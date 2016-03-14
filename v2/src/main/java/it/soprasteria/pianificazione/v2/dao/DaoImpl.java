@@ -128,6 +128,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				p.setCustomer(rs.getString("cliente"));
 				p.setCurrency(rs.getString("valuta"));
 				p.setType(rs.getString("attività"));
+				p.setBusinessUnit(rs.getInt("business_unit"));
 				return p;
 			}
 		});

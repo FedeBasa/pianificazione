@@ -106,7 +106,8 @@
 					}
 					$('#employeeDesc').val(data.employeeDesc).change();
 					$('#projectDesc').val(data.projectDesc).change();
-					$('#bu').val($("#projetDesc").getSelectedItemData().businessUnit).change();
+					console.log(data.businessUnit);
+					$('#bu').val(data.businessUnit).change();
 				});
 	}
 </script>

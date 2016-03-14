@@ -48,6 +48,7 @@ public class V2Service {
 		item.setCurrency(prb.getCurrency());
 		item.setActivityType(prb.getType());
 		item.setCustomer(prb.getCustomer());
+		item.setBusinessUnit(prb.getBusinessUnit());
 
 	}
 

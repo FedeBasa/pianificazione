@@ -18,7 +18,14 @@ public class RecordV2Bean {
 	private Integer cons2;
 	private Integer prod2;
     private String customer;
-
+    private Integer businessUnit;
+    
+	public Integer getBusinessUnit() {
+		return businessUnit;
+	}
+	public void setBusinessUnit(Integer businessUnit) {
+		this.businessUnit = businessUnit;
+	}
 	public String getMonth() {
 		return month;
 	}
