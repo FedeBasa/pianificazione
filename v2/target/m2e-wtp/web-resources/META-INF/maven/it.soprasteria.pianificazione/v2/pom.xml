@@ -82,7 +82,10 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.14</version>
 		</dependency>
+<<<<<<< HEAD
 		
+=======
+>>>>>>> b6ddb4b0c76942c9db1b95b820af63a7a000fc48
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
