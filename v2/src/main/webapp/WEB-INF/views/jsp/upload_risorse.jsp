@@ -6,12 +6,42 @@
 <head>
 
 	<jsp:include page="../fragments/head.jsp" />
+
+<script>
+	$(document).ready(function() {
+		
+		$("#upload").click(function(){
+			var path="${pageContext.request.contextPath}/excel/upload/employee";
+			$("#form1").attr("action",path);
+			$("#form1").submit();
+		});
+		$("#save").click(function(){
+			var path="${pageContext.request.contextPath}/excel/save/employee";
+			$("#form1").attr("action",path);
+			$("#form1").submit();
+		});
+		$("#replace").click(function(){
+			var path="${pageContext.request.contextPath}/excel/replace/employee";
+			$("#form1").attr("action",path);
+			$("#form1").submit();
+		});
+	});
+</script>
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body> 
  
     <div class="container">
-        <form:form method="POST" modelAttribute="uploadBean" enctype="multipart/form-data" class="form-horizontal">
+    
+		<div class="btn-group">
+		
+			<button id="upload" type="button" class="btn btn-primary">Carica File</button>
+			<button id="save" type="button" class="btn btn-primary">Salva</button>
+			<button id="replace" type="button" class="btn btn-primary">Sostituisci tutto</button>
+			
+		</div>
+    
+        <form:form id="form1" method="POST" modelAttribute="uploadBean" enctype="multipart/form-data" class="form-horizontal">
          
             <div class="row">
                 <div class="form-group col-md-12">
@@ -25,11 +55,6 @@
                 </div>
             </div>
      
-            <div class="row">
-                <div class="form-actions floatRight">
-                    <input type="submit" value="Upload" class="btn btn-primary btn-sm">
-                </div>
-            </div>
         </form:form>
         
         <div class="alert alert-info">

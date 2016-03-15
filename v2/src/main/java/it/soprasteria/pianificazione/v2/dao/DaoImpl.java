@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -39,10 +40,10 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 	@Override
 	public List<ProjectBean> getAllProject(final Integer businessUnit) {
-		List<ProjectBean> prog = getJdbcTemplate().query("SELECT * FROM progetti WHERE business_unit = ?",new PreparedStatementSetter(){
+		List<ProjectBean> prog = getJdbcTemplate().query("SELECT * FROM progetti WHERE business_unit = ?", new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
-                        pstm.setInt(1,businessUnit);				
+				pstm.setInt(1, businessUnit);
 			}
 		}, new RowMapper<ProjectBean>() {
 			public ProjectBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
@@ -221,7 +222,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setInt(i++, rec.getProd1() == null ? 0 : rec.getProd1());
 				ps.setInt(i++, rec.getCons2() == null ? 0 : rec.getCons2());
 				ps.setInt(i++, rec.getProd2() == null ? 0 : rec.getProd2());
-				
+
 				// TODO
 				// sistemare, cablato nome utente
 				ps.setString(i++, "Admin");
@@ -246,28 +247,64 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		});
 
 	}
-	
+
 	@Override
-	public List<RecordV2Bean> findAllV2(){
+	public List<RecordV2Bean> findAllV2() {
 		List<RecordV2Bean> result = new ArrayList<RecordV2Bean>();
 		StringBuilder sb = new StringBuilder();
-		
+
 		// TODO
 		// recuperare l'elenco dei v2 in modo diverso
 
 		sb.append("SELECT *");
 		sb.append(" FROM u_progetti_risorse");
 		sb.append(" GROUP BY mese");
-       result = getJdbcTemplate().query(sb.toString(), new RowMapper<RecordV2Bean>(){
-    	 @Override
-    	public RecordV2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
-    		 RecordV2Bean rv = new RecordV2Bean();
-    		 rv.setMonth(rs.getString("mese"));
-    		 LOG.debug(rv.getMonth());
-    		return rv;
-    	}
-       });
+		result = getJdbcTemplate().query(sb.toString(), new RowMapper<RecordV2Bean>() {
+			@Override
+			public RecordV2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				RecordV2Bean rv = new RecordV2Bean();
+				rv.setMonth(rs.getString("mese"));
+				LOG.debug(rv.getMonth());
+				return rv;
+			}
+		});
 		return result;
 	}
 
+	@Override
+	public void deleteAllEmployees() {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("DELETE FROM risorse");
+
+		getJdbcTemplate().update(sb.toString());
+	}
+
+	@Override
+	public void persist(final List<EmployeeBean> list) {
+
+		final StringBuilder sb = new StringBuilder();
+		
+		sb.append("INSERT INTO risorse(matricola, nome, cognome)");
+		sb.append(" VALUES(?,?,?)");
+		
+		getJdbcTemplate().batchUpdate(sb.toString(), new BatchPreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm, int i) throws SQLException {
+
+				EmployeeBean item = list.get(i);
+				
+				pstm.setString(1, item.getBadgeNumber());
+				pstm.setString(2, item.getName());
+				pstm.setString(3, item.getSurname());
+			}
+			
+			@Override
+			public int getBatchSize() {
+				return list.size();
+			}
+		});
+		
+	}
 }

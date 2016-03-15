@@ -62,7 +62,7 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value = "/excel/save/employee", method = RequestMethod.POST)
-	public String uploadEmployee(Model model) {
+	public String saveEmployee(Model model) {
 	
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
 		
@@ -70,7 +70,25 @@ public class UploadController {
 		
 		SessionHelper.clearEmployeeDigester();
 		
+		// TODO
+		// aggiungere messaggio di conferma operazione
+		
 		return "redirect:/excel/upload/employee";
 	}	
+
+	@RequestMapping(value = "/excel/replace/employee", method = RequestMethod.POST)
+	public String replaceEmployee(Model model) {
 	
+		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
+		
+		service.replace(digester.getList());
+		
+		SessionHelper.clearEmployeeDigester();
+		
+		// TODO
+		// aggiungere messaggio di conferma operazione
+
+		return "redirect:/excel/upload/employee";
+	}	
+
 }

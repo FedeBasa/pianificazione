@@ -27,4 +27,8 @@ public interface Dao {
 
 	public List<RecordV2Bean> findAllV2();
 
+	public void persist(List<EmployeeBean> list);
+	
+	public void deleteAllEmployees();
+
 }
