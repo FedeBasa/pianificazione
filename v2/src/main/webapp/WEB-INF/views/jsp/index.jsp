@@ -8,7 +8,9 @@
 <html lang="it">
 	<head>	
 		<jsp:include page="../fragments/head.jsp" />
-	
+
+<script  src= 
+       "${pageContext.request.contextPath}/resources/js/mindmup-editabletable.js"></script>	
 <script>
 	$(document).ready(function() {
 		
@@ -109,6 +111,8 @@
 					console.log(data.businessUnit);
 					$('#bu').val(data.businessUnit).change();
 				});
+		
+		$('#v2').editableTableWidget();
 	}
 </script>
 	</head>

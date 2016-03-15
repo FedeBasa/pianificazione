@@ -1,12 +1,24 @@
 package it.soprasteria.pianificazione.v2.bean;
 
-public class EmployeeBean {
+import java.io.Serializable;
+
+public class EmployeeBean implements Serializable {
 
 	private String badgeNumber;
 	private String name;
 	private String surname;
 	private String nameSurname;
 
+	public static EmployeeBean build(String badgeNumber, String name, String surname) {
+		
+		EmployeeBean instance = new EmployeeBean();
+		instance.badgeNumber = badgeNumber;
+		instance.name = name;
+		instance.surname = surname;
+		
+		return instance;
+	}
+	
 	public String getNameSurname() {
 		return nameSurname;
 	}

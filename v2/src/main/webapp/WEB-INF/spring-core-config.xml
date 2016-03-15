@@ -1,21 +1,31 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:jee="http://www.springframework.org/schema/jee"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd 
-         http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+         http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
 	<cache:annotation-driven />
 	<context:component-scan base-package="it.soprasteria.pianificazione.v2" />
+
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/pianificazione" expected-type="javax.sql.DataSource" />
 	
+	<!-- 
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/pianificazione" />
+	</bean>
+	 -->
+
 	<bean id="V2Service" class="it.soprasteria.pianificazione.v2.service.V2Service" />
-	<bean id="Employee" class="it.soprasteria.pianificazione.v2.service.EmployeeService" />
+	<bean id="Employee"
+		class="it.soprasteria.pianificazione.v2.service.EmployeeService" />
 	<bean id="Project" class="it.soprasteria.pianificazione.v2.service.ProjectService" />
 	<bean id="User" class="it.soprasteria.pianificazione.v2.service.UserService" />
-	
+
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
 	</bean>
@@ -27,15 +37,6 @@
 
 	<bean id="DaoImpl" class="it.soprasteria.pianificazione.v2.dao.DaoImpl">
 		<property name="dataSource" ref="dataSource" />
-	</bean>
-
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/pianificazione" />
-		<property name="username" value="root" />
-		<property name="password" value="mysql" />
 	</bean>
 
 	<!-- JMX for ehcache -->
@@ -52,8 +53,5 @@
 		<property name="locateExistingServerIfPossible" value="true" />
 
 	</bean>
-	
-	<bean id="formValidator" class="it.soprasteria.pianificazione.v2.validator.FormValidator">
-	</bean>
-	
+
 </beans>
