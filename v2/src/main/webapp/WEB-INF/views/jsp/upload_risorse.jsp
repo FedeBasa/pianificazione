@@ -10,7 +10,7 @@
 <jsp:include page="../fragments/nav.jsp" />
 <body> 
  
-    <div class="form-container">
+    <div class="container">
         <form:form method="POST" modelAttribute="uploadBean" enctype="multipart/form-data" class="form-horizontal">
          
             <div class="row">
@@ -31,6 +31,27 @@
                 </div>
             </div>
         </form:form>
+        
+        <c:if test="${not empty list}">
+        	<table class="table table-bordered table-striped">
+        		<thead>
+        			<tr>
+        				<th>Matricola</th>
+        				<th>Nome</th>
+        				<th>Cognome</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			<c:forEach items="list" var="row">
+        			<tr>
+						<td><c:out value="${row.badgeNumber}"/></td>
+						<td><c:out value="${row.name}"/></td>
+						<td><c:out value="${row.surname}"/></td>
+        			</tr>
+        			</c:forEach>
+        		</tbody>
+        	</table>
+        </c:if>
     </div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package it.soprasteria.pianificazione.v2.digester;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.exception.DigestException;
 
-public class ExcelEmployeeDigester {
+public class ExcelEmployeeDigester implements Serializable {
 
 	private static final Logger LOG = Logger.getLogger(ExcelEmployeeDigester.class);
 	
@@ -51,9 +52,14 @@ public class ExcelEmployeeDigester {
 				String name = row.getCell(1).getStringCellValue();
 				String surname = row.getCell(2).getStringCellValue();
 
-				LOG.info("matricola: " + badgeNumber);
-				LOG.info("name: " + name);
-				LOG.info("surname: " + surname);
+				String[] rowContent = new String[3];
+				rowContent[0] = badgeNumber;
+				rowContent[1] = name;
+				rowContent[2] = surname;
+
+				this.content.add(rowContent);
+				
+				this.countRows++;
 			}
 		} catch(IOException e) {
 			
@@ -74,10 +80,20 @@ public class ExcelEmployeeDigester {
 	}
 
 	public void validate() {
+
+		this.list.clear();
+
+		for(String[] rowContent : this.content) {
+			
+			// TODO
+			// implementare la validazione del contenuto
+			this.list.add(EmployeeBean.build(rowContent[0], rowContent[1], rowContent[2]));
+		}
 		
-		// TODO
-		// implementare la validazione del contenuto
 	}
 	
+	public List<EmployeeBean> getList() {
+		return list;
+	}
 	
 }

@@ -35,4 +35,11 @@ public class EmployeeService {
 	public EmployeeBean details(String id) throws SQLException {
 		return dao.getEmployee(id);
 	}
+	
+	public void save(List<EmployeeBean> list) {
+		
+		
+		// TODO
+		// richiamare il DAO
+	}
 }
