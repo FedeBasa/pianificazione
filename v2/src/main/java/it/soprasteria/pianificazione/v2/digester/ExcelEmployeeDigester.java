@@ -26,6 +26,8 @@ public class ExcelEmployeeDigester implements Serializable {
 	
 	private int countRows;
 	private int countRejected;
+	
+	private List<String> infoMessages = new ArrayList<String>();
 	private List<String> errorMessages = new ArrayList<String>();
 	
 	public void load(InputStream inputStream) throws DigestException {
@@ -90,10 +92,15 @@ public class ExcelEmployeeDigester implements Serializable {
 			this.list.add(EmployeeBean.build(rowContent[0], rowContent[1], rowContent[2]));
 		}
 		
+		this.infoMessages.add(this.list.size() + " elementi pronti per il salvataggio");
+		
 	}
 	
 	public List<EmployeeBean> getList() {
 		return list;
 	}
 	
+	public List<String> getInfoMessages() {
+		return infoMessages;
+	}
 }

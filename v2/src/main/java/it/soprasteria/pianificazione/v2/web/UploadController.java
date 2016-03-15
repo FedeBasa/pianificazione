@@ -27,7 +27,6 @@ public class UploadController {
 	@Autowired
 	private EmployeeService service;
 	
-	
 	@RequestMapping(value = "/excel/upload/employee", method = RequestMethod.GET)
 	public String view(Model model) {
 		
@@ -49,7 +48,7 @@ public class UploadController {
 			
 			digester.validate();
 			
-			model.addAttribute("list", digester.getList());
+			model.addAttribute("digester", digester);
 			
 			SessionHelper.storeEmployeeDigester(digester);
 			

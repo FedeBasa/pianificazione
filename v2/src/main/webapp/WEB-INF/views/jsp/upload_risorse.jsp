@@ -32,7 +32,14 @@
             </div>
         </form:form>
         
-        <c:if test="${not empty list}">
+        <div class="alert alert-info">
+        
+        	<c:forEach items="${digester.infoMessages}" var="message">
+        		<span><c:out value="${message}"/></span>
+        	</c:forEach>
+        </div>
+        
+        <c:if test="${not empty digester}">
         	<table class="table table-bordered table-striped">
         		<thead>
         			<tr>
@@ -42,7 +49,7 @@
         			</tr>
         		</thead>
         		<tbody>
-        			<c:forEach items="list" var="row">
+        			<c:forEach items="${digester.list}" var="row">
         			<tr>
 						<td><c:out value="${row.badgeNumber}"/></td>
 						<td><c:out value="${row.name}"/></td>
