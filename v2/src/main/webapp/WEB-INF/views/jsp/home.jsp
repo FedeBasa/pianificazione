@@ -13,7 +13,7 @@
 <body>
 <c:if test="${rejected}">
 <%-- 	<spring:message code="rejected.month"></spring:message> --%>
-	<span>Impossibile aggiungere il mese</span>
+	<p class="alert alert-danger">Impossibile aggiungere il mese</p>
 </c:if>
 	<table>
 	<tr>

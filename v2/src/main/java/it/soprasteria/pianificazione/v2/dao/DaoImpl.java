@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.bean.V2Bean;
 
 public class DaoImpl extends JdbcDaoSupport implements Dao {
 	private static final Logger LOG = Logger.getLogger(DaoImpl.class);
@@ -272,15 +273,36 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return result;
 	}
 
+//
+//	@Override
+//	public List<Integer> getMonths(String user){
+//		List<Integer> result = new ArrayList<Integer>();
+//		StringBuilder sb = new StringBuilder();
+//
+//		sb.append("SELECT DISTINCT mese");
+//		sb.append(" FROM u_progetti_risorse");
+//		sb.append(" WHERE user_id = '" + user + "'");
+//		sb.append(" ORDER BY mese");
+//		
+//       result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>(){
+//    	 @Override
+//    	public Integer mapRow(ResultSet rs, int rowNumb) throws SQLException {
+//    		 Integer mese = rs.getInt("mese");
+//    		return mese;
+//    	}
+//       });
+//		return result;
+//	}
 
+	//recupera la lista dei mesi
 	@Override
 	public List<Integer> getMonths(String user){
 		List<Integer> result = new ArrayList<Integer>();
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("SELECT DISTINCT mese");
-		sb.append(" FROM u_progetti_risorse");
-		sb.append(" WHERE user_id = '" + user + "'");
+		sb.append("SELECT mese");
+		sb.append(" FROM v2");
+		sb.append(" WHERE user = '" + user + "'");
 		sb.append(" ORDER BY mese");
 		
        result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>(){
@@ -292,11 +314,13 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
        });
 		return result;
 	}
-
+	
+	//recupera solo l'ultimo mese
 	public Integer getLastMonth(List<Integer> mesi) {
 		return mesi.get(mesi.size() -1);
 	}
 	
+	//controllo che venga aggiunto solo il mese seguente
 	public boolean checkMonth(int mese) {
 		
 		//recupero il mese 
@@ -325,12 +349,13 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return false;
 	}
 	
+	//replica le risorse del mese precedente per il nuovo mese
 	@Override
-	public void addNextMonth(String user) {
+	public void addProjectsResources(String user, int currentMonth, int nextMonth) {
 		
 		List<RecordV2Bean> result = new ArrayList<RecordV2Bean>();
 		StringBuilder sb = new StringBuilder();
-			sb.append("SELECT * FROM u_progetti_risorse WHERE mese = '"+ getLastMonth(getMonths(user)) +"' AND user_id = '" + user + "' ORDER BY mese desc");
+			sb.append("SELECT * FROM u_progetti_risorse WHERE mese = '"+ currentMonth +"' AND user_id = '" + user + "' ORDER BY mese desc");
 			
 			result = getJdbcTemplate().query(sb.toString(), new RowMapper<RecordV2Bean>(){
 				 @Override
@@ -367,13 +392,54 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	
 			for (RecordV2Bean v2 : result) {
 				
-			Object[] params = new Object[] { getNextMonth(v2.getMonth()), v2.getIdProject(), v2.getBadgeNumber(), v2.getCons1(), v2.getCons2(), 0, v2.getProd1(), v2.getProd2(), 0, "Admin", v2.getPrice() };
+			Object[] params = new Object[] { nextMonth, v2.getIdProject(), v2.getBadgeNumber(), v2.getCons1(), v2.getCons2(), 0, v2.getProd1(), v2.getProd2(), 0, "Admin", v2.getPrice() };
 			int[] types = new int[] { Types.VARCHAR, Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.INTEGER };
 			int row = getJdbcTemplate().update(insertSql, params, types);
 			System.out.println(row + " row inserted.");
 			}
 	}
 	
+	//aggiunge il nuovo mese
+	@Override
+	public void addNextMonth(String user) {
+		
+		List<V2Bean> result = new ArrayList<V2Bean>();
+		StringBuilder sb = new StringBuilder();
+			sb.append("SELECT * FROM v2 WHERE mese = '"+ getLastMonth(getMonths(user)) +"' AND user = '" + user + "' ORDER BY mese desc");
+			
+			result = getJdbcTemplate().query(sb.toString(), new RowMapper<V2Bean>(){
+				 @Override
+			    	public V2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+			    		 V2Bean rv = new V2Bean();
+			    		 rv.setMonth(rs.getInt("mese"));
+			    		 rv.setUser(rs.getString("user"));
+			    		 rv.setEditable(rs.getInt("editable"));
+			    		return rv;
+			    	}
+			       });
+			
+			String insertSql =
+					  "INSERT INTO v2 (" +
+					  " mese, " +
+					  " user, " +
+					  " editable)" +
+					  "VALUES (?, ?, ?)";
+	
+			int nextMonth = 0;
+			int currentMonth = 0;
+			for (V2Bean v2 : result) {
+			currentMonth = v2.getMonth();
+			nextMonth = getNextMonth(v2.getMonth());
+			Object[] params = new Object[] { nextMonth, user, 0 };
+			int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.INTEGER };
+			int row = getJdbcTemplate().update(insertSql, params, types);
+			System.out.println(row + " row inserted.");
+			}
+			
+			addProjectsResources(user, currentMonth, nextMonth);
+	}
+	
+	//calcola il mese successivo
 	private int getNextMonth(int month) {
 		
 		String meseString = "" + month;

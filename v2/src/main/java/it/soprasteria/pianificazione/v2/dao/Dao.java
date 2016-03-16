@@ -29,6 +29,8 @@ public interface Dao {
 	
 	public List<Integer> getMonths(String user);
 	
+	public void addProjectsResources(String user, int currentMonth, int nextMonth);
+	
 	public void addNextMonth(String user);
 
 }
