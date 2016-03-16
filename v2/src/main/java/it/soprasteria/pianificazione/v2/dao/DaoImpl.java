@@ -224,6 +224,10 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setInt(i++, rec.getProd1() == null ? 0 : rec.getProd1());
 				ps.setInt(i++, rec.getCons2() == null ? 0 : rec.getCons2());
 				ps.setInt(i++, rec.getProd2() == null ? 0 : rec.getProd2());
+<<<<<<< HEAD
+=======
+
+>>>>>>> bdd79d805a6fb663620f829982c6e6b06e2ff035
 				// TODO
 				// sistemare, cablato nome utente
 				ps.setString(i++, "Admin");
