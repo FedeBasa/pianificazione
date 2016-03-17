@@ -175,12 +175,11 @@ public class SampleController {
 	
 	
 	@RequestMapping(value = "/update",method = RequestMethod.POST)
-	public String newUpdate(@RequestParam (name = "id") String id, @RequestParam(name = "colname") String colname,@RequestParam(name = "value") String data){
+	public void newUpdate(@RequestParam (name = "id") String id, @RequestParam(name = "colname") String colname,@RequestParam(name = "value") String data){
 		//TODO						
 		//ottenere il tipo di risultato e la colonna ed effettuare l'update
 		service.v2Update(Long.parseLong(id), colname, data);
 		LOG.debug("OK");
-		return "redirect:/home";
 	}
 
 }

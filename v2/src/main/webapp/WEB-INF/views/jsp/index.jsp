@@ -114,17 +114,16 @@
 		
  		$('#v2').editableTableWidget();
  		
- 		$('#price').on('change', function(evt,newValue){
- 			var colname = "tariffa"
+ 		$('#v2').on('change', function(evt,newValue){
+ 			var colname = "tariffa" ;
  			var data = newValue;
+ 			var id = $("#idRecord").val();
  			console.log(evt);
- 			console.log(newValue);
+ 			console.log(data);
   			$.ajax({
   				  type: "POST",
-  				  url: "${pageContext.request.contextPath}/update?id=3&colname="+colname+"&value="+newValue,
-  				  data: "",
+  				  url: "${pageContext.request.contextPath}/update?id="+ id +"&colname="+colname+"&value="+data,
   				  success : console.log("success"),
-  				  dataType : "text"
 			});
  		});
 	}
