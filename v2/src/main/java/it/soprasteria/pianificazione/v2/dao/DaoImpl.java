@@ -224,10 +224,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setInt(i++, rec.getProd1() == null ? 0 : rec.getProd1());
 				ps.setInt(i++, rec.getCons2() == null ? 0 : rec.getCons2());
 				ps.setInt(i++, rec.getProd2() == null ? 0 : rec.getProd2());
-<<<<<<< HEAD
-=======
-
->>>>>>> bdd79d805a6fb663620f829982c6e6b06e2ff035
 				// TODO
 				// sistemare, cablato nome utente
 				ps.setString(i++, "Admin");
@@ -310,6 +306,25 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				return list.size();
 			}
 		});
+	}
+	
+	@Override
+	public void updateTable(final Long id , final String colname, final String modify){
+		final StringBuilder sb = new StringBuilder();
 		
+		sb.append("UPDATE  u_progetti_risorse");
+		sb.append(" SET "+ colname +" = ?");
+		sb.append(" WHERE id_unione = ?");
+		LOG.debug(sb.toString());
+		getJdbcTemplate().update(new PreparedStatementCreator(){
+			@Override
+			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+				PreparedStatement ps = conn.prepareStatement(sb.toString());
+				int i = 1;
+				ps.setString(i++, modify);
+				ps.setLong(i++, id);
+				return ps;
+			}
+		});
 	}
 }

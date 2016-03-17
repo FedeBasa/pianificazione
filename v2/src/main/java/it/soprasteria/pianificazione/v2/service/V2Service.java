@@ -70,5 +70,9 @@ public class V2Service {
 		List<RecordV2Bean> v2s = dao.findAllV2();
 		return v2s;
 	}
+	
+	public void v2Update(Long id, String colname , String data){
+		dao.updateTable(id, colname, data);
+	}
 
 }

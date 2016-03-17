@@ -30,5 +30,6 @@ public interface Dao {
 	public void persist(List<EmployeeBean> list);
 	
 	public void deleteAllEmployees();
-
+	
+	public void updateTable(Long id, String colname, String modify);
 }

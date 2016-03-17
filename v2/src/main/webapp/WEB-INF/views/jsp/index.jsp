@@ -112,7 +112,15 @@
 					$('#bu').val(data.businessUnit).change();
 				});
 		
-		$('#v2').editableTableWidget();
+ 		$('#v2').editableTableWidget();
+// 		$('v2 td').on('change', function(evt,newValue){
+// 			var colname = "tariffa"
+// 			console.log(newValue);
+// 			$.post("${pageContext.request.contextPath}/update?id="+3+"&colname="+colname,
+// 			                   function(newValue){
+// 				           data:  newValue
+// 			});
+// 		});
 	}
 </script>
 	</head>

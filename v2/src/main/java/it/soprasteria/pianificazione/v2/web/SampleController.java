@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,6 +61,9 @@ public class SampleController {
 		return "home";
 	}
 
+	// @RequestMapping(value = "/edit/{month}", method = RequestMethod.GET)
+	// public ModelAndView method1(@PathVariable(value = "month") String month) throws SQLException {
+	
 	@RequestMapping(value = "/edit/v2", method = RequestMethod.GET)
 	public ModelAndView method1(@RequestParam(required = false, name = "month") String month) throws SQLException {
 
@@ -94,6 +98,9 @@ public class SampleController {
 		return result;
 	}
 
+	// @RequestMapping(value = "/record/detail/{id}", method = RequestMethod.GET)
+	// public @ResponseBody RecordV2Bean detail(@PathVariable(value="id") Long id) throws SQLException {
+	
 	@RequestMapping(value = "/table/edit", method = RequestMethod.GET)
 	public @ResponseBody RecordV2Bean detail(Long id) throws SQLException {
 		
@@ -102,6 +109,8 @@ public class SampleController {
 		return service.getRecord(id);
 	}
 
+	// @RequestMapping(value = "/record/update/{id}", method = RequestMethod.POST)
+	
 	// era presente un errore nella firma del metodo
 	@RequestMapping(value = "/send/data", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
@@ -162,6 +171,17 @@ public class SampleController {
 	   service.deleteRecord(id);
 		
 		return "redirect:/edit/v2?month=" + record.getMonth();
+	}
+	
+	
+	@RequestMapping(value = "/update",method = RequestMethod.POST)
+	public String newUpdate(@RequestParam (name = "id") String id, @RequestParam(name = "colname") String colname, String data){
+		//TODO						
+		//ottenere il tipo di risultato e la colonna ed effettuare l'update
+		data = "15";
+		service.v2Update(Long.parseLong(id), colname, data);
+		LOG.debug("OK");
+		return "redirect:/home";
 	}
 
 }
