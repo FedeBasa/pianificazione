@@ -320,6 +320,27 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return mesi.get(mesi.size() -1);
 	}
 	
+	//controlla se il mese è editabile per l'utente corrente
+	public int checkEditable(final String user, final int month) {
+		
+		List<Integer> mesi = getJdbcTemplate().query("SELECT editable FROM v2 WHERE user = ? AND mese = ?",new PreparedStatementSetter(){
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+                        pstm.setString(1, user);
+                        pstm.setInt(2, month);
+			}
+		}, new RowMapper<Integer>() {
+			public Integer mapRow(ResultSet rs, int rowNumb) throws SQLException {			
+				int editable = (rs.getInt("editable"));
+				return editable;
+			}
+		});
+		
+		LOG.info("#################" + mesi.get(0));
+		return mesi.get(0);
+
+	}
+	
 	//controllo che venga aggiunto solo il mese seguente
 	public boolean checkMonth(int mese) {
 		
@@ -433,7 +454,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			Object[] params = new Object[] { nextMonth, user, 0 };
 			int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.INTEGER };
 			int row = getJdbcTemplate().update(insertSql, params, types);
-			System.out.println(row + " row inserted.");
+			LOG.info((row + " row inserted."));
 			}
 			
 			addProjectsResources(user, currentMonth, nextMonth);

@@ -85,5 +85,14 @@ public class V2Service {
 		
 		return true;
 	}
+	
+	public boolean isEditable(String user, int month) {
+		
+		if(dao.checkEditable(user, month) == 0) {			
+			return true;
+		}
+		
+		return false;
+	}
 
 }

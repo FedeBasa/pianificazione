@@ -29,5 +29,6 @@
 	<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/addMonth">
        <button type="submit" class="btn btn-primary">Aggiungi Mese</button>       
 	</form:form>
+	
 </body>
 </html>

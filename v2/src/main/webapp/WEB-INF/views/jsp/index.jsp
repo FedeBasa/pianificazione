@@ -114,12 +114,12 @@
 	
 	<div class="container">
 		<div class="btn-group">
-		
-			<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
-			<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
-			<button id="delete" type="button" class="btn btn-primary">Elimina</button>
-			<button id="bottone" type="button" class="btn btn-primary">Aggiungi</button>
-			
+			<c:if test="${editable eq true}">	
+				<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>		
+				<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
+				<button id="delete" type="button" class="btn btn-primary">Elimina</button>
+				<button id="bottone" type="button" class="btn btn-primary">Aggiungi</button>
+			</c:if>	
 		</div>
 
 	

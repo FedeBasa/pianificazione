@@ -57,8 +57,9 @@ public class SampleController {
         List<Integer> monthsList = new ArrayList<Integer>();
         String user = SessionHelper.getUser().getUsername();
         monthsList = service.getMonths(user);
-        
+            
         model.addAttribute("lista",monthsList);
+        
 		return "home";
 	}
 
@@ -83,11 +84,14 @@ public class SampleController {
 		ModelAndView model = new ModelAndView();
 		model.setViewName("index");
 		
+		String user = SessionHelper.getUser().getUsername();
 		List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
 		list = service.getV2(month, SessionHelper.getUser().getUsername());
+		boolean editable = service.isEditable(user, month);
 		
 		model.addObject("list", list);
 		model.addObject("v2Form", new RecordV2Bean());
+		model.addObject("editable", editable);
 		
 		return model;
 	}
