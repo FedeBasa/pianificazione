@@ -113,14 +113,20 @@
 				});
 		
  		$('#v2').editableTableWidget();
-// 		$('v2 td').on('change', function(evt,newValue){
-// 			var colname = "tariffa"
-// 			console.log(newValue);
-// 			$.post("${pageContext.request.contextPath}/update?id="+3+"&colname="+colname,
-// 			                   function(newValue){
-// 				           data:  newValue
-// 			});
-// 		});
+ 		
+ 		$('#price').on('change', function(evt,newValue){
+ 			var colname = "tariffa"
+ 			var data = newValue;
+ 			console.log(evt);
+ 			console.log(newValue);
+  			$.ajax({
+  				  type: "POST",
+  				  url: "${pageContext.request.contextPath}/update?id=3&colname="+colname+"&value="+newValue,
+  				  data: "",
+  				  success : console.log("success"),
+  				  dataType : "text"
+			});
+ 		});
 	}
 </script>
 	</head>
@@ -157,10 +163,10 @@
 			<tbody>	
 			<c:forEach items="${list}" var="item">
 				<tr onclick="detail(${item.idRecord})">
-				<td><c:out value="${item.employeeDesc}" /></td>
+				    <td><c:out value="${item.employeeDesc}" /></td>
 					<td><c:out value="${item.activityType}" /></td>
 					<td><c:out value="${item.projectDesc}" /></td>
-					<td><c:out value="${item.price}" /></td>
+					<td id = "price"><c:out value="${item.price}" /></td>
 					<td><c:out value="${item.currency}" /></td>
 					<td><c:out value="${item.cons0}" /></td>
 					<td><c:out value="${item.prod0}" /></td>
@@ -301,4 +307,5 @@
 	</div>	
 	<jsp:include page="../fragments/footer.jsp" />	
 </body>
+
 </html>
