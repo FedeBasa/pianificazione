@@ -32,5 +32,7 @@ public interface Dao {
 	public void addProjectsResources(String user, int currentMonth, int nextMonth);
 	
 	public void addNextMonth(String user);
+	
+	public void setEditable(String user, int month);
 
 }

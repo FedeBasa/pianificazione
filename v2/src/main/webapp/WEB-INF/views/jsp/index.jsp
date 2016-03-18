@@ -107,6 +107,15 @@
 					$('#projectDesc').val(data.projectDesc).change();
 				});
 	}
+	
+	function validate(form) {
+		if(confirm("Vuoi approvare questo mese?")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 </script>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
@@ -120,6 +129,11 @@
 				<button id="delete" type="button" class="btn btn-primary">Elimina</button>
 				<button id="bottone" type="button" class="btn btn-primary">Aggiungi</button>
 			</c:if>	
+		</div>
+		<div class="btn-group">
+		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/approva?month=${month}" onsubmit="return validate(this);">
+			<button id="approva" type="submit" class="${editable eq true ? 'btn btn-warning' : 'btn btn-warning disabled'}">Approva</button>
+		</form:form>
 		</div>
 
 	

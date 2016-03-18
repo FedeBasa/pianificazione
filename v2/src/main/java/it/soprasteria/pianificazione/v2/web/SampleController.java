@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.catalina.connector.Request;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,6 +93,7 @@ public class SampleController {
 		model.addObject("list", list);
 		model.addObject("v2Form", new RecordV2Bean());
 		model.addObject("editable", editable);
+		model.addObject("month", month);
 		
 		return model;
 	}
@@ -179,6 +181,14 @@ public class SampleController {
 	   service.deleteRecord(id);
 		
 		return "redirect:/edit/v2?month=" + record.getMonth();
+	}
+	
+	@RequestMapping(value = "/approva", method = RequestMethod.POST)
+	public String approva(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
+	    
+	    String user = SessionHelper.getUser().getUsername();
+	    service.setEditable(user, month);
+		return "redirect:/edit/v2?month=" + month;
 	}
 	
 }

@@ -336,7 +336,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 		});
 		
-		LOG.info("#################" + mesi.get(0));
 		return mesi.get(0);
 
 	}
@@ -357,11 +356,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		int lastMonth = Integer.parseInt(meseString.substring(4, 6));
 		currentMonth++;
 		
-		System.out.println("current mese: " + currentMonth);
-		System.out.println("current anno: " + currentYear);
-		
-		System.out.println("last mese: " + lastMonth);
-		System.out.println("last anno: " + lastYear);
 		
 		if(currentMonth == lastMonth && currentYear == lastYear) {			
 			return true;
@@ -482,6 +476,31 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		
 		
 		return Integer.parseInt(anno + stringMese);
+	}
+	
+	@Override
+	public void setEditable(final String user, final int month) {
+		
+		LOG.info("##############SET EDITABLE");
+		LOG.info("############## USER: " + user);
+		LOG.info("############## MESE: " + month);
+		final StringBuilder sb = new StringBuilder();
+		sb.append("UPDATE v2");
+		sb.append(" SET editable= ?");
+		sb.append(" WHERE user = ? AND");
+		sb.append(" mese = ?");
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+				int i = 1;
+				PreparedStatement ps = conn.prepareStatement(sb.toString());
+				ps.setInt(i++, 1);
+				ps.setString(i++, user);
+				ps.setInt(i++, month);
+				return ps;
+			}
+		});
 	}
 		
 }

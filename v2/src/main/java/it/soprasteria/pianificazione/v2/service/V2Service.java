@@ -94,5 +94,9 @@ public class V2Service {
 		
 		return false;
 	}
+	
+	public void setEditable(String user, int month) {
+		dao.setEditable(user, month);
+	}
 
 }
