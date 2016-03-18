@@ -18,6 +18,7 @@ public class RecordV2Bean {
 	private int cons2;
 	private int prod2;
     private String customer;
+<<<<<<< HEAD
     
     
 	public String getCustomer() {
@@ -29,6 +30,17 @@ public class RecordV2Bean {
 	}
 
 	public int getMonth() {
+=======
+    private Integer businessUnit;
+    
+	public Integer getBusinessUnit() {
+		return businessUnit;
+	}
+	public void setBusinessUnit(Integer businessUnit) {
+		this.businessUnit = businessUnit;
+	}
+	public String getMonth() {
+>>>>>>> master
 		return month;
 	}
 

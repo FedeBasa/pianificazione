@@ -35,4 +35,9 @@ public interface Dao {
 	
 	public void setEditable(String user, int month);
 
+	public void persist(List<EmployeeBean> list);
+	
+	public void deleteAllEmployees();
+	
+	public void updateTable(Long id, String colname, Integer modify);
 }

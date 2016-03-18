@@ -19,6 +19,7 @@ public class FormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeDesc", "NotEmpty.risorsa");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projectDesc", "NotEmpty.progetto");
+<<<<<<< HEAD
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "NotEmpty.tariffa");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cons0", "NotEmpty.cons0");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cons1", "NotEmpty.cons1");
@@ -38,5 +39,8 @@ public class FormValidator implements Validator {
 		if(((RecordV2Bean)target).getCons2() == 0){
 			errors.rejectValue("cons2", "Zero.cons2");
 		}
+=======
+		
+>>>>>>> master
 	}
 }

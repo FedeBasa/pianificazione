@@ -48,6 +48,7 @@ public class V2Service {
 		item.setCurrency(prb.getCurrency());
 		item.setActivityType(prb.getType());
 		item.setCustomer(prb.getCustomer());
+		item.setBusinessUnit(prb.getBusinessUnit());
 
 	}
 
@@ -70,6 +71,7 @@ public class V2Service {
 		return v2s;
 	}
 	
+<<<<<<< HEAD
 	public List<Integer> getMonths(String user) {
 		List<Integer> monthsList = dao.getMonths(user);
 		
@@ -97,6 +99,10 @@ public class V2Service {
 	
 	public void setEditable(String user, int month) {
 		dao.setEditable(user, month);
+=======
+	public void v2Update(Long id, String colname, Integer value){
+		dao.updateTable(id, colname, value);
+>>>>>>> master
 	}
 
 }

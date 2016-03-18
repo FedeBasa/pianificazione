@@ -11,6 +11,13 @@
 
 	<context:component-scan base-package="it.soprasteria.pianificazione.v2" />
 
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:annotation-driven />
+	<context:annotation-config />
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
@@ -19,17 +26,13 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<mvc:resources mapping="/resources/**" location="/resources/" />
-
-
-
    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-   <property name ="basename" value = "classpath:messages/validator"/>
-   <property name = "defaultEncoding" value ="UTF-8"/>
+	   <property name ="basename" value = "classpath:messages/validator"/>
+	   <property name = "defaultEncoding" value ="UTF-8"/>
     </bean>
 
-	<mvc:annotation-driven />
+	<bean id="formValidator" class="it.soprasteria.pianificazione.v2.validator.FormValidator">
+	</bean>
 
-	<context:annotation-config />
 
 </beans>

@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +28,10 @@ import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.service.EmployeeService;
 import it.soprasteria.pianificazione.v2.service.ProjectService;
 import it.soprasteria.pianificazione.v2.service.V2Service;
+import it.soprasteria.pianificazione.v2.util.ColnameConverter;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 import it.soprasteria.pianificazione.v2.validator.FormValidator;
+import it.soprasteria.pianificazione.v2.web.ajax.JsonResponse;
 
 @Controller
 public class SampleController {
@@ -64,6 +67,7 @@ public class SampleController {
 		return "home";
 	}
 
+<<<<<<< HEAD
 	@RequestMapping(value = "/addMonth", method = RequestMethod.POST)
 	public String addMonth(Model model, RedirectAttributes redirectAttributes) {
 		
@@ -78,6 +82,10 @@ public class SampleController {
 			return "redirect:/home";
 		
 	}
+=======
+	// @RequestMapping(value = "/edit/{month}", method = RequestMethod.GET)
+	// public ModelAndView method1(@PathVariable(value = "month") String month) throws SQLException {
+>>>>>>> master
 	
 	@RequestMapping(value = "/edit/v2", method = RequestMethod.GET)
 	public ModelAndView method1(@RequestParam(required = false, name = "month") int month) throws SQLException {
@@ -117,6 +125,9 @@ public class SampleController {
 		return result;
 	}
 
+	// @RequestMapping(value = "/record/detail/{id}", method = RequestMethod.GET)
+	// public @ResponseBody RecordV2Bean detail(@PathVariable(value="id") Long id) throws SQLException {
+	
 	@RequestMapping(value = "/table/edit", method = RequestMethod.GET)
 	public @ResponseBody RecordV2Bean detail(int id) throws SQLException {
 		
@@ -125,6 +136,8 @@ public class SampleController {
 		return service.getRecord(id);
 	}
 
+	// @RequestMapping(value = "/record/update/{id}", method = RequestMethod.POST)
+	
 	// era presente un errore nella firma del metodo
 	@RequestMapping(value = "/send/data", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
@@ -157,13 +170,25 @@ public class SampleController {
 
 	@RequestMapping(value = "/send/insert", method = RequestMethod.POST)
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+		
 		LOG.debug("SONO NELL'INSERT");
-
+		LOG.debug("IDRecord: "+ record.getMonth());
+		LOG.debug("IDProject: "+ record.getIdProject());
+		LOG.debug("BadgeNumber: "+ record.getBadgeNumber());
+		
 		if (result.hasErrors()) {
 			LOG.debug("EERRRRROOOOOOOREEEEEEE " + result.getFieldError());
 			
 			// TODO
 			// come per il metodo di modifica anche qui bisogna ricaricare la lista
+<<<<<<< HEAD
+=======
+			
+			List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
+			list = service.getV2(record.getMonth(), SessionHelper.getUser().getUsername());
+			
+			model.addAttribute("list", list);
+>>>>>>> master
 			
 			return "index";
 		} else {
@@ -183,6 +208,7 @@ public class SampleController {
 		return "redirect:/edit/v2?month=" + record.getMonth();
 	}
 	
+<<<<<<< HEAD
 	@RequestMapping(value = "/approva", method = RequestMethod.POST)
 	public String approva(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 	    
@@ -191,4 +217,28 @@ public class SampleController {
 		return "redirect:/edit/v2?month=" + month;
 	}
 	
+=======
+	
+	@RequestMapping(value = "/update",method = RequestMethod.POST)
+	public @ResponseBody JsonResponse newUpdate(@RequestParam (name = "id") String id, @RequestParam(name = "colname") String colname,@RequestParam(name = "value") String data){
+		
+		if (ColnameConverter.existsColname(colname)) {
+			
+			String realColname = ColnameConverter.convertColname(colname);
+			Integer value = 0;
+			try {
+				value = Integer.parseInt(data);
+			} catch(NumberFormatException e) {
+				return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore della colonna [" + colname + "] non valida");
+			}
+			
+			service.v2Update(Long.parseLong(id), realColname, value);
+		
+			return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
+		}
+		
+		return JsonResponse.build(JsonResponse.CODE_INVALID_COLNAME, "Colonna [" + colname + "] non valida");
+	}
+
+>>>>>>> master
 }

@@ -6,33 +6,39 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.dao.Dao;
 
 public class EmployeeService {
 
-	@Autowired
-	private Dao dao;
 	private static final Logger LOG = Logger.getLogger(EmployeeService.class);
 
-	public EmployeeBean findByBadgeNumber(String badgeNumber) {
-
-		EmployeeBean bean = new EmployeeBean();
-		bean.setBadgeNumber("00001");
-		bean.setName("Nome");
-		bean.setSurname("Cognome");
-
-		return bean;
-	}
+	@Autowired
+	private Dao dao;
 
 	@Cacheable(value = "employeeCache")
 	public List<EmployeeBean> findAll() throws SQLException {
-		LOG.debug("RISORSE AGGIUNTE");
+
 		return dao.getAllEmployees();
 	}
 
-	public EmployeeBean details(String id) throws SQLException {
+	public EmployeeBean findById(String id) throws SQLException {
 		return dao.getEmployee(id);
+	}
+	
+	@Transactional
+	public void save(List<EmployeeBean> list) {
+		
+		dao.persist(list);
+	}
+
+	@Transactional
+	public void replace(List<EmployeeBean> list) {
+		
+		dao.deleteAllEmployees();
+		
+		dao.persist(list);
 	}
 }
