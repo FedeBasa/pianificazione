@@ -180,7 +180,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE u_progetti_risorse");
-		sb.append(" SET id_progetto=?,consolidato_1= ?,prodotto_1= ?,consolidato_2= ?,prodotto_2= ?,consolidato_3= ?,prodotto_3= ?,tariffa= ?");
+		sb.append(" SET id_risorsa=?");
+		sb.append(" ,id_progetto=?");
 		sb.append(" WHERE id_unione = ?");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 
@@ -188,16 +189,9 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
+				ps.setString(i++, rec.getBadgeNumber());
 				ps.setLong(i++, rec.getIdProject() == null ? 0 : rec.getIdProject());
-				ps.setInt(i++, rec.getCons0() == null ? 0 : rec.getCons0());
-				ps.setInt(i++, rec.getProd0() == null ? 0 : rec.getProd0());
-				ps.setInt(i++, rec.getCons1() == null ? 0 : rec.getCons1());
-				ps.setInt(i++, rec.getProd1() == null ? 0 : rec.getProd1());
-				ps.setInt(i++, rec.getCons2() == null ? 0 : rec.getCons2());
-				ps.setInt(i++, rec.getProd2() == null ? 0 : rec.getProd2());
-				ps.setInt(i++, rec.getPrice());
 				ps.setLong(i++, rec.getIdRecord());
-				LOG.debug(rec.getIdRecord());
 				return ps;
 			}
 		});

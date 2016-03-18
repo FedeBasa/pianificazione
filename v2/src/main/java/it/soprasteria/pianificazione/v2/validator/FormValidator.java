@@ -19,26 +19,6 @@ public class FormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeDesc", "NotEmpty.risorsa");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projectDesc", "NotEmpty.progetto");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "NotEmpty.tariffa");
 		
-		RecordV2Bean recordV2Bean = (RecordV2Bean)target;
-		
-		if(recordV2Bean.getCons0() != null){
-			if (recordV2Bean.getCons0() < 0) {
-				errors.rejectValue("cons0", "Zero.cons0");
-			}
-		}
-		
-		if(recordV2Bean.getCons1() != null){
-			if (recordV2Bean.getCons1() < 0) {
-				errors.rejectValue("cons0", "Zero.cons0");
-			}
-		}
-		
-		if(recordV2Bean.getCons2() != null){
-			if (recordV2Bean.getCons2() < 0) {
-				errors.rejectValue("cons0", "Zero.cons0");
-			}
-		}
 	}
 }
