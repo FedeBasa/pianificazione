@@ -146,12 +146,17 @@ public class SampleController {
 
 	@RequestMapping(value = "/send/insert", method = RequestMethod.POST)
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+		
 		LOG.debug("SONO NELL'INSERT");
-
+		LOG.debug("IDRecord: "+ record.getMonth());
+		LOG.debug("IDProject: "+ record.getIdProject());
+		LOG.debug("BadgeNumber: "+ record.getBadgeNumber());
+		
 		if (result.hasErrors()) {
 			LOG.debug("EERRRRROOOOOOOREEEEEEE " + result.getFieldError());
 			// TODO
 			// come per il metodo di modifica anche qui bisogna ricaricare la lista
+			
 			List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
 			list = service.getV2(record.getMonth(), SessionHelper.getUser().getUsername());
 			

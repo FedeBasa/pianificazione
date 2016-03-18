@@ -177,8 +177,9 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 	@Override
 	public void update(final RecordV2Bean rec) {
-
+		
 		final StringBuilder sb = new StringBuilder();
+		
 		sb.append("UPDATE u_progetti_risorse");
 		sb.append(" SET id_risorsa=?");
 		sb.append(" ,id_progetto=?");
@@ -200,8 +201,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	@Override
 	public void insert(final RecordV2Bean rec) {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,id_risorsa,consolidato_1," + "prodotto_1,consolidato_2,prodotto_2,consolidato_3," + "prodotto_3,user_id,tariffa)");
-		sb.append("  VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,id_risorsa,user_id)");
+		sb.append("  VALUES(?,?,?,?)");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
@@ -210,16 +211,9 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setString(i++, rec.getMonth());
 				ps.setLong(i++, rec.getIdProject() == null ? 0 : rec.getIdProject());
 				ps.setInt(i++, Integer.parseInt(rec.getBadgeNumber()));
-				ps.setInt(i++, rec.getCons0() == null ? 0 : rec.getCons0());
-				ps.setInt(i++, rec.getProd0() == null ? 0 : rec.getProd0());
-				ps.setInt(i++, rec.getCons1() == null ? 0 : rec.getCons1());
-				ps.setInt(i++, rec.getProd1() == null ? 0 : rec.getProd1());
-				ps.setInt(i++, rec.getCons2() == null ? 0 : rec.getCons2());
-				ps.setInt(i++, rec.getProd2() == null ? 0 : rec.getProd2());
 				// TODO
 				// sistemare, cablato nome utente
 				ps.setString(i++, "Admin");
-				ps.setInt(i++, rec.getPrice());
 				return ps;
 			}
 		});
