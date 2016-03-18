@@ -2,22 +2,35 @@ package it.soprasteria.pianificazione.v2.bean;
 
 public class RecordV2Bean {
 
-	private String month;
-	private Long idRecord;
+	private int month;
+	private long idRecord;
 	private String badgeNumber;
 	private String employeeDesc;
 	private String activityType;
-	private Long idProject;
+	private long idProject;
 	private String projectDesc;
-	private Integer price;
+	private int price;
 	private String currency;
-	private Integer cons0;
-	private Integer prod0;
-	private Integer cons1;
-	private Integer prod1;
-	private Integer cons2;
-	private Integer prod2;
+	private int cons0;
+	private int prod0;
+	private int cons1;
+	private int prod1;
+	private int cons2;
+	private int prod2;
     private String customer;
+<<<<<<< HEAD
+    
+    
+	public String getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(String customer) {
+		this.customer = customer;
+	}
+
+	public int getMonth() {
+=======
     private Integer businessUnit;
     
 	public Integer getBusinessUnit() {
@@ -27,101 +40,124 @@ public class RecordV2Bean {
 		this.businessUnit = businessUnit;
 	}
 	public String getMonth() {
+>>>>>>> master
 		return month;
 	}
-	public void setMonth(String month) {
+
+	public void setMonth(int month) {
 		this.month = month;
 	}
-	public Long getIdRecord() {
+
+	public long getIdRecord() {
 		return idRecord;
 	}
-	public void setIdRecord(Long idRecord) {
+
+	public void setIdRecord(long idRecord) {
 		this.idRecord = idRecord;
 	}
+
 	public String getBadgeNumber() {
 		return badgeNumber;
 	}
+
 	public void setBadgeNumber(String badgeNumber) {
 		this.badgeNumber = badgeNumber;
 	}
+
 	public String getEmployeeDesc() {
 		return employeeDesc;
 	}
+
 	public void setEmployeeDesc(String employeeDesc) {
 		this.employeeDesc = employeeDesc;
 	}
+
 	public String getActivityType() {
 		return activityType;
 	}
+
 	public void setActivityType(String activityType) {
 		this.activityType = activityType;
 	}
-	public Long getIdProject() {
+
+	public long getIdProject() {
 		return idProject;
 	}
-	public void setIdProject(Long idProject) {
+
+	public void setIdProject(long idProject) {
 		this.idProject = idProject;
 	}
+
 	public String getProjectDesc() {
 		return projectDesc;
 	}
+
 	public void setProjectDesc(String projectDesc) {
 		this.projectDesc = projectDesc;
 	}
-	public Integer getPrice() {
+
+	public int getPrice() {
 		return price;
 	}
-	public void setPrice(Integer price) {
+
+	public void setPrice(int price) {
 		this.price = price;
 	}
+
 	public String getCurrency() {
 		return currency;
 	}
+
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
-	public Integer getCons0() {
+
+	public int getCons0() {
 		return cons0;
 	}
-	public void setCons0(Integer cons0) {
+
+	public void setCons0(int cons0) {
 		this.cons0 = cons0;
 	}
-	public Integer getProd0() {
+
+	public int getProd0() {
 		return prod0;
 	}
-	public void setProd0(Integer prod0) {
+
+	public void setProd0(int prod0) {
 		this.prod0 = prod0;
 	}
-	public Integer getCons1() {
+
+	public int getCons1() {
 		return cons1;
 	}
-	public void setCons1(Integer cons1) {
+
+	public void setCons1(int cons1) {
 		this.cons1 = cons1;
 	}
-	public Integer getProd1() {
+
+	public int getProd1() {
 		return prod1;
 	}
-	public void setProd1(Integer prod1) {
+
+	public void setProd1(int prod1) {
 		this.prod1 = prod1;
 	}
-	public Integer getCons2() {
+
+	public int getCons2() {
 		return cons2;
 	}
-	public void setCons2(Integer cons2) {
+
+	public void setCons2(int cons2) {
 		this.cons2 = cons2;
 	}
-	public Integer getProd2() {
+
+	public int getProd2() {
 		return prod2;
 	}
-	public void setProd2(Integer prod2) {
+
+	public void setProd2(int prod2) {
 		this.prod2 = prod2;
 	}
-	public String getCustomer() {
-		return customer;
-	}
-	public void setCustomer(String customer) {
-		this.customer = customer;
-	}
-    
 
 }

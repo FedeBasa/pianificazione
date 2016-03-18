@@ -11,16 +11,24 @@
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body>
-
+<c:if test="${rejected}">
+<%-- 	<spring:message code="rejected.month"></spring:message> --%>
+	<p class="alert alert-danger">Impossibile aggiungere il mese</p>
+</c:if>
 	<table>
 	<tr>
 	 <th>Mese</th>
 	 </tr>
-	 <c:forEach items="${lista}" var = "item">
+	 <c:forEach items="${lista}" var = "month">
 	     <tr>
-			<td><a href="${pageContext.request.contextPath}/edit/v2?month=${item.month}"><c:out value="${item.month}" /></a></td>
+			<td><a href="${pageContext.request.contextPath}/edit/v2?month=${month}"><c:out value="${month}" /></a></td>
 		</tr>
 	 </c:forEach>
 	</table>
+	
+	<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/addMonth">
+       <button type="submit" class="btn btn-primary">Aggiungi Mese</button>       
+	</form:form>
+	
 </body>
 </html>

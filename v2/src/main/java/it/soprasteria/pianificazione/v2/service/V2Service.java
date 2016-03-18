@@ -16,7 +16,7 @@ public class V2Service {
 	@Autowired
 	private DaoImpl dao;
 
-	public List<RecordV2Bean> getV2(String month, String user) {
+	public List<RecordV2Bean> getV2(int month, String user) {
 
 		List<RecordV2Bean> list = dao.getV2(month, user);
 
@@ -26,7 +26,7 @@ public class V2Service {
 		return list;
 	}
 
-	public RecordV2Bean getRecord(Long id) {
+	public RecordV2Bean getRecord(long id) {
 
 		RecordV2Bean record = dao.getRecord(id);
 		completeRecord(record);
@@ -40,7 +40,7 @@ public class V2Service {
 
 		item.setEmployeeDesc(eb.getName() + " " + eb.getSurname());
 
-		Long id = item.getIdProject();
+		long id = item.getIdProject();
 		LOG.debug("IDENTIFICATIVO " + id);
 		ProjectBean prb = dao.getProject(id);
 
@@ -71,8 +71,38 @@ public class V2Service {
 		return v2s;
 	}
 	
+<<<<<<< HEAD
+	public List<Integer> getMonths(String user) {
+		List<Integer> monthsList = dao.getMonths(user);
+		
+		return monthsList;
+	}
+	
+	public boolean addNextMonth(String user) {
+		
+		if(dao.checkMonth(dao.getLastMonth(dao.getMonths(user)))) {
+			dao.addNextMonth(user);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean isEditable(String user, int month) {
+		
+		if(dao.checkEditable(user, month) == 0) {			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void setEditable(String user, int month) {
+		dao.setEditable(user, month);
+=======
 	public void v2Update(Long id, String colname, Integer value){
 		dao.updateTable(id, colname, value);
+>>>>>>> master
 	}
 
 }
