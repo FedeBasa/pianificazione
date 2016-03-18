@@ -9,6 +9,7 @@
 	<head>	
 		<jsp:include page="../fragments/head.jsp" />
 
+
 <script  src= 
        "${pageContext.request.contextPath}/resources/js/mindmup-editabletable.js"></script>	
 <script>
@@ -88,6 +89,7 @@
 					$("#idProject").val(value[3]).trigger("change");
 					$("#month").val(value[4]).trigger("change");
 				},
+				
 				maxNumberOfElements : 10,
 				match : {
 					enabled : true
@@ -135,27 +137,21 @@
 					}
 					$('#employeeDesc').val(data.employeeDesc).change();
 					$('#projectDesc').val(data.projectDesc).change();
-<<<<<<< HEAD
-				});
-	}
-	
-	function validate(form) {
-		if(confirm("Vuoi approvare questo mese?")) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-</script>
-=======
 					console.log(data.businessUnit);
 					$('#bu').val(data.businessUnit).change();
 				});
 	}
- 	
+
+	function validate(form) {
+			if(confirm("Vuoi approvare questo mese?")) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
  </script>
->>>>>>> master
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
 <body>
@@ -163,18 +159,17 @@
 	<input type="hidden" id="responsecode">
 	<div class="container">
 		<div class="btn-group">
-			<c:if test="${editable eq true}">	
-				<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>		
+<%-- 			<c:if test="${editable eq true}">	 --%>
+				<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
 				<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
 				<button id="delete" type="button" class="btn btn-primary">Elimina</button>
 				<button id="bottone" type="button" class="btn btn-primary">Aggiungi</button>
-			</c:if>	
+<%-- 			</c:if>	 --%>
 		</div>
 		<div class="btn-group">
 		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/approva?month=${month}" onsubmit="return validate(this);">
 			<button id="approva" type="submit" class="${editable eq true ? 'btn btn-warning' : 'btn btn-warning disabled'}">Approva</button>
 		</form:form>
-		</div>
 
 		<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
 		    <form:hidden path="month"/>

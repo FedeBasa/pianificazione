@@ -26,7 +26,7 @@ public class V2Service {
 		return list;
 	}
 
-	public RecordV2Bean getRecord(long id) {
+	public RecordV2Bean getRecord(Long id) {
 
 		RecordV2Bean record = dao.getRecord(id);
 		completeRecord(record);
@@ -40,7 +40,7 @@ public class V2Service {
 
 		item.setEmployeeDesc(eb.getName() + " " + eb.getSurname());
 
-		long id = item.getIdProject();
+		Long id = item.getIdProject();
 		LOG.debug("IDENTIFICATIVO " + id);
 		ProjectBean prb = dao.getProject(id);
 
@@ -71,7 +71,10 @@ public class V2Service {
 		return v2s;
 	}
 	
-<<<<<<< HEAD
+	public void v2Update(Long id, String colname, Integer value){
+		dao.updateTable(id, colname, value);
+	}
+	
 	public List<Integer> getMonths(String user) {
 		List<Integer> monthsList = dao.getMonths(user);
 		
@@ -99,10 +102,6 @@ public class V2Service {
 	
 	public void setEditable(String user, int month) {
 		dao.setEditable(user, month);
-=======
-	public void v2Update(Long id, String colname, Integer value){
-		dao.updateTable(id, colname, value);
->>>>>>> master
 	}
 
 }
