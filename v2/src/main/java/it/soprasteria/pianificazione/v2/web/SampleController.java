@@ -27,8 +27,10 @@ import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.service.EmployeeService;
 import it.soprasteria.pianificazione.v2.service.ProjectService;
 import it.soprasteria.pianificazione.v2.service.V2Service;
+import it.soprasteria.pianificazione.v2.util.ColnameConverter;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 import it.soprasteria.pianificazione.v2.validator.FormValidator;
+import it.soprasteria.pianificazione.v2.web.ajax.JsonResponse;
 
 @Controller
 public class SampleController {
@@ -175,11 +177,24 @@ public class SampleController {
 	
 	
 	@RequestMapping(value = "/update",method = RequestMethod.POST)
-	public void newUpdate(@RequestParam (name = "id") String id, @RequestParam(name = "colname") String colname,@RequestParam(name = "value") String data){
-		//TODO						
-		//ottenere il tipo di risultato e la colonna ed effettuare l'update
-		service.v2Update(Long.parseLong(id), colname, data);
-		LOG.debug("OK");
+	public @ResponseBody JsonResponse newUpdate(@RequestParam (name = "id") String id, @RequestParam(name = "colname") String colname,@RequestParam(name = "value") String data){
+		
+		if (ColnameConverter.existsColname(colname)) {
+			
+			String realColname = ColnameConverter.convertColname(colname);
+			Integer value = 0;
+			try {
+				value = Integer.parseInt(data);
+			} catch(NumberFormatException e) {
+				return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore della colonna [" + colname + "] non valida");
+			}
+			
+			service.v2Update(Long.parseLong(id), realColname, value);
+		
+			return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
+		}
+		
+		return JsonResponse.build(JsonResponse.CODE_INVALID_COLNAME, "Colonna [" + colname + "] non valida");
 	}
 
 }

@@ -206,9 +206,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	@Override
 	public void insert(final RecordV2Bean rec) {
 		final StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,id_risorsa,consolidato_1,"
-		+ "prodotto_1,consolidato_2,prodotto_2,consolidato_3,"
-				+ "prodotto_3,user_id,tariffa)");
+		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,id_risorsa,consolidato_1," + "prodotto_1,consolidato_2,prodotto_2,consolidato_3," + "prodotto_3,user_id,tariffa)");
 		sb.append("  VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
@@ -286,42 +284,43 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	public void persist(final List<EmployeeBean> list) {
 
 		final StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("INSERT INTO risorse(matricola, nome, cognome)");
 		sb.append(" VALUES(?,?,?)");
-		
+
 		getJdbcTemplate().batchUpdate(sb.toString(), new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm, int i) throws SQLException {
 
 				EmployeeBean item = list.get(i);
-				
+
 				pstm.setString(1, item.getBadgeNumber());
 				pstm.setString(2, item.getName());
 				pstm.setString(3, item.getSurname());
 			}
-			
+
 			@Override
 			public int getBatchSize() {
 				return list.size();
 			}
 		});
 	}
-	
+
 	@Override
-	public void updateTable(final Long id , final String colname, final String modify){
+	public void updateTable(final Long id, final String colname, final Integer value) {
+
 		final StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("UPDATE  u_progetti_risorse");
-		sb.append(" SET "+ colname +" = ?");
+		sb.append(" SET ").append(colname).append(" = ?");
 		sb.append(" WHERE id_unione = ?");
-		LOG.debug(sb.toString());
-		getJdbcTemplate().update(new PreparedStatementCreator(){
+
+		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
 				int i = 1;
-				ps.setString(i++, modify);
+				ps.setInt(i++, value);
 				ps.setLong(i++, id);
 				return ps;
 			}

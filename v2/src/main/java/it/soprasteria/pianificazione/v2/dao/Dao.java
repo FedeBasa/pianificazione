@@ -31,5 +31,5 @@ public interface Dao {
 	
 	public void deleteAllEmployees();
 	
-	public void updateTable(Long id, String colname, String modify);
+	public void updateTable(Long id, String colname, Integer modify);
 }

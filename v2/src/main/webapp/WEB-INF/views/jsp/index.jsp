@@ -96,6 +96,21 @@
 			}
 		}
 		$("#projectDesc").easyAutocomplete(options2);
+		
+		$('#v2').editableTableWidget();
+		
+		$('#v2').on('change', function(evt,newValue){
+			var data = newValue;
+			var colname = $(evt.target).attr('colname');
+			var id = $(evt.target).parent().attr('rowId');
+			
+			var url = "${pageContext.request.contextPath}/update?id="+ id +"&colname="+colname+"&value="+data;
+			
+			$.post(url, function( data ) {
+				console.log(data);
+			});
+		});
+
 	});
 	 
 	function detail(id) {
@@ -111,23 +126,9 @@
 					console.log(data.businessUnit);
 					$('#bu').val(data.businessUnit).change();
 				});
-		
- 		$('#v2').editableTableWidget();
- 		
- 		$('#v2').on('change', function(evt,newValue){
- 			var colname = "tariffa" ;
- 			var data = newValue;
- 			var id = $("#idRecord").val();
- 			console.log(evt);
- 			console.log(data);
-  			$.ajax({
-  				  type: "POST",
-  				  url: "${pageContext.request.contextPath}/update?id="+ id +"&colname="+colname+"&value="+data,
-  				  success : console.log("success"),
-			});
- 		});
 	}
-</script>
+ 	
+ </script>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
 <body>
@@ -161,18 +162,18 @@
 			</thead>
 			<tbody>	
 			<c:forEach items="${list}" var="item">
-				<tr onclick="detail(${item.idRecord})">
+				<tr onclick="detail(${item.idRecord})" rowId="${item.idRecord}">
 				    <td><c:out value="${item.employeeDesc}" /></td>
 					<td><c:out value="${item.activityType}" /></td>
 					<td><c:out value="${item.projectDesc}" /></td>
-					<td id = "price"><c:out value="${item.price}" /></td>
+					<td colname="price"><c:out value="${item.price}" /></td>
 					<td><c:out value="${item.currency}" /></td>
-					<td><c:out value="${item.cons0}" /></td>
-					<td><c:out value="${item.prod0}" /></td>
-					<td><c:out value="${item.cons1}" /></td>
-					<td><c:out value="${item.prod1}" /></td>
-					<td><c:out value="${item.cons2}" /></td>
-					<td><c:out value="${item.prod2}" /></td>
+					<td colname="cons0"><c:out value="${item.cons0}" /></td>
+					<td colname="prod0"><c:out value="${item.prod0}" /></td>
+					<td colname="cons1"><c:out value="${item.cons1}" /></td>
+					<td colname="prod1"><c:out value="${item.prod1}" /></td>
+					<td colname="cons2"><c:out value="${item.cons2}" /></td>
+					<td colname="prod2"><c:out value="${item.prod2}" /></td>
 				</tr>
 			</c:forEach>
 			</tbody>

@@ -71,8 +71,8 @@ public class V2Service {
 		return v2s;
 	}
 	
-	public void v2Update(Long id, String colname , String data){
-		dao.updateTable(id, colname, data);
+	public void v2Update(Long id, String colname, Integer value){
+		dao.updateTable(id, colname, value);
 	}
 
 }
