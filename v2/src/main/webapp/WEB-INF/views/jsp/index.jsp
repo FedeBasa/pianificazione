@@ -106,9 +106,22 @@
 			
 			var url = "${pageContext.request.contextPath}/update?id="+ id +"&colname="+colname+"&value="+data;
 			
-			$.post(url, function( data ) {
-				console.log(data);
+			//$.post(url, function( data ) {
+			//	console.log(data);
+			//});
+			
+			$.ajax({
+				type: 'POST',
+				url: url,
+				success: function(result) {
+					$('#responsecode').val(result.code);
+				},
+				async:false
 			});
+			
+			if ($('#responsecode').val() < 0) {
+				return false;
+			}
 		});
 
 	});
@@ -133,6 +146,7 @@
 	<jsp:include page="../fragments/nav.jsp" />
 <body>
 	
+	<input type="hidden" id="responsecode">
 	<div class="container">
 		<div class="btn-group">
 		
