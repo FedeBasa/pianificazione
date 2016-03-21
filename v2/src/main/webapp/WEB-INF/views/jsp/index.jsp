@@ -30,17 +30,17 @@
 		}
 		
 		$("#bottone").click(function(){
-			var path="${pageContext.request.contextPath}/send/insert";
+			var path="${pageContext.request.contextPath}/record/insert";
 			$("#v2Form").attr("action",path);
 			$("#v2Form").submit();
 		});
 		$("#delete").click(function(){
-			var path = "${pageContext.request.contextPath}/send/delete";
+			var path = "${pageContext.request.contextPath}/record/delete";
 			$("#v2Form").attr("action",path);
 			$("#v2Form").submit();
 		});
 		$("#aggiorna").click(function(){
-			var path = "${pageContext.request.contextPath}/send/data";
+			var path = "${pageContext.request.contextPath}/record/update";
 			$("#v2Form").attr("action",path);
 			$("#v2Form").submit();
 		});
@@ -128,7 +128,7 @@
 	});
 	 
 	function detail(id) {
-		$.get("${pageContext.request.contextPath}/table/edit?id=" + id,
+		$.get("${pageContext.request.contextPath}/record/detail/" + id,
 				function(data) {
 					console.log(data);
 					for ( var key in data) {

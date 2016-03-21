@@ -6,14 +6,16 @@ public class UserBean {
 	private String password;
 	private String name;
 	private String surname;
+	private String profilo;
 
-	public static UserBean build(String username, String name, String surname) {
+	public static UserBean build(String username, String name, String surname, String profilo) {
 
 		UserBean result = new UserBean();
 
-		result.setUsername(username);
-		result.setName(name);
-		result.setSurname(surname);
+		result.username = username;
+		result.name = name;
+		result.surname = surname;
+		result.profilo = profilo;
 
 		return result;
 	}
@@ -48,6 +50,14 @@ public class UserBean {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
+	}
+
+	public String getProfilo() {
+		return profilo;
+	}
+
+	public void setProfilo(String profilo) {
+		this.profilo = profilo;
 	}
 
 }

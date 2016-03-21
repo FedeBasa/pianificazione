@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.dao.DaoImpl;
 
 public class V2Service {
@@ -16,13 +17,19 @@ public class V2Service {
 	@Autowired
 	private DaoImpl dao;
 
+	public V2Bean findByMonth(int month, String username) {
+		
+		return dao.findByMonth(month, username);
+	}
+	
+	
 	public List<RecordV2Bean> getV2(int month, String user) {
 
 		List<RecordV2Bean> list = dao.getV2(month, user);
 
-		for (RecordV2Bean item : list) {
-			completeRecord(item);
-		}
+//		for (RecordV2Bean item : list) {
+//			completeRecord(item);
+//		}
 		return list;
 	}
 
@@ -39,6 +46,8 @@ public class V2Service {
 		EmployeeBean eb = dao.getEmployee(bn);
 
 		item.setEmployeeDesc(eb.getName() + " " + eb.getSurname());
+		item.setNome(eb.getName());
+		item.setCognome(eb.getSurname());
 
 		Long id = item.getIdProject();
 		LOG.debug("IDENTIFICATIVO " + id);
@@ -53,10 +62,18 @@ public class V2Service {
 	}
 
 	public void updateRecord(RecordV2Bean record) {
+		completeRecord(record);
 		dao.update(record);
 	}
 
 	public void insertRecord(RecordV2Bean record) {
+		completeRecord(record);
+		LOG.debug(record.getBadgeNumber());
+		LOG.debug(record.getEmployeeDesc());
+		LOG.debug(record.getNome());
+		LOG.debug(record.getCognome());
+		LOG.debug(record.getProjectDesc());
+		
 		dao.insert(record);
 	}
 
@@ -91,15 +108,8 @@ public class V2Service {
 		return true;
 	}
 	
-	public boolean isEditable(String user, int month) {
-		
-		if(dao.checkEditable(user, month) == 0) {			
-			return true;
-		}
-		
-		return false;
-	}
-	
+	// TODO
+	// rinominare
 	public void setEditable(String user, int month) {
 		dao.setEditable(user, month);
 	}

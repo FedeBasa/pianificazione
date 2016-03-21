@@ -4,6 +4,9 @@ public class V2Bean {
 
 		private int month;
 		private String user;
+		
+		// TODO
+		// deve essere un booleano
 	    private int editable;
 	    
 	    
