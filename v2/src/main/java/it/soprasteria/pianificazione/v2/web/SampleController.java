@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -102,7 +101,7 @@ public class SampleController {
 		
 		model.addObject("list", list);
 		model.addObject("v2Form", new RecordV2Bean());
-		model.addObject("editable", (v2Bean.getEditable() == 1 ? true : false));
+		model.addObject("editable", (v2Bean.getEditable()));
 		model.addObject("month", month);
 		
 		return model;
@@ -155,9 +154,8 @@ public class SampleController {
 			// return codice errore
 			// l'utente sta cercando di modificare un mese diverso da quello che è in sessione
 		}
-		// TODO
-		// modificare condizione con booleano
-		if (v2.getEditable() == 0) {
+		
+		if (v2.getEditable()) {
 			//TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -207,9 +205,7 @@ public class SampleController {
 			// return codice errore
 			// l'utente sta cercando di modificare un mese diverso da quello che è in sessione
 		}
-		// TODO
-		// modificare condizione con booleano
-		if (v2.getEditable() == 0) {
+		if (v2.getEditable()) {
 			//TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -249,9 +245,8 @@ public class SampleController {
 			// return codice errore
 			// l'utente sta cercando di modificare un mese diverso da quello che è in sessione
 		}
-		// TODO
-		// modificare condizione con booleano
-		if (v2.getEditable() == 0) {
+		
+		if (v2.getEditable()) {
 			//TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -280,9 +275,8 @@ public class SampleController {
 			// return codice errore
 			// l'utente sta cercando di modificare un mese diverso da quello che è in sessione
 //		}
-		// TODO
-		// modificare condizione con booleano
-		if (v2.getEditable() == 0) {
+		
+		if (v2.getEditable()) {
 			//TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -310,14 +304,17 @@ public class SampleController {
 	public String approva(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 	    
 	    String user = SessionHelper.getUser().getUsername();
-	    service.setEditable(user, month);
-		return "redirect:/edit/v2?month=" + month;
+	    service.approveMonth(user, month);
+		return "redirect:/approvaPage";
 	}
 	
 	@RequestMapping(value = "/approvaPage", method = RequestMethod.GET)
 	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
 	    
-		service.getV2ToApprove();
+		String user = SessionHelper.getUser().getUsername();
+		List<V2Bean> v2List = service.getV2ToApprove(user);
+		model.addAttribute("v2List",v2List);
+		
 		return "approva_mese";
 	}
 

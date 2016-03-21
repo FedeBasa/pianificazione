@@ -98,15 +98,13 @@ public class V2Service {
 		return true;
 	}
 	
-	// TODO
-	// rinominare
-	public void setEditable(String user, int month) {
-		dao.setEditable(user, month);
+	public void approveMonth(String user, int month) {
+		dao.approveMonth(user, month);
 	}
 
-	public List<V2Bean> getV2ToApprove() {
+	public List<V2Bean> getV2ToApprove(String user) {
 		
-		List<V2Bean> v2List = dao.getV2ToApprove();
+		List<V2Bean> v2List = dao.getV2ToApprove(user);
 		
 		return v2List;
 	}

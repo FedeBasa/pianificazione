@@ -143,13 +143,13 @@
 	}
 
 	function validate(form) {
-			if(confirm("Vuoi approvare questo mese?")) {
-				return true;
-			}
-			else {
-				return false;
-			}
+		if(confirm("Vuoi approvare questo mese?")) {
+			return true;
 		}
+		else {
+			return false;
+		}
+	}
 
  </script>
 	</head>
@@ -167,9 +167,6 @@
 <%-- 			</c:if>	 --%>
 		</div>
 		<div class="btn-group">
-		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/approva?month=${month}" onsubmit="return validate(this);">
-			<button id="approva" type="submit" class="${editable eq true ? 'btn btn-warning' : 'btn btn-warning disabled'}">Approva</button>
-		</form:form>
 
 		<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
 		    <form:hidden path="month"/>
@@ -246,6 +243,7 @@
 			</tbody>
 		</table>	
 	</div>	
+	</div>
 	<jsp:include page="../fragments/footer.jsp" />	
 </body>
 

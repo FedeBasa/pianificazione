@@ -15,10 +15,12 @@
 <%-- 	<spring:message code="rejected.month"></spring:message> --%>
 	<p class="alert alert-danger">Impossibile aggiungere il mese</p>
 </c:if>
-	<table>
+	<table class="table table-bordered table-striped">
+	<thead>
 	<tr>
 	 <th>Mese</th>
 	 </tr>
+	 </thead>
 	 <c:forEach items="${lista}" var = "month">
 	     <tr>
 			<td><a href="${pageContext.request.contextPath}/edit/v2?month=${month}"><c:out value="${month}" /></a></td>

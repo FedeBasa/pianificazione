@@ -422,7 +422,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				V2Bean rv = new V2Bean();
 				rv.setMonth(rs.getInt("mese"));
 				rv.setUser(rs.getString("user"));
-				rv.setEditable(rs.getInt("editable"));
+				rv.setEditable(getEditableBoolean(rs.getInt("editable")));
 				return rv;
 			}
 		});
@@ -465,10 +465,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return Integer.parseInt(anno + stringMese);
 	}
 
-	// TODO
-	// rinominare!
 	@Override
-	public void setEditable(final String user, final int month) {
+	public void approveMonth(final String user, final int month) {
 
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE v2");
@@ -504,7 +502,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				result.setUser(rs.getString("user"));
 				result.setMonth(rs.getInt("mese"));
-				result.setEditable(rs.getInt("editable"));
+				result.setEditable(getEditableBoolean(rs.getInt("editable")));
 
 				return result;
 			}
@@ -527,17 +525,22 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				result.setUser(rs.getString("user"));
 				result.setMonth(rs.getInt("mese"));
-				result.setEditable(getBoolean());
-				if(rs.getInt("editable") == 0) { 
-					result.setEditable(true);
-				}
-				else {
-					result.setEditable(false);
-				}
+				result.setEditable(getEditableBoolean(rs.getInt("editable")));
+				
 				return result;
+				
 			}
 		});
 		
 		return v2List;
+	}
+	
+	public boolean getEditableBoolean(int editable) {
+		
+		if(editable == 0) { 
+			return true;
+		}
+		
+		return false;
 	}
 }

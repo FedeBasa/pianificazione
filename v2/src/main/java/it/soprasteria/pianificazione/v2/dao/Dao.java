@@ -33,7 +33,7 @@ public interface Dao {
 	
 	public void addNextMonth(String user);
 	
-	public void setEditable(String user, int month);
+	public void approveMonth(String user, int month);
 
 	public void persist(List<EmployeeBean> list);
 	
