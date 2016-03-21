@@ -56,6 +56,7 @@ public class RecordV2Bean {
 	public void setActivityType(String activityType) {
 		this.activityType = activityType;
 	}
+
 	public Long getIdProject() {
 		return idProject;
 	}

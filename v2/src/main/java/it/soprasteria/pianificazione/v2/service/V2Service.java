@@ -10,6 +10,7 @@ import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.dao.DaoImpl;
+import it.soprasteria.pianificazione.v2.util.DateUtil;
 
 public class V2Service {
 	private static final Logger LOG = Logger.getLogger(V2Service.class);
@@ -37,7 +38,6 @@ public class V2Service {
 
 		RecordV2Bean record = dao.getRecord(id);
 		completeRecord(record);
-		LOG.debug("*******************************************************" + "  " + record.getProjectDesc());
 		return record;
 	}
 
@@ -48,7 +48,6 @@ public class V2Service {
 		item.setEmployeeDesc(eb.getName() + " " + eb.getSurname());
 
 		Long id = item.getIdProject();
-		LOG.debug("IDENTIFICATIVO " + id);
 		ProjectBean prb = dao.getProject(id);
 
 		item.setProjectDesc(prb.getDescription());
@@ -71,13 +70,6 @@ public class V2Service {
 		dao.delete(id);
 	}
 	
-	// TODO
-	// manca parametro in input per filtrare l'utente
-	public List<RecordV2Bean> trovaV2(){
-		List<RecordV2Bean> v2s = dao.findAllV2();
-		return v2s;
-	}
-	
 	public void v2Update(Long id, String colname, Integer value){
 		dao.updateTable(id, colname, value);
 	}
@@ -90,8 +82,11 @@ public class V2Service {
 	
 	public boolean addNextMonth(String user) {
 		
-		if(dao.checkMonth(dao.getLastMonth(dao.getMonths(user)))) {
-			dao.addNextMonth(user);
+		List<Integer> list = dao.getMonths(user);
+		Integer lastMonth = list.get(list.size()-1);
+		
+		if(DateUtil.checkMonth(lastMonth)) {
+			dao.addNextMonth(user, lastMonth);
 			return false;
 		}
 		
@@ -100,8 +95,8 @@ public class V2Service {
 	
 	// TODO
 	// rinominare
-	public void setEditable(String user, int month) {
-		dao.setEditable(user, month);
+	public void updateEditable(String user, int month) {
+		dao.updateEditable(user, month);
 	}
 
 }

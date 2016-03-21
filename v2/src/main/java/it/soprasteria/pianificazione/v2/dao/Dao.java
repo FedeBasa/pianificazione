@@ -5,8 +5,10 @@ import java.util.List;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.bean.V2Bean;
 
 public interface Dao {
+	
 	public List<EmployeeBean> getAllEmployees();
 
 	public List<ProjectBean> getAllProject(int businessUnit);
@@ -25,19 +27,17 @@ public interface Dao {
 
 	public void delete(long id);
 
-	public List<RecordV2Bean> findAllV2();
-	
 	public List<Integer> getMonths(String user);
 	
-	public void addProjectsResources(String user, int currentMonth, int nextMonth);
+	public void addNextMonth(String user, Integer lastMonth);
 	
-	public void addNextMonth(String user);
-	
-	public void setEditable(String user, int month);
+	public void updateEditable(String user, int month);
 
 	public void persist(List<EmployeeBean> list);
 	
 	public void deleteAllEmployees();
 	
 	public void updateTable(Long id, String colname, Integer modify);
+
+	public V2Bean findByMonth(int month, String username);
 }
