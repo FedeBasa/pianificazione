@@ -71,7 +71,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		sb.append("SELECT *");
 		sb.append(" FROM u_progetti_risorse");
 		sb.append(" WHERE mese = ?");
-		sb.append(" AND user_id = ?");
+		sb.append(" AND id_user = ?");
 
 		result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
 			@Override
@@ -86,7 +86,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				v2b.setMonth(month);
 				v2b.setIdRecord(rs.getLong("id_unione"));
 				v2b.setIdProject(rs.getLong("id_progetto"));
-				v2b.setBadgeNumber(Integer.toString(rs.getInt("id_risorsa")));
+				v2b.setBadgeNumber(Integer.toString(rs.getInt("matricola")));
 				v2b.setCons0(rs.getInt("consolidato_1"));
 				v2b.setProd0(rs.getInt("prodotto_1"));
 				v2b.setCons1(rs.getInt("consolidato_2"));
@@ -94,6 +94,14 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				v2b.setCons2(rs.getInt("consolidato_3"));
 				v2b.setProd2(rs.getInt("prodotto_3"));
 				v2b.setPrice(rs.getInt("tariffa"));
+				v2b.setNome(rs.getString("nome_risorsa"));
+				v2b.setCognome(rs.getString("cognome_risorsa"));
+				v2b.setCurrency(rs.getString("valuta"));
+				v2b.setProjectDesc(rs.getString("desc_progetto"));
+				v2b.setEmployeeDesc(rs.getString("nome_risorsa")+" "+rs.getString("cognome_risorsa"));
+				v2b.setBusinessUnit(rs.getInt("business_unit"));
+				v2b.setActivityType(rs.getString("attività"));
+				
 				return v2b;
 			}
 		});
@@ -175,8 +183,15 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				rv.setCons2(rs.getInt("consolidato_3"));
 				rv.setProd2(rs.getInt("prodotto_3"));
 				rv.setIdProject(rs.getLong("id_progetto"));
-				rv.setBadgeNumber(Integer.toString(rs.getInt("id_risorsa")));
+				rv.setBadgeNumber(Integer.toString(rs.getInt("matricola")));
+				rv.setCurrency(rs.getString("valuta"));
+				rv.setCustomer(rs.getString("cliente"));
+				rv.setProjectDesc(rs.getString("desc_progetto"));
+				rv.setBusinessUnit(rs.getInt("business_unit"));
+				rv.setActivityType(rs.getString("attività"));
 				rv.setPrice(rs.getInt("tariffa"));
+				rv.setNome(rs.getString("nome_risorsa"));
+				rv.setCognome(rs.getString("cognome_risorsa"));
 				return rv;
 
 			};
@@ -194,8 +209,10 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		final StringBuilder sb = new StringBuilder();
 
 		sb.append("UPDATE u_progetti_risorse");
-		sb.append(" SET id_risorsa=?");
-		sb.append(" , id_progetto=?");
+		sb.append(" SET matricola=?");
+		sb.append(" ,id_progetto=?");
+		sb.append(" ,nome_risorsa= ?");
+		sb.append(" ,cognome_risorsa= ?");
 		sb.append(" WHERE id_unione = ?");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 
@@ -204,7 +221,9 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
 				ps.setString(i++, rec.getBadgeNumber());
-				ps.setLong(i++, (rec.getIdProject() == null ? 0 : rec.getIdProject()));
+				ps.setLong(i++, rec.getIdProject() == null ? 0 : rec.getIdProject());
+				ps.setString(i++, rec.getNome());
+				ps.setString(i++, rec.getCognome());
 				ps.setLong(i++, rec.getIdRecord());
 				return ps;
 			}
@@ -215,22 +234,28 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	public void insert(final RecordV2Bean rec) {
 		
 		final StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,id_risorsa,user_id)");
-		sb.append(" VALUES(?,?,?,?)");
-		
+		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,matricola,id_user,nome_risorsa,cognome_risorsa,desc_progetto,attività,valuta,cliente)");
+		sb.append("  VALUES(?,?,?,?,?,?,?,?,?,?)");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
 				ps.setInt(i++, rec.getMonth());
-				ps.setLong(i++, (rec.getIdProject() == null ? 0 : rec.getIdProject()));
+				ps.setLong(i++, rec.getIdProject() == null ? 0 : rec.getIdProject());
 				ps.setInt(i++, Integer.parseInt(rec.getBadgeNumber()));
-
 				// TODO
 				// sistemare, cablato nome utente
 				ps.setString(i++, "Admin");
-
+				ps.setString(i++, rec.getNome());
+				ps.setString(i++, rec.getCognome());
+				ps.setString(i++, rec.getProjectDesc());
+				ps.setString(i++, rec.getActivityType());
+				ps.setString(i++, rec.getCurrency());
+				ps.setString(i++, rec.getCustomer());
+//				Date now = new Date();
+//				ps.setTimestamp(i++, new java.sql.Timestamp(now.getTime()));
+				
 				return ps;
 			}
 		});
@@ -318,7 +343,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		sb.append("SELECT mese");
 		sb.append(" FROM v2");
-		sb.append(" WHERE user = ?");
+		sb.append(" WHERE id_user = ?");
 		sb.append(" ORDER BY mese");
 
 		result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
@@ -341,7 +366,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM u_progetti_risorse");
 		sb.append(" WHERE mese = ?");
-		sb.append(" AND user_id = ?");
+		sb.append(" AND id_user = ?");
 		sb.append(" ORDER BY mese desc");
 
 		final List<RecordV2Bean> list = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
@@ -355,23 +380,33 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			@Override
 			public RecordV2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				RecordV2Bean rv = new RecordV2Bean();
+				rv.setIdRecord(rs.getLong("id_unione"));
 				rv.setMonth(rs.getInt("mese"));
-				rv.setIdProject(rs.getLong("id_progetto"));
-				rv.setBadgeNumber(rs.getString("id_risorsa"));
 				rv.setCons0(rs.getInt("consolidato_1"));
-				rv.setCons1(rs.getInt("consolidato_2"));
-				rv.setCons2(rs.getInt("consolidato_3"));
 				rv.setProd0(rs.getInt("prodotto_1"));
+				rv.setCons1(rs.getInt("consolidato_2"));
 				rv.setProd1(rs.getInt("prodotto_2"));
+				rv.setCons2(rs.getInt("consolidato_3"));
 				rv.setProd2(rs.getInt("prodotto_3"));
+				rv.setIdProject(rs.getLong("id_progetto"));
+				rv.setBadgeNumber(Integer.toString(rs.getInt("matricola")));
+				rv.setCurrency(rs.getString("valuta"));
+				rv.setCustomer(rs.getString("cliente"));
+				rv.setProjectDesc(rs.getString("desc_progetto"));
+				rv.setBusinessUnit(rs.getInt("business_unit"));
+				rv.setActivityType(rs.getString("attività"));
 				rv.setPrice(rs.getInt("tariffa"));
+				rv.setNome(rs.getString("nome_risorsa"));
+				rv.setCognome(rs.getString("cognome_risorsa"));				
 				return rv;
 			}
 		});
 
 		StringBuilder insertSql = new StringBuilder();
-		insertSql.append("INSERT INTO u_progetti_risorse (mese, id_progetto, id_risorsa, consolidato_1, consolidato_2, consolidato_3, prodotto_1, prodotto_2, prodotto_3, user_id, tariffa)");
-		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		insertSql.append("INSERT INTO u_progetti_risorse");
+		insertSql.append(" (mese, id_progetto, id_risorsa, consolidato_1, consolidato_2, consolidato_3, prodotto_1, prodotto_2, prodotto_3,");
+		insertSql.append(" id_user, tariffa, matricola, nome_risorsa, cognome_risorsa, valuta, cliente, desc_progetto, business_unit, attività)");
+		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 		getJdbcTemplate().batchUpdate(insertSql.toString(), new BatchPreparedStatementSetter() {
 			
@@ -390,8 +425,16 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setInt(i++, bean.getProd1());
 				pstm.setInt(i++, bean.getProd2());
 				pstm.setLong(i++, 0);
+				pstm.setString(i++, "Admin");
 				pstm.setInt(i++, bean.getPrice());
-				
+				pstm.setString(i++, bean.getBadgeNumber());
+				pstm.setString(i++, bean.getNome());
+				pstm.setString(i++, bean.getCognome());
+				pstm.setString(i++, bean.getCurrency());
+				pstm.setString(i++, bean.getCustomer());
+				pstm.setString(i++, bean.getProjectDesc());
+				pstm.setInt(i++, bean.getBusinessUnit());
+				pstm.setString(i++, bean.getActivityType());
 			}
 			
 			@Override
@@ -410,7 +453,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		sb.append("SELECT *");
 		sb.append(" FROM v2");
 		sb.append(" WHERE mese = ?");
-		sb.append(" AND user = ?");
+		sb.append(" AND id_user = ?");
 		sb.append(" ORDER BY mese desc");
 
 		result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
@@ -425,14 +468,14 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public V2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				V2Bean rv = new V2Bean();
 				rv.setMonth(rs.getInt("mese"));
-				rv.setUser(rs.getString("user"));
+				rv.setUser(rs.getString("id_user"));
 				rv.setEditable(rs.getInt("editable"));
 				return rv;
 			}
 		});
 
 		StringBuilder insertSql = new StringBuilder();
-		insertSql.append(" INSERT INTO v2 (mese, user, editable)");
+		insertSql.append(" INSERT INTO v2 (mese, id_user, editable)");
 		insertSql.append(" VALUES (?, ?, ?)");
 
 		int nextMonth = 0;
@@ -454,7 +497,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE v2");
 		sb.append(" SET editable= ?");
-		sb.append(" WHERE user = ?");
+		sb.append(" WHERE id_user = ?");
 		sb.append(" AND mese = ?");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 
@@ -473,7 +516,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	@Override
 	public V2Bean findByMonth(final int month, final String username) {
 
-		List<V2Bean> mesi = getJdbcTemplate().query("SELECT * FROM v2 WHERE user = ? AND mese = ?", new PreparedStatementSetter() {
+		List<V2Bean> mesi = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ? AND mese = ?", new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 				pstm.setString(1, username);
@@ -484,7 +527,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				V2Bean result = new V2Bean();
 
-				result.setUser(rs.getString("user"));
+				result.setUser(rs.getString("id_user"));
 				result.setMonth(rs.getInt("mese"));
 				result.setEditable(rs.getInt("editable"));
 

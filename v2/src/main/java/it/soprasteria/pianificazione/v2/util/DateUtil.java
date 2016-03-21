@@ -33,7 +33,6 @@ public class DateUtil {
 	
 			int currentMonth = cal.get(Calendar.MONTH);
 			int currentYear = cal.get(Calendar.YEAR);
-			currentMonth++;
 	
 			Date parsedMonth = SDF_MONTH.parse(String.valueOf(mese));
 			Calendar calMonth = Calendar.getInstance();

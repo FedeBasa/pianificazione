@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -117,24 +118,15 @@ public class SampleController {
 		return result;
 	}
 
-	// @RequestMapping(value = "/record/detail/{id}", method =
-	// RequestMethod.GET)
-	// public @ResponseBody RecordV2Bean detail(@PathVariable(value="id") Long
-	// id) throws SQLException {
-
-	@RequestMapping(value = "/table/edit", method = RequestMethod.GET)
-	public @ResponseBody RecordV2Bean detail(Long id) throws SQLException {
-
+	 @RequestMapping(value = "/record/detail/{id}", method = RequestMethod.GET)
+	 public @ResponseBody RecordV2Bean detail(@PathVariable(value="id") Long id) throws SQLException {
+	
 		LOG.debug("*********************************************************************************SONO QUI");
-
+		
 		return service.getRecord(id);
 	}
 
-	// @RequestMapping(value = "/record/update/{id}", method =
-	// RequestMethod.POST)
-
-	// era presente un errore nella firma del metodo
-	@RequestMapping(value = "/send/data", method = RequestMethod.POST)
+	@RequestMapping(value = "/record/update", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
 		V2Bean v2 = SessionHelper.getV2();
@@ -185,7 +177,7 @@ public class SampleController {
 		}
 	}
 
-	@RequestMapping(value = "/send/insert", method = RequestMethod.POST)
+	@RequestMapping(value = "/record/insert", method = RequestMethod.POST)
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		LOG.debug("SONO NELL'INSERT");
 
@@ -227,7 +219,7 @@ public class SampleController {
 		}
 	}
 
-	@RequestMapping(value = "/send/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/record/delete", method = RequestMethod.POST)
 	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
 		LOG.debug("SONO NEL DELETE");
