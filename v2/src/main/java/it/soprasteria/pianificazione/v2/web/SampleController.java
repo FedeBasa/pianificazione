@@ -65,14 +65,14 @@ public class SampleController {
 	@RequestMapping(value = "/addMonth", method = RequestMethod.POST)
 	public String addMonth(Model model, RedirectAttributes redirectAttributes) {
 
-		boolean addMonthRejected = false;
+		boolean done = false;
 
 		String user = SessionHelper.getUser().getUsername();
 		LOG.info("user: " + user);
 
-		addMonthRejected = service.addNextMonth(user);
+		done = service.addNextMonth(user);
 
-		redirectAttributes.addFlashAttribute("rejected", addMonthRejected);
+		redirectAttributes.addFlashAttribute("rejected", !done);
 		return "redirect:/home";
 
 	}

@@ -19,6 +19,7 @@ import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
+import it.soprasteria.pianificazione.v2.bean.V2ConfigBean;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
 
 public class DaoImpl extends JdbcDaoSupport implements Dao {
@@ -361,6 +362,25 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return result;
 	}
 
+	public List<Integer> getMonthsConfig() {
+		List<Integer> result = new ArrayList<Integer>();
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("SELECT mese");
+		sb.append(" FROM v2_config");
+		sb.append(" WHERE enable = 1");
+		sb.append(" ORDER BY mese");
+
+		result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>() {
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				Integer mese = rs.getInt("mese");
+				return mese;
+			}
+		});
+		return result;
+	}
+
 	private void addProjectsResources(final String username, final int currentMonth, final int nextMonth) {
 
 		StringBuilder sb = new StringBuilder();
@@ -538,4 +558,33 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return mesi.get(0);
 
 	}
+	
+	public V2ConfigBean findConfigByMonth(final int month) {
+		
+		List<V2ConfigBean> list = getJdbcTemplate().query("SELECT * FROM v2_config WHERE mese = ?", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				pstm.setInt(1, month);
+			}
+		}, new RowMapper<V2ConfigBean>() {
+			public V2ConfigBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+
+				V2ConfigBean result = new V2ConfigBean();
+
+				result.setIdConfig(rs.getInt("id_config"));
+				result.setMonth(rs.getInt("mese"));
+				result.setEnable(rs.getInt("enable") == 1 ? true : false);
+
+				return result;
+			}
+		});
+		
+		if (list.isEmpty()) {
+			return null;
+		}
+		
+		return list.get(0);
+	}
+	
+	
 }

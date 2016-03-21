@@ -10,7 +10,6 @@ import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.dao.DaoImpl;
-import it.soprasteria.pianificazione.v2.util.DateUtil;
 
 public class V2Service {
 	private static final Logger LOG = Logger.getLogger(V2Service.class);
@@ -80,21 +79,23 @@ public class V2Service {
 		return monthsList;
 	}
 	
-	public boolean addNextMonth(String user) {
+	public boolean addNextMonth(String username) {
 		
-		List<Integer> list = dao.getMonths(user);
+		List<Integer> list = dao.getMonths(username);
 		Integer lastMonth = list.get(list.size()-1);
 		
-		if(DateUtil.checkMonth(lastMonth)) {
-			dao.addNextMonth(user, lastMonth);
-			return false;
-		}
+		List<Integer> listConfig = dao.getMonthsConfig();
+		Integer lastMonthConfig = listConfig.get(listConfig.size()-1);
 		
-		return true;
+		boolean check = lastMonth.intValue() < lastMonthConfig.intValue();
+		if (check) {
+			dao.addNextMonth(username, lastMonth);
+			return true;
+		}
+
+		return false;
 	}
 	
-	// TODO
-	// rinominare
 	public void updateEditable(String user, int month) {
 		dao.updateEditable(user, month);
 	}
