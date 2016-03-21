@@ -16,8 +16,6 @@
 	$(document).ready(function() {
 		
 		 $('#v2').DataTable({
-			"scrollY":        "200px",
-			"scrollCollapse": true,
 			"paging":         false}
 		);
 		 
@@ -101,6 +99,7 @@
 		$('#v2').editableTableWidget();
 		
 		$('#v2').on('change', function(evt,newValue){
+			
 			var data = newValue;
 			var colname = $(evt.target).attr('colname');
 			var id = $(evt.target).parent().attr('rowId');
@@ -154,98 +153,112 @@
  </script>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
-<body>
+<body style="font-size:12px">
 	
 	<input type="hidden" id="responsecode">
-	<div class="container">
-		<div class="btn-group">
-<%-- 			<c:if test="${editable eq true}">	 --%>
-				<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
-				<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
-				<button id="delete" type="button" class="btn btn-primary">Elimina</button>
-				<button id="bottone" type="button" class="btn btn-primary">Aggiungi</button>
-<%-- 			</c:if>	 --%>
-		</div>
-		<div class="btn-group">
-		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/approva?month=${month}" onsubmit="return validate(this);">
-			<button id="approva" type="submit" class="${editable eq true ? 'btn btn-warning' : 'btn btn-warning disabled'}">Approva</button>
-		</form:form>
-
-		<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
-		    <form:hidden path="month"/>
-		    <form:hidden path="idRecord"/>
-		    <form:hidden path="idProject"/>
-			<form:hidden path="badgeNumber"/>
-			<form:hidden path="idProject"/>
-	
-			<spring:bind path="employeeDesc">
-				<div class="form-group ${status.error ? 'has-error' : ''}">
-					<label class="col-sm-2 control-label">Risorsa</label>
-					<div class="col-sm-6">
-						<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
-						<form:errors path="employeeDesc" class="control-label" />
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-3">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="btn-group">
+				 			<c:if test="${editable}">
+								<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
+								<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
+								<button id="delete" type="button" class="btn btn-primary">Elimina</button>
+								<button id="bottone" type="button" class="btn btn-primary">Aggiungi</button>
+				 			</c:if>
+						</div>
 					</div>
 				</div>
-			</spring:bind>
-
-			<div class="form-group">
-				<label class="col-sm-2 control-label">BU</label>
-				<div class="col-sm-6">
-					<select id="bu" class="form-control">
-						<option value ="791">791</option>
-						<option value = "792">792</option>
-					</select>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="panel panel-default" style="margin-top:6px">
+							<div class="panel-heading">
+								<h3 class="panel-title"></h3>
+							</div>
+							<div class="panel-body">
+								<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
+								    <form:hidden path="month"/>
+								    <form:hidden path="idRecord"/>
+								    <form:hidden path="idProject"/>
+									<form:hidden path="badgeNumber"/>
+									<form:hidden path="idProject"/>
+							
+									<spring:bind path="employeeDesc">
+										<div class="form-group ${status.error ? 'has-error' : ''}">
+											<label class="col-lg-1">Risorsa</label>
+											<div class="col-lg-11">
+												<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
+												<form:errors path="employeeDesc" class="control-label" />
+											</div>
+										</div>
+									</spring:bind>
+						
+									<div class="form-group">
+										<label class="col-lg-1">BU</label>
+										<div class="col-lg-11">
+											<select id="bu" class="form-control">
+												<option value ="791">791</option>
+												<option value = "792">792</option>
+											</select>
+										</div>
+									</div>
+									
+									<spring:bind path="projectDesc">
+										<div class="form-group ${status.error ? 'has-error' : ''}">
+											<label class="col-lg-1">Progetto</label>
+											<div class="col-lg-11">
+												<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
+												<form:errors path="projectDesc" class="control-label" />
+											</div>
+										</div>
+									</spring:bind>
+							
+								</form:form>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			
-			<spring:bind path="projectDesc">
-				<div class="form-group ${status.error ? 'has-error' : ''}">
-					<label class="col-sm-2 control-label">Progetto</label>
-					<div class="col-sm-6">
-						<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
-						<form:errors path="projectDesc" class="control-label" />
-					</div>
-				</div>
-			</spring:bind>
-	
-		</form:form>
-
-	
-		<table id="v2" class="table table-bordered table-striped">
-			<thead>
-				<tr>
-					<th>Risorsa</th>
-					<th>Attività</th>
-					<th>Progetto</th>
-					<th>Tariffa</th>
-					<th>Valuta</th>
-					<th>Consolidato 1</th>
-					<th>Prodotto 1</th>
-					<th>Consolidato 2</th>
-					<th>Prodotto 2</th>
-					<th>Consolidato 3</th>
-					<th>Prodotto 3</th>
-				</tr>
-			</thead>
-			<tbody>	
-			<c:forEach items="${list}" var="item">
-				<tr onclick="detail(${item.idRecord})" rowId="${item.idRecord}">
-				    <td><c:out value="${item.employeeDesc}" /></td>
-					<td><c:out value="${item.activityType}" /></td>
-					<td><c:out value="${item.projectDesc}" /></td>
-					<td colname="price"><c:out value="${item.price}" /></td>
-					<td><c:out value="${item.currency}" /></td>
-					<td colname="cons0"><c:out value="${item.cons0}" /></td>
-					<td colname="prod0"><c:out value="${item.prod0}" /></td>
-					<td colname="cons1"><c:out value="${item.cons1}" /></td>
-					<td colname="prod1"><c:out value="${item.prod1}" /></td>
-					<td colname="cons2"><c:out value="${item.cons2}" /></td>
-					<td colname="prod2"><c:out value="${item.prod2}" /></td>
-				</tr>
-			</c:forEach>
-			</tbody>
-		</table>	
-	</div>	
+			<div class="col-lg-9">
+				<table id="v2" class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>Risorsa</th>
+							<th>Attività</th>
+							<th>Progetto</th>
+							<th>Tariffa</th>
+							<th>Valuta</th>
+							<th>Cons 1</th>
+							<th>Prod 1</th>
+							<th>Cons 2</th>
+							<th>Prod 2</th>
+							<th>Cons 3</th>
+							<th>Prod 3</th>
+						</tr>
+					</thead>
+					<tbody>	
+					<c:forEach items="${list}" var="item">
+						<tr onclick="detail(${item.idRecord})" rowId="${item.idRecord}">
+						    <td><c:out value="${item.employeeDesc}" /></td>
+							<td><c:out value="${item.activityType}" /></td>
+							<td><c:out value="${item.projectDesc}" /></td>
+							<td colname="price"><c:out value="${item.price}" /></td>
+							<td><c:out value="${item.currency}" /></td>
+							<td colname="cons0"><c:out value="${item.cons0}" /></td>
+							<td colname="prod0"><c:out value="${item.prod0}" /></td>
+							<td colname="cons1"><c:out value="${item.cons1}" /></td>
+							<td colname="prod1"><c:out value="${item.prod1}" /></td>
+							<td colname="cons2"><c:out value="${item.cons2}" /></td>
+							<td colname="prod2"><c:out value="${item.prod2}" /></td>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 	<jsp:include page="../fragments/footer.jsp" />	
 </body>
 

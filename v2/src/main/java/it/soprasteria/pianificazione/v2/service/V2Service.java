@@ -79,6 +79,11 @@ public class V2Service {
 		return monthsList;
 	}
 	
+	public List<V2Bean> findByUser(String username) {
+		
+		return dao.findByUser(username);
+	}
+	
 	public boolean addNextMonth(String username) {
 		
 		List<Integer> list = dao.getMonths(username);

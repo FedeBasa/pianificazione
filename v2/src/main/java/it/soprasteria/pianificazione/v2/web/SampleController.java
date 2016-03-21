@@ -55,9 +55,9 @@ public class SampleController {
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(Model model) {
 
-		String user = SessionHelper.getUser().getUsername();
+		String username = SessionHelper.getUser().getUsername();
 
-		model.addAttribute("lista", service.getMonths(user));
+		model.addAttribute("lista", service.findByUser(username));
 
 		return "home";
 	}

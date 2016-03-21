@@ -11,24 +11,36 @@
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body>
-<c:if test="${rejected}">
-<%-- 	<spring:message code="rejected.month"></spring:message> --%>
-	<p class="alert alert-danger">Impossibile aggiungere il mese</p>
-</c:if>
-	<table>
-	<tr>
-	 <th>Mese</th>
-	 </tr>
-	 <c:forEach items="${lista}" var = "month">
-	     <tr>
-			<td><a href="${pageContext.request.contextPath}/edit/v2?month=${month}"><c:out value="${month}" /></a></td>
-		</tr>
-	 </c:forEach>
-	</table>
-	
-	<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/addMonth">
-       <button type="submit" class="btn btn-primary">Aggiungi Mese</button>       
-	</form:form>
-	
+	<div class="container-fluid">
+		<c:if test="${rejected}">
+			<p class="alert alert-danger">Impossibile aggiungere il mese</p>
+		</c:if>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>Mese</th>
+				<th>Stato</th>
+			</tr>
+			<c:forEach items="${lista}" var = "bean">
+			<tr>
+				<td>
+					<a href="${pageContext.request.contextPath}/edit/v2?month=${bean.month}"><c:out value="${bean.month}" /></a>
+				</td>
+				<td>
+					<c:if test="${bean.editable == 1}">
+						Aperto
+					</c:if>
+					<c:if test="${bean.editable == 0}">
+						Chiuso
+					</c:if>
+				</td>
+			</tr>
+			</c:forEach>
+		</table>
+		
+		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/addMonth">
+	       <button type="submit" class="btn btn-primary">Aggiungi Mese</button>       
+		</form:form>
+	</div>
 </body>
 </html>

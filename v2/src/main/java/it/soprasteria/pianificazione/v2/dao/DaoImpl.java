@@ -558,7 +558,32 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return mesi.get(0);
 
 	}
-	
+
+	@Override
+	public List<V2Bean> findByUser(final String username) {
+
+		List<V2Bean> list = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ? ORDER BY MESE", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				pstm.setString(1, username);
+			}
+		}, new RowMapper<V2Bean>() {
+			public V2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+
+				V2Bean result = new V2Bean();
+
+				result.setUser(rs.getString("id_user"));
+				result.setMonth(rs.getInt("mese"));
+				result.setEditable(rs.getInt("editable"));
+
+				return result;
+			}
+		});
+
+		return list;
+
+	}
+
 	public V2ConfigBean findConfigByMonth(final int month) {
 		
 		List<V2ConfigBean> list = getJdbcTemplate().query("SELECT * FROM v2_config WHERE mese = ?", new PreparedStatementSetter() {

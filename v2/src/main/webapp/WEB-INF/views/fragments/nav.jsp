@@ -4,7 +4,7 @@
 <spring:url value="/excel/upload/employee" var="urlUpload" />
 <spring:url value="/logout" var="urlLogout" />
 
-<nav class="navbar navbar-inverse ">
+<nav class="navbar navbar-default">
 	<div class="container">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="${urlHome}">Home</a>

@@ -40,4 +40,6 @@ public interface Dao {
 	public void updateTable(Long id, String colname, Integer modify);
 
 	public V2Bean findByMonth(int month, String username);
+
+	List<V2Bean> findByUser(String username);
 }
