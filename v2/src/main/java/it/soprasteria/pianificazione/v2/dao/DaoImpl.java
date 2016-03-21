@@ -513,4 +513,31 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return mesi.get(0);
 
 	}
+	
+	public List<V2Bean> getV2ToApprove(final String username) {
+		List<V2Bean> v2List = getJdbcTemplate().query("SELECT * FROM v2 WHERE user = ?", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				pstm.setString(1, username);
+			}
+		}, new RowMapper<V2Bean>() {
+			public V2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+
+				V2Bean result = new V2Bean();
+
+				result.setUser(rs.getString("user"));
+				result.setMonth(rs.getInt("mese"));
+				result.setEditable(getBoolean());
+				if(rs.getInt("editable") == 0) { 
+					result.setEditable(true);
+				}
+				else {
+					result.setEditable(false);
+				}
+				return result;
+			}
+		});
+		
+		return v2List;
+	}
 }

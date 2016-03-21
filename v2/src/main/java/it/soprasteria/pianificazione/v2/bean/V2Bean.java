@@ -4,10 +4,7 @@ public class V2Bean {
 
 		private int month;
 		private String user;
-		
-		// TODO
-		// deve essere un booleano
-	    private int editable;
+	    private boolean editable;
 	    
 	    
 		public int getMonth() {
@@ -26,11 +23,11 @@ public class V2Bean {
 			this.user = user;
 		}
 
-		public int getEditable() {
+		public boolean getEditable() {
 			return editable;
 		}
 
-		public void setEditable(int editable) {
+		public void setEditable(boolean editable) {
 			this.editable = editable;
 		}
 

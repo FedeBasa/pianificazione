@@ -104,4 +104,10 @@ public class V2Service {
 		dao.setEditable(user, month);
 	}
 
+	public List<V2Bean> getV2ToApprove() {
+		
+		List<V2Bean> v2List = dao.getV2ToApprove();
+		
+		return v2List;
+	}
 }

@@ -313,5 +313,12 @@ public class SampleController {
 	    service.setEditable(user, month);
 		return "redirect:/edit/v2?month=" + month;
 	}
+	
+	@RequestMapping(value = "/approvaPage", method = RequestMethod.GET)
+	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
+	    
+		service.getV2ToApprove();
+		return "approva_mese";
+	}
 
 }
