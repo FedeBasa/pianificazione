@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.service.EmployeeService;
 import it.soprasteria.pianificazione.v2.service.ProjectService;
 import it.soprasteria.pianificazione.v2.service.V2Service;
@@ -90,14 +92,17 @@ public class SampleController {
 		ModelAndView model = new ModelAndView();
 		model.setViewName("index");
 		
-		String user = SessionHelper.getUser().getUsername();
+		String username = SessionHelper.getUser().getUsername();
 		List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
+		
+		V2Bean v2Bean = service.findByMonth(month, username);
+		SessionHelper.storeV2(v2Bean);
+		
 		list = service.getV2(month, SessionHelper.getUser().getUsername());
-		boolean editable = service.isEditable(user, month);
 		
 		model.addObject("list", list);
 		model.addObject("v2Form", new RecordV2Bean());
-		model.addObject("editable", editable);
+		model.addObject("editable", (v2Bean.getEditable() == 1 ? true : false));
 		model.addObject("month", month);
 		
 		return model;
@@ -139,6 +144,26 @@ public class SampleController {
 	@RequestMapping(value = "/send/data", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		
+		V2Bean v2 = SessionHelper.getV2();
+		if (v2 == null) {
+			// TODO
+			// return codice errore http permission denied
+		}
+		
+		if(v2.getMonth() != record.getMonth()) {
+			// TODO
+			// return codice errore
+			// l'utente sta cercando di modificare un mese diverso da quello che è in sessione
+		}
+		// TODO
+		// modificare condizione con booleano
+		if (v2.getEditable() == 0) {
+			//TODO
+			// return codice errore
+			// l'utente prova a modificare un v2 non editabile
+		}
+		
+		
 		// il bean deve essere dichiarato @Validated
 		// non bisogna invocare il metodo di validazione sul form fa Spring in automatico
 		
@@ -171,6 +196,26 @@ public class SampleController {
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		LOG.debug("SONO NELL'INSERT");
 
+		V2Bean v2 = SessionHelper.getV2();
+		if (v2 == null) {
+			// TODO
+			// return codice errore http permission denied
+		}
+		
+		if(v2.getMonth() != record.getMonth()) {
+			// TODO
+			// return codice errore
+			// l'utente sta cercando di modificare un mese diverso da quello che è in sessione
+		}
+		// TODO
+		// modificare condizione con booleano
+		if (v2.getEditable() == 0) {
+			//TODO
+			// return codice errore
+			// l'utente prova a modificare un v2 non editabile
+		}
+		
+		
 		if (result.hasErrors()) {
 			LOG.debug("EERRRRROOOOOOOREEEEEEE " + result.getFieldError());
 			// TODO
@@ -190,8 +235,29 @@ public class SampleController {
 
 	@RequestMapping(value = "/send/delete", method = RequestMethod.POST)
 	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+
 		LOG.debug("SONO NEL DELETE");
-       Long id = record.getIdRecord();
+
+		V2Bean v2 = SessionHelper.getV2();
+		if (v2 == null) {
+			// TODO
+			// return codice errore http permission denied
+		}
+		
+		if(v2.getMonth() != record.getMonth()) {
+			// TODO
+			// return codice errore
+			// l'utente sta cercando di modificare un mese diverso da quello che è in sessione
+		}
+		// TODO
+		// modificare condizione con booleano
+		if (v2.getEditable() == 0) {
+			//TODO
+			// return codice errore
+			// l'utente prova a modificare un v2 non editabile
+		}
+
+		Long id = record.getIdRecord();
 	   service.deleteRecord(id);
 		
 		return "redirect:/edit/v2?month=" + record.getMonth();
@@ -200,6 +266,27 @@ public class SampleController {
 	
 	@RequestMapping(value = "/update",method = RequestMethod.POST)
 	public @ResponseBody JsonResponse newUpdate(@RequestParam (name = "id") String id, @RequestParam(name = "colname") String colname,@RequestParam(name = "value") String data){
+		
+		V2Bean v2 = SessionHelper.getV2();
+		if (v2 == null) {
+			// TODO
+			// return codice errore http permission denied
+		}
+		
+		// TODO
+		// passare anche id del mese per controllo coerenza
+//		if(v2.getMonth() != record.getMonth()) {
+			// TODO
+			// return codice errore
+			// l'utente sta cercando di modificare un mese diverso da quello che è in sessione
+//		}
+		// TODO
+		// modificare condizione con booleano
+		if (v2.getEditable() == 0) {
+			//TODO
+			// return codice errore
+			// l'utente prova a modificare un v2 non editabile
+		}
 		
 		if (ColnameConverter.existsColname(colname)) {
 			

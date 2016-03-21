@@ -12,7 +12,7 @@ public class UserService {
 		
 		if ("admin".equalsIgnoreCase(username) && "admin".equalsIgnoreCase(password)) {
 			
-			return UserBean.build("admin", "utente", "prova");
+			return UserBean.build("admin", "utente", "prova", "administrator");
 		}
 		
 		return null;
