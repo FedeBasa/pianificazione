@@ -352,7 +352,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		sb.append("SELECT mese");
 		sb.append(" FROM v2");
+<<<<<<< HEAD
 		sb.append(" WHERE id_user = '" + user + "'");
+=======
+		sb.append(" WHERE user = '" + user + "'");
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 		sb.append(" ORDER BY mese");
 
 		result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>() {
@@ -399,7 +403,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		List<RecordV2Bean> result = new ArrayList<RecordV2Bean>();
 		StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
 		sb.append("SELECT * FROM u_progetti_risorse WHERE mese = '" + currentMonth + "' AND id_user = '" + user + "' ORDER BY mese desc");
+=======
+		sb.append("SELECT * FROM u_progetti_risorse WHERE mese = '" + currentMonth + "' AND user_id = '" + user + "' ORDER BY mese desc");
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 
 		result = getJdbcTemplate().query(sb.toString(), new RowMapper<RecordV2Bean>() {
 			@Override
@@ -407,7 +415,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				RecordV2Bean rv = new RecordV2Bean();
 				rv.setMonth(rs.getInt("mese"));
 				rv.setIdProject(rs.getLong("id_progetto"));
+<<<<<<< HEAD
 				rv.setBadgeNumber(rs.getString("matricola"));
+=======
+				rv.setBadgeNumber(rs.getString("id_risorsa"));
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 				rv.setCons0(rs.getInt("consolidato_1"));
 				rv.setCons1(rs.getInt("consolidato_2"));
 				rv.setCons2(rs.getInt("consolidato_3"));
@@ -419,7 +431,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 		});
 
+<<<<<<< HEAD
 		String insertSql = "INSERT INTO u_progetti_risorse (" + " mese, " + " id_progetto, " + " matricola, " + " consolidato_1, " + " consolidato_2," + " consolidato_3, " + " prodotto_1," + " prodotto_2, " + " prodotto_3," + " id_user, "
+=======
+		String insertSql = "INSERT INTO u_progetti_risorse (" + " mese, " + " id_progetto, " + " id_risorsa, " + " consolidato_1, " + " consolidato_2," + " consolidato_3, " + " prodotto_1," + " prodotto_2, " + " prodotto_3," + " user_id, "
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 				+ " tariffa)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		for (RecordV2Bean v2 : result) {
@@ -437,7 +453,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		List<V2Bean> result = new ArrayList<V2Bean>();
 		StringBuilder sb = new StringBuilder();
+<<<<<<< HEAD
 		sb.append("SELECT * FROM v2 WHERE mese = '" + getLastMonth(getMonths(user)) + "' AND id_user = '" + user + "' ORDER BY mese desc");
+=======
+		sb.append("SELECT * FROM v2 WHERE mese = '" + getLastMonth(getMonths(user)) + "' AND user = '" + user + "' ORDER BY mese desc");
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 
 		result = getJdbcTemplate().query(sb.toString(), new RowMapper<V2Bean>() {
 			@Override
@@ -450,7 +470,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 		});
 
+<<<<<<< HEAD
 		String insertSql = "INSERT INTO v2 (" + " mese, " + " id_user, " + " editable)" + "VALUES (?, ?, ?)";
+=======
+		String insertSql = "INSERT INTO v2 (" + " mese, " + " user, " + " editable)" + "VALUES (?, ?, ?)";
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 
 		int nextMonth = 0;
 		int currentMonth = 0;
@@ -496,7 +520,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE v2");
 		sb.append(" SET editable= ?");
+<<<<<<< HEAD
 		sb.append(" WHERE id_user = ? AND");
+=======
+		sb.append(" WHERE user = ? AND");
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 		sb.append(" mese = ?");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 
@@ -514,7 +542,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 	public V2Bean findByMonth(final int month, final String username) {
 
+<<<<<<< HEAD
 		List<V2Bean> mesi = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ? AND mese = ?", new PreparedStatementSetter() {
+=======
+		List<V2Bean> mesi = getJdbcTemplate().query("SELECT * FROM v2 WHERE user = ? AND mese = ?", new PreparedStatementSetter() {
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 				pstm.setString(1, username);
@@ -525,7 +557,11 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				V2Bean result = new V2Bean();
 
+<<<<<<< HEAD
 				result.setUser(rs.getString("id_user"));
+=======
+				result.setUser(rs.getString("user"));
+>>>>>>> d79448c693bb3c969f50712c25031ed52a33706d
 				result.setMonth(rs.getInt("mese"));
 				result.setEditable(rs.getInt("editable"));
 
