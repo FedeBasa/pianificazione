@@ -27,10 +27,10 @@
 					<a href="${pageContext.request.contextPath}/edit/v2?month=${bean.month}"><c:out value="${bean.month}" /></a>
 				</td>
 				<td>
-					<c:if test="${bean.editable == 1}">
+					<c:if test="${bean.editable}">
 						Aperto
 					</c:if>
-					<c:if test="${bean.editable == 0}">
+					<c:if test="${!bean.editable}">
 						Chiuso
 					</c:if>
 				</td>

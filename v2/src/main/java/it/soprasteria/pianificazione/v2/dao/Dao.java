@@ -32,6 +32,8 @@ public interface Dao {
 	
 	public void addNextMonth(String user, Integer lastMonth);
 	
+	public void approveMonth(final String user, final int month);
+	
 	public void updateEditable(String user, int month);
 
 	public void persist(List<EmployeeBean> list);

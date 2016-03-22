@@ -491,7 +491,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				V2Bean rv = new V2Bean();
 				rv.setMonth(rs.getInt("mese"));
 				rv.setUser(rs.getString("id_user"));
-				rv.setEditable(rs.getInt("editable"));
+				rv.setEditable(getEditableBoolean(rs.getInt("editable")));
 				return rv;
 			}
 		});
@@ -554,7 +554,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				result.setUser(rs.getString("id_user"));
 				result.setMonth(rs.getInt("mese"));
-				result.setEditable(rs.getInt("editable"));
+				result.setEditable(getEditableBoolean(rs.getInt("editable")));
 
 				return result;
 			}
@@ -562,6 +562,28 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		return mesi.get(0);
 
+	}
+	
+	@Override
+	public void approveMonth(final String user, final int month) {
+
+		final StringBuilder sb = new StringBuilder();
+		sb.append("UPDATE v2");
+		sb.append(" SET editable= ?");
+		sb.append(" WHERE user = ? AND");
+		sb.append(" mese = ?");
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+				int i = 1;
+				PreparedStatement ps = conn.prepareStatement(sb.toString());
+				ps.setInt(i++, 1);
+				ps.setString(i++, user);
+				ps.setInt(i++, month);
+				return ps;
+			}
+		});
 	}
 
 	@Override
@@ -579,7 +601,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				result.setUser(rs.getString("id_user"));
 				result.setMonth(rs.getInt("mese"));
-				result.setEditable(rs.getInt("editable"));
+				result.setEditable(getEditableBoolean(rs.getInt("editable")));
 
 				return result;
 			}
@@ -642,5 +664,36 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return userlist.get(0);
 	}
 	
+	public List<V2Bean> getV2ToApprove(final String username) {
+		List<V2Bean> v2List = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ?", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				pstm.setString(1, username);
+			}
+		}, new RowMapper<V2Bean>() {
+			public V2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+
+				V2Bean result = new V2Bean();
+
+				result.setUser(rs.getString("id_user"));
+				result.setMonth(rs.getInt("mese"));
+				result.setEditable(getEditableBoolean(rs.getInt("editable")));
+				
+				return result;
+				
+			}
+		});
+		
+		return v2List;
+	}
+	
+	public boolean getEditableBoolean(int editable) {
+		
+		if(editable == 0) { 
+			return true;
+		}
+		
+		return false;
+	}
 	
 }
