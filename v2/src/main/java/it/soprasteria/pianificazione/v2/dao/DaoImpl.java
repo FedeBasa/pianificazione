@@ -426,8 +426,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		StringBuilder insertSql = new StringBuilder();
 		insertSql.append("INSERT INTO u_progetti_risorse");
 		insertSql.append(" (mese, id_progetto, matricola, consolidato_1, consolidato_2, consolidato_3, prodotto_1, prodotto_2, prodotto_3,");
-		insertSql.append(" id_user, tariffa, matricola, nome_risorsa, cognome_risorsa, valuta, cliente, desc_progetto, business_unit, attività)");
-		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		insertSql.append(" id_user, tariffa, nome_risorsa, cognome_risorsa, valuta, cliente, desc_progetto, business_unit, attività)");
+		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 		getJdbcTemplate().batchUpdate(insertSql.toString(), new BatchPreparedStatementSetter() {
 			
@@ -448,7 +448,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setLong(i++, 0);
 				pstm.setString(i++, "Admin");
 				pstm.setInt(i++, bean.getPrice());
-				pstm.setString(i++, bean.getBadgeNumber());
 				pstm.setString(i++, bean.getNome());
 				pstm.setString(i++, bean.getCognome());
 				pstm.setString(i++, bean.getCurrency());
@@ -505,7 +504,10 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		V2Bean v2 = result.get(0);
 		currentMonth = v2.getMonth();
 		nextMonth = DateUtil.nextMonth(v2.getMonth());
-		Object[] params = new Object[] { nextMonth, username, 0 };
+		
+		LOG.info("######### [" + currentMonth + "] [" + nextMonth + "]");
+		
+		Object[] params = new Object[] { nextMonth, username, 1 };
 		int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.INTEGER };
 		getJdbcTemplate().update(insertSql.toString(), params, types);
 
