@@ -5,7 +5,7 @@
 	<spring:url value="/resources/css/jquery.dataTables.min.css" var="css3" />
 	<spring:url value="/resources/EasyAutocomplete-1.3.3/easy-autocomplete.min.css" var="css4" />
 	
-	<spring:url value="/webjars/jquery/1.11.1/jquery.js" var="js1" />
+	<spring:url value="/webjars/jquery/1.11.1/jquery.min.js" var="js1" />
 	<spring:url value="/resources/js/jquery.dataTables.min.js" var="js2"/>
 	<spring:url value="/resources/js/dataTables.bootstrap.min.js" var="js3" />
 	<spring:url value="/resources/js/table.js" var="js4" />
@@ -20,4 +20,11 @@
 	<script src="${js3}"></script>
 	<script src="${js4}"></script>
 	<script src="${js5}"></script>
-	
+	<script>
+		$(document).ready(function(){
+		    $("#bottone").click(function(){
+		        $(".dropdown-menu").toggle();
+		    });
+		});
+	</script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

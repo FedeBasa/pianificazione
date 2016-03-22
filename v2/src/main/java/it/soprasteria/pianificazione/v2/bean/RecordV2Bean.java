@@ -76,7 +76,10 @@ public class RecordV2Bean {
 	}
 
 	public String getEmployeeDesc() {
-		return nome + " " + cognome;
+		if (nome != null && cognome != null) {
+			return nome + " " + cognome;
+		}
+		return "";
 	}
 
 	public String getActivityType() {

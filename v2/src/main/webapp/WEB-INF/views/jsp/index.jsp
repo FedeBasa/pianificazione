@@ -11,13 +11,13 @@
 
 <script  src= 
        "${pageContext.request.contextPath}/resources/js/mindmup-editabletable.js"></script>	
+
 <script>
 	$(document).ready(function() {
-		
+
 		 $('#v2').DataTable({
 			"paging":         false}
 		);
-		 
 		function getUrlVars() {
 		    var vars = {};
 		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -26,7 +26,7 @@
 		    return vars;
 		}
 		
-		$("#bottone").click(function(){
+		$("#aggiungi").click(function(){
 			var path="${pageContext.request.contextPath}/record/insert";
 			$("#v2Form").attr("action",path);
 			$("#v2Form").submit();
@@ -94,7 +94,6 @@
 			}
 		}
 		$("#projectDesc").easyAutocomplete(options2);
-		
 		$('#v2').editableTableWidget();
 		
 		$('#v2').on('change', function(evt,newValue){
@@ -140,15 +139,6 @@
 				});
 	}
 
-	function validate(form) {
-			if(confirm("Vuoi approvare questo mese?")) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-
  </script>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
@@ -165,7 +155,7 @@
 								<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
 								<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
 								<button id="delete" type="button" class="btn btn-primary">Elimina</button>
-								<button id="bottone" type="button" class="btn btn-primary">Aggiungi</button>
+								<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>
 				 			</c:if>
 						</div>
 					</div>
@@ -182,7 +172,6 @@
 								    <form:hidden path="idRecord"/>
 								    <form:hidden path="idProject"/>
 									<form:hidden path="badgeNumber"/>
-									<form:hidden path="idProject"/>
 							
 									<spring:bind path="employeeDesc">
 										<div class="form-group ${status.error ? 'has-error' : ''}">

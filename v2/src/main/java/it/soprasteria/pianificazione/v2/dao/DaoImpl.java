@@ -202,9 +202,9 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setLong(i++, rec.getIdProject() == null ? 0 : rec.getIdProject());
 				ps.setString(i++, rec.getNome());
 				ps.setString(i++, rec.getCognome());
-				ps.setLong(i++, rec.getIdRecord());
 				ps.setString(i++, rec.getUserMod());
 				ps.setTimestamp(i++, new java.sql.Timestamp(new Date().getTime()));
+				ps.setLong(i++, rec.getIdRecord());
 				
 				return ps;
 			}
