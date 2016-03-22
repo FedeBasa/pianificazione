@@ -22,20 +22,20 @@ function validate(form) {
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body>
-	<div class="container">
+	<div class="container-fluid">
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
 				 <th>Mese</th>
-				 <th>Approva</th>
+				 <th>Azioni</th>
 				</tr>
 			 </thead>
 			 <c:forEach items="${v2List}" var = "v2">
 			     <tr>
-					<td><a href="${pageContext.request.contextPath}/edit/v2?month=${v2.month}"><c:out value="${v2.month}" /></a></td>
+					<td><c:out value="${v2.month}" /></td>
 					<td>
-						<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/approva?month=${v2.month}" onsubmit="return validate(this);">
-							<button id="approva" type="submit" class="${v2.editable eq true ? 'btn btn-warning' : 'btn btn-warning disabled'}">Approva</button>
+						<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/admin/approva?month=${v2.month}" onsubmit="return validate(this);">
+							<button id="approva" type="submit" class="${v2.editable eq true ? 'btn btn-warning' : 'btn btn-warning disabled'}">Chiudi</button>
 						</form:form>
 					</td>
 				</tr>

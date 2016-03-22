@@ -675,7 +675,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE v2");
 		sb.append(" SET editable= ?");
-		sb.append(" WHERE user = ? AND");
+		sb.append(" WHERE id_user = ? AND");
 		sb.append(" mese = ?");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 
@@ -683,7 +683,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, 1);
+				ps.setInt(i++, 0);
 				ps.setString(i++, user);
 				ps.setInt(i++, month);
 				return ps;

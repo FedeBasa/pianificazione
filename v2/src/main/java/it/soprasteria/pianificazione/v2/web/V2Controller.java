@@ -34,9 +34,9 @@ import it.soprasteria.pianificazione.v2.validator.FormValidator;
 import it.soprasteria.pianificazione.v2.web.ajax.JsonResponse;
 
 @Controller
-public class SampleController {
+public class V2Controller {
 
-	private static final Logger LOG = Logger.getLogger(SampleController.class);
+	private static final Logger LOG = Logger.getLogger(V2Controller.class);
 
 	@Autowired
 	private V2Service service;
@@ -292,21 +292,5 @@ public class SampleController {
 		return JsonResponse.build(JsonResponse.CODE_INVALID_COLNAME, "Colonna [" + colname + "] non valida");
 	}
 
-	@RequestMapping(value = "/approva", method = RequestMethod.POST)
-	public String approva(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 
-		String user = SessionHelper.getUser().getUsername();
-		service.updateEditable(user, month);
-		return "redirect:/approvaPage";
-	}
-
-	@RequestMapping(value = "/approvaPage", method = RequestMethod.GET)
-	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
-	    
-		String user = SessionHelper.getUser().getUsername();
-		List<V2Bean> v2List = service.getV2ToApprove(user);
-		model.addAttribute("v2List",v2List);
-		
-		return "approva_mese";
-	}
 }
