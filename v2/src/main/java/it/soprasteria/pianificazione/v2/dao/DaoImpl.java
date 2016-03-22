@@ -19,9 +19,11 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.bean.UserBean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.bean.V2ConfigBean;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
+import it.soprasteria.pianificazione.v2.util.SessionHelper;
 
 public class DaoImpl extends JdbcDaoSupport implements Dao {
 	
@@ -248,7 +250,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setInt(i++, Integer.parseInt(rec.getBadgeNumber()));
 				// TODO
 				// sistemare, cablato nome utente
-				ps.setString(i++, "Admin");
+				ps.setString(i++, SessionHelper.getUser().getUsername());
 				ps.setString(i++, rec.getNome());
 				ps.setString(i++, rec.getCognome());
 				ps.setString(i++, rec.getProjectDesc());
@@ -446,7 +448,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setInt(i++, bean.getProd1());
 				pstm.setInt(i++, bean.getProd2());
 				pstm.setLong(i++, 0);
-				pstm.setString(i++, "Admin");
+				pstm.setString(i++, SessionHelper.getUser().getUsername());
 				pstm.setInt(i++, bean.getPrice());
 				pstm.setString(i++, bean.getNome());
 				pstm.setString(i++, bean.getCognome());
@@ -612,6 +614,32 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		}
 		
 		return list.get(0);
+	}
+
+	@Override
+	public UserBean login(final String username ,final String password) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT *");
+		sb.append(" FROM users");
+		sb.append(" WHERE profilo = ? AND password = ?");
+		List<UserBean> userlist = getJdbcTemplate().query(sb.toString(),new PreparedStatementSetter(){
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				pstm.setString(1, username);
+				pstm.setString(2, password);
+			}
+		} ,new RowMapper<UserBean>(){
+			@Override
+			public UserBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				UserBean user = UserBean.build(rs.getString("profilo"), rs.getString("nome"), rs.getString("cognome"), rs.getString("profilo"));
+				return user;
+			}
+		});
+				if(userlist.isEmpty())
+		return null;
+				else
+		return userlist.get(0);
 	}
 	
 	

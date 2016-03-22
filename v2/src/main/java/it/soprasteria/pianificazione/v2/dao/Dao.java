@@ -5,6 +5,7 @@ import java.util.List;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.bean.UserBean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 
 public interface Dao {
@@ -41,5 +42,7 @@ public interface Dao {
 
 	public V2Bean findByMonth(int month, String username);
 
-	List<V2Bean> findByUser(String username);
+	public List<V2Bean> findByUser(String username);
+	
+	public UserBean login(String username,String password);
 }
