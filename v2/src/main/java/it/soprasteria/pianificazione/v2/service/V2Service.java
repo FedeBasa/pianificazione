@@ -27,9 +27,9 @@ public class V2Service {
 
 		List<RecordV2Bean> list = dao.getV2(month, user);
 
-//		for (RecordV2Bean item : list) {
-//			completeRecord(item);
-//		}
+		for (RecordV2Bean item : list) {
+			completeRecord(item);
+		}
 		return list;
 	}
 
@@ -37,7 +37,6 @@ public class V2Service {
 
 		RecordV2Bean record = dao.getRecord(id);
 		completeRecord(record);
-		LOG.debug("*******************************************************" + "  " + record.getProjectDesc());
 		return record;
 	}
 
@@ -48,9 +47,7 @@ public class V2Service {
 		item.setEmployeeDesc(eb.getName() + " " + eb.getSurname());
 		item.setNome(eb.getName());
 		item.setCognome(eb.getSurname());
-
 		Long id = item.getIdProject();
-		LOG.debug("IDENTIFICATIVO " + id);
 		ProjectBean prb = dao.getProject(id);
 
 		item.setProjectDesc(prb.getDescription());
@@ -68,24 +65,11 @@ public class V2Service {
 
 	public void insertRecord(RecordV2Bean record) {
 		completeRecord(record);
-		LOG.debug(record.getBadgeNumber());
-		LOG.debug(record.getEmployeeDesc());
-		LOG.debug(record.getNome());
-		LOG.debug(record.getCognome());
-		LOG.debug(record.getProjectDesc());
-		
 		dao.insert(record);
 	}
 
 	public void deleteRecord(Long id) {
 		dao.delete(id);
-	}
-	
-	// TODO
-	// manca parametro in input per filtrare l'utente
-	public List<RecordV2Bean> trovaV2(){
-		List<RecordV2Bean> v2s = dao.findAllV2();
-		return v2s;
 	}
 	
 	public void v2Update(Long id, String colname, Integer value){
@@ -98,20 +82,30 @@ public class V2Service {
 		return monthsList;
 	}
 	
-	public boolean addNextMonth(String user) {
+	public List<V2Bean> findByUser(String username) {
 		
-		if(dao.checkMonth(dao.getLastMonth(dao.getMonths(user)))) {
-			dao.addNextMonth(user);
-			return false;
-		}
-		
-		return true;
+		return dao.findByUser(username);
 	}
 	
-	// TODO
-	// rinominare
-	public void setEditable(String user, int month) {
-		dao.setEditable(user, month);
+	public boolean addNextMonth(String username) {
+		
+		List<Integer> list = dao.getMonths(username);
+		Integer lastMonth = list.get(list.size()-1);
+		
+		List<Integer> listConfig = dao.getMonthsConfig();
+		Integer lastMonthConfig = listConfig.get(listConfig.size()-1);
+		
+		boolean check = lastMonth.intValue() < lastMonthConfig.intValue();
+		if (check) {
+			dao.addNextMonth(username, lastMonth);
+			return true;
+		}
+
+		return false;
+	}
+	
+	public void updateEditable(String user, int month) {
+		dao.updateEditable(user, month);
 	}
 
 }
