@@ -524,15 +524,13 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setInt(2, month);
 			}
 		}, new RowMapper<V2Bean>() {
-			public V2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+			public V2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-				V2Bean result = new V2Bean();
+				V2Bean bean = new V2Bean();
 
-				result.setUser(rs.getString("id_user"));
-				result.setMonth(rs.getInt("mese"));
-				result.setEditable(rs.getInt("editable"));
-
-				return result;
+				enrichV2Bean(rs, bean, rowNum);
+				
+				return bean;
 			}
 		});
 
@@ -549,15 +547,13 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setString(1, username);
 			}
 		}, new RowMapper<V2Bean>() {
-			public V2Bean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+			public V2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-				V2Bean result = new V2Bean();
+				V2Bean bean = new V2Bean();
 
-				result.setUser(rs.getString("id_user"));
-				result.setMonth(rs.getInt("mese"));
-				result.setEditable(rs.getInt("editable"));
-
-				return result;
+				enrichV2Bean(rs, bean, rowNum);
+				
+				return bean;
 			}
 		});
 
@@ -649,7 +645,50 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		
 		bean.setMonth(rs.getInt("mese"));
 		bean.setUser(rs.getString("id_user"));
-		bean.setEditable(rs.getInt("editable"));
+		bean.setEditable(rs.getInt("editable") == 1 ? true : false);
 	}
 	
+	public List<V2Bean> getV2ToApprove(final String username) {
+		List<V2Bean> v2List = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ?", new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				pstm.setString(1, username);
+			}
+		}, new RowMapper<V2Bean>() {
+			public V2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+				V2Bean bean = new V2Bean();
+
+				enrichV2Bean(rs, bean, rowNum);
+				
+				return bean;
+				
+			}
+		});
+		
+		return v2List;
+	}
+	
+	@Override
+	public void approveMonth(final String user, final int month) {
+
+		final StringBuilder sb = new StringBuilder();
+		sb.append("UPDATE v2");
+		sb.append(" SET editable= ?");
+		sb.append(" WHERE user = ? AND");
+		sb.append(" mese = ?");
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+				int i = 1;
+				PreparedStatement ps = conn.prepareStatement(sb.toString());
+				ps.setInt(i++, 1);
+				ps.setString(i++, user);
+				ps.setInt(i++, month);
+				return ps;
+			}
+		});
+	}
+
 }

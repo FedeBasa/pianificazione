@@ -93,7 +93,7 @@ public class SampleController {
 
 		model.addObject("list", list);
 		model.addObject("v2Form", new RecordV2Bean());
-		model.addObject("editable", (v2Bean.getEditable() == 1 ? true : false));
+		model.addObject("editable", (v2Bean.getEditable()));
 		model.addObject("month", month);
 
 		return model;
@@ -141,9 +141,8 @@ public class SampleController {
 			// l'utente sta cercando di modificare un mese diverso da quello che
 			// è in sessione
 		}
-		// TODO
-		// modificare condizione con booleano
-		if (v2.getEditable() == 0) {
+		
+		if (v2.getEditable()) {
 			// TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -196,9 +195,8 @@ public class SampleController {
 			// l'utente sta cercando di modificare un mese diverso da quello che
 			// è in sessione
 		}
-		// TODO
-		// modificare condizione con booleano
-		if (v2.getEditable() == 0) {
+		
+		if (v2.getEditable()) {
 			// TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -240,9 +238,8 @@ public class SampleController {
 			// l'utente sta cercando di modificare un mese diverso da quello che
 			// è in sessione
 		}
-		// TODO
-		// modificare condizione con booleano
-		if (v2.getEditable() == 0) {
+		
+		if (v2.getEditable()) {
 			// TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -271,9 +268,7 @@ public class SampleController {
 		// l'utente sta cercando di modificare un mese diverso da quello che è
 		// in sessione
 		// }
-		// TODO
-		// modificare condizione con booleano
-		if (v2.getEditable() == 0) {
+		if (v2.getEditable()) {
 			// TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -302,7 +297,16 @@ public class SampleController {
 
 		String user = SessionHelper.getUser().getUsername();
 		service.updateEditable(user, month);
-		return "redirect:/edit/v2?month=" + month;
+		return "redirect:/approvaPage";
 	}
 
+	@RequestMapping(value = "/approvaPage", method = RequestMethod.GET)
+	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
+	    
+		String user = SessionHelper.getUser().getUsername();
+		List<V2Bean> v2List = service.getV2ToApprove(user);
+		model.addAttribute("v2List",v2List);
+		
+		return "approva_mese";
+	}
 }
