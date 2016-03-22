@@ -45,12 +45,8 @@ public class V2Service {
 		EmployeeBean eb = dao.getEmployee(bn);
 
 		item.setEmployeeDesc(eb.getName() + " " + eb.getSurname());
-<<<<<<< HEAD
 		item.setNome(eb.getName());
 		item.setCognome(eb.getSurname());
-=======
-
->>>>>>> 369911d2ad1291af4ca35a5a1804b8f2d6589d49
 		Long id = item.getIdProject();
 		ProjectBean prb = dao.getProject(id);
 
@@ -63,14 +59,12 @@ public class V2Service {
 	}
 
 	public void updateRecord(RecordV2Bean record) {
+		completeRecord(record);
 		dao.update(record);
 	}
 
 	public void insertRecord(RecordV2Bean record) {
-<<<<<<< HEAD
 		completeRecord(record);
-=======
->>>>>>> 369911d2ad1291af4ca35a5a1804b8f2d6589d49
 		dao.insert(record);
 	}
 

@@ -6,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.Date;
-=======
->>>>>>> 369911d2ad1291af4ca35a5a1804b8f2d6589d49
 import java.util.List;
 
 import org.apache.log4j.Logger;
