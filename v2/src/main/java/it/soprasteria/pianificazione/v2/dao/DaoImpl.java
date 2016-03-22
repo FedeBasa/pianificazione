@@ -425,7 +425,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		StringBuilder insertSql = new StringBuilder();
 		insertSql.append("INSERT INTO u_progetti_risorse");
-		insertSql.append(" (mese, id_progetto, id_risorsa, consolidato_1, consolidato_2, consolidato_3, prodotto_1, prodotto_2, prodotto_3,");
+		insertSql.append(" (mese, id_progetto, matricola, consolidato_1, consolidato_2, consolidato_3, prodotto_1, prodotto_2, prodotto_3,");
 		insertSql.append(" id_user, tariffa, matricola, nome_risorsa, cognome_risorsa, valuta, cliente, desc_progetto, business_unit, attività)");
 		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
