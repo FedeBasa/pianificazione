@@ -38,11 +38,12 @@ public interface Dao {
 	
 	public void deleteAllEmployees();
 	
-	public void updateTable(Long id, String colname, Integer modify);
+	public void updateTable(Long id, String colname, Integer modify, String username);
 
 	public V2Bean findByMonth(int month, String username);
 
 	public List<V2Bean> findByUser(String username);
 	
 	public UserBean login(String username,String password);
+
 }

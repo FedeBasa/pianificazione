@@ -165,13 +165,16 @@ public class SampleController {
 			return "index";
 		} else {
 
+			record.setUserMod(SessionHelper.getUser().getUsername());
+			
+			service.updateRecord(record);
+
 			// TODO
 			// provare a verificare se ritornando sulla pagina si riescono a
 			// gestire dopo la redirect
 			redirectAttributes.addFlashAttribute("css", "success");
 			redirectAttributes.addFlashAttribute("msg", "Record aggiornato!");
 
-			service.updateRecord(record);
 
 			return "redirect:/edit/v2?month=" + record.getMonth();
 		}
@@ -213,6 +216,7 @@ public class SampleController {
 			return "index";
 		} else {
 
+			record.setUserIns(SessionHelper.getUser().getUsername());
 			service.insertRecord(record);
 
 			return "redirect:/edit/v2?month=" + record.getMonth();
@@ -285,7 +289,7 @@ public class SampleController {
 				return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore della colonna [" + colname + "] non valida");
 			}
 
-			service.v2Update(Long.parseLong(id), realColname, value);
+			service.v2Update(Long.parseLong(id), realColname, value, SessionHelper.getUser().getUsername());
 
 			return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
 		}

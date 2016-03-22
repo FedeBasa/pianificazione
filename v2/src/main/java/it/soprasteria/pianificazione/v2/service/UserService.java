@@ -9,13 +9,9 @@ public class UserService {
 
 	@Autowired
 	private Dao dao;
-	
+
 	public UserBean login(String username, String password) {
-		if(dao.login(username, password).getProfilo().equals("")){
-		return null;
-		}else{
-			return dao.login(username, password);
-		}
+		return dao.login(username, password);
 	}
-	
+
 }

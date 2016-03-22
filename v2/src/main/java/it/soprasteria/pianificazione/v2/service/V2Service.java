@@ -44,7 +44,6 @@ public class V2Service {
 		String bn = item.getBadgeNumber();
 		EmployeeBean eb = dao.getEmployee(bn);
 
-		item.setEmployeeDesc(eb.getName() + " " + eb.getSurname());
 		item.setNome(eb.getName());
 		item.setCognome(eb.getSurname());
 		Long id = item.getIdProject();
@@ -55,7 +54,6 @@ public class V2Service {
 		item.setActivityType(prb.getType());
 		item.setCustomer(prb.getCustomer());
 		item.setBusinessUnit(prb.getBusinessUnit());
-
 	}
 
 	public void updateRecord(RecordV2Bean record) {
@@ -72,8 +70,8 @@ public class V2Service {
 		dao.delete(id);
 	}
 	
-	public void v2Update(Long id, String colname, Integer value){
-		dao.updateTable(id, colname, value);
+	public void v2Update(Long id, String colname, Integer value, String username){
+		dao.updateTable(id, colname, value, username);
 	}
 	
 	public List<Integer> getMonths(String user) {

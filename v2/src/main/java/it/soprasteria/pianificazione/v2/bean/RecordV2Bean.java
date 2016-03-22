@@ -1,11 +1,12 @@
 package it.soprasteria.pianificazione.v2.bean;
 
+import java.util.Date;
+
 public class RecordV2Bean {
 
 	private int month;
 	private Long idRecord;
 	private String badgeNumber;
-	private String employeeDesc;
 	private String activityType;
 	private Long idProject;
 	private String projectDesc;
@@ -21,6 +22,10 @@ public class RecordV2Bean {
 	private Integer businessUnit;
 	private String nome;
 	private String cognome;
+	private String userIns;
+	private Date dataIns;
+	private String userMod;
+	private Date dataMod;
 
 	public String getNome() {
 		return nome;
@@ -71,11 +76,7 @@ public class RecordV2Bean {
 	}
 
 	public String getEmployeeDesc() {
-		return employeeDesc;
-	}
-
-	public void setEmployeeDesc(String employeeDesc) {
-		this.employeeDesc = employeeDesc;
+		return nome + " " + cognome;
 	}
 
 	public String getActivityType() {
@@ -172,6 +173,38 @@ public class RecordV2Bean {
 
 	public void setCustomer(String customer) {
 		this.customer = customer;
+	}
+
+	public String getUserIns() {
+		return userIns;
+	}
+
+	public void setUserIns(String userIns) {
+		this.userIns = userIns;
+	}
+
+	public Date getDataIns() {
+		return dataIns;
+	}
+
+	public void setDataIns(Date dataIns) {
+		this.dataIns = dataIns;
+	}
+
+	public String getUserMod() {
+		return userMod;
+	}
+
+	public void setUserMod(String userMod) {
+		this.userMod = userMod;
+	}
+
+	public Date getDataMod() {
+		return dataMod;
+	}
+
+	public void setDataMod(Date dataMod) {
+		this.dataMod = dataMod;
 	}
 
 }
