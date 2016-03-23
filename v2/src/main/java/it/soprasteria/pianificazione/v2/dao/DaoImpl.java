@@ -669,22 +669,57 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return v2List;
 	}
 	
+	public List<V2Bean> getV2Config() {
+		List<V2Bean> v2List = getJdbcTemplate().query("SELECT * FROM v2_config", new RowMapper<V2Bean>() {
+			public V2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+				V2Bean bean = new V2Bean();
+
+				bean.setMonth(rs.getInt("mese"));
+				bean.setUser("");
+				bean.setEditable(rs.getInt("enable") == 1 ? true : false);
+				
+				return bean;
+				
+			}
+		});
+		
+		return v2List;
+	}
+	
 	@Override
-	public void approveMonth(final String user, final int month) {
+	public void updateMonthsStatus(final int month, final boolean enable) {
 
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE v2");
 		sb.append(" SET editable= ?");
-		sb.append(" WHERE id_user = ? AND");
-		sb.append(" mese = ?");
+		sb.append(" WHERE mese = ?");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
-
 			@Override
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, 0);
-				ps.setString(i++, user);
+				ps.setInt(i++, enable ? 0 : 1);
+				ps.setInt(i++, month);
+				return ps;
+			}
+		});
+	}
+	
+	@Override
+	public void updateV2ConfigStatus(final int month, final boolean enable) {
+
+		final StringBuilder sb = new StringBuilder();
+		sb.append("UPDATE v2_config");
+		sb.append(" SET enable= ?");
+		sb.append(" WHERE mese = ?");
+		
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+				int i = 1;
+				PreparedStatement ps = conn.prepareStatement(sb.toString());
+				ps.setInt(i++, enable ? 0 : 1);
 				ps.setInt(i++, month);
 				return ps;
 			}

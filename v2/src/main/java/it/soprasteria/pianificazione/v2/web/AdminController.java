@@ -23,21 +23,32 @@ public class AdminController {
 	@Autowired
 	private V2Service service;
 
+	@RequestMapping(value = "/admin/chiudi", method = RequestMethod.POST)
+	public String chiudi(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
+
+		String user = SessionHelper.getUser().getUsername();
+		service.updateV2ConfigStatus(month, false);
+		service.updateMonthsStatus(month, false);
+		return "redirect:/admin/gestione_mese";
+	}
+	
 	@RequestMapping(value = "/admin/approva", method = RequestMethod.POST)
 	public String approva(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 
 		String user = SessionHelper.getUser().getUsername();
-		service.approveMonth(user, month);
-		return "redirect:/admin/approva";
+		service.updateV2ConfigStatus(month, true);
+		service.updateMonthsStatus(month, true);
+		return "redirect:/admin/gestione_mese";
 	}
 
-	@RequestMapping(value = "/admin/approva", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/gestione_mese", method = RequestMethod.GET)
 	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
-	    
+
 		String user = SessionHelper.getUser().getUsername();
-		List<V2Bean> v2List = service.getV2ToApprove(user);
+	//	List<V2Bean> v2List = service.getV2ToApprove(user);
+		List<V2Bean> v2List = service.getV2Config();
 		model.addAttribute("v2List",v2List);
 		
-		return "approva_mese";
+		return "gestione_mese";
 	}
 }

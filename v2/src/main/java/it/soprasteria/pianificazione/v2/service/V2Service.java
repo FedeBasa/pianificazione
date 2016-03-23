@@ -106,13 +106,24 @@ public class V2Service {
 		dao.updateEditable(user, month);
 	}
 	
-	public void approveMonth(String user, int month) {
-		dao.approveMonth(user, month);
+	public void updateMonthsStatus(int month, boolean enable) {
+		dao.updateMonthsStatus(month, enable);
 	}
 
+	public void updateV2ConfigStatus(int month, boolean enable) {
+		dao.updateV2ConfigStatus(month, enable);
+	}
+	
 	public List<V2Bean> getV2ToApprove(String user) {
 		
 		List<V2Bean> v2List = dao.getV2ToApprove(user);
+		
+		return v2List;
+	}
+	
+public List<V2Bean> getV2Config() {
+		
+		List<V2Bean> v2List = dao.getV2Config();
 		
 		return v2List;
 	}
