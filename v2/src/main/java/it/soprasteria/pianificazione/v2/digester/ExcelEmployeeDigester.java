@@ -36,9 +36,9 @@ public class ExcelEmployeeDigester implements Serializable {
 	
 			// TODO
 			// leggere cella di controllo per verificare che il file caricato derivi dal template
-			if (!checkWorkbook(workbook)) {
-				throw new DigestException("Invalid input file");
-			}
+//			if (!checkWorkbook(workbook)) {
+//				throw new DigestException("Invalid input file");
+//			}
 
 			XSSFSheet sheet = workbook.getSheetAt(0);
 	
@@ -46,18 +46,21 @@ public class ExcelEmployeeDigester implements Serializable {
 			
 			// salto l'intestazione
 			rowIterator.next();
+			rowIterator.next();
+			rowIterator.next();
+			rowIterator.next();
 	
 			while(rowIterator.hasNext()) {
 				
 				XSSFRow row = (XSSFRow)rowIterator.next();
-				String badgeNumber = row.getCell(0).getStringCellValue();
+				String surname = row.getCell(0).getStringCellValue();
 				String name = row.getCell(1).getStringCellValue();
-				String surname = row.getCell(2).getStringCellValue();
+				String badgeNumber = row.getCell(2).getRawValue();
 
 				String[] rowContent = new String[3];
-				rowContent[0] = badgeNumber;
+				rowContent[0] = surname;
 				rowContent[1] = name;
-				rowContent[2] = surname;
+				rowContent[2] = badgeNumber;
 
 				this.content.add(rowContent);
 				
@@ -69,18 +72,6 @@ public class ExcelEmployeeDigester implements Serializable {
 		}
 	}
 	
-	private boolean checkWorkbook(XSSFWorkbook  workbook) {
-
-		XSSFSheet sheetCheck = workbook.getSheetAt(1);
-		
-		String checkValue = sheetCheck.getRow(0).getCell(0).getRawValue();
-		
-		if ("123".equals(checkValue)) {
-			return true;
-		}
-		return false;
-	}
-
 	public void validate() {
 
 		this.list.clear();
@@ -89,7 +80,7 @@ public class ExcelEmployeeDigester implements Serializable {
 			
 			// TODO
 			// implementare la validazione del contenuto
-			this.list.add(EmployeeBean.build(rowContent[0], rowContent[1], rowContent[2]));
+			this.list.add(EmployeeBean.build(rowContent[2], rowContent[1], rowContent[0]));
 		}
 		
 		this.infoMessages.add(this.list.size() + " elementi pronti per il salvataggio");
