@@ -214,7 +214,7 @@
 					<thead>
 						<tr>
 							<th>Risorsa</th>
-							<th>Attività</th>
+							<th>Attivita'</th>
 							<th>Progetto</th>
 							<th>Tariffa</th>
 							<th>Valuta</th>

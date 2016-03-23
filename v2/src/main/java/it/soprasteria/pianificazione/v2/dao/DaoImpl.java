@@ -627,11 +627,13 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		bean.setCons2(rs.getInt("consolidato_3"));
 		bean.setProd2(rs.getInt("prodotto_3"));
 		bean.setPrice(rs.getInt("tariffa"));
+		bean.setCustomer(rs.getString("cliente"));
 		bean.setNome(rs.getString("nome_risorsa"));
 		bean.setCognome(rs.getString("cognome_risorsa"));
 		bean.setCurrency(rs.getString("valuta"));
 		bean.setProjectDesc(rs.getString("desc_progetto"));
 		bean.setBusinessUnit(rs.getInt("business_unit"));
+		bean.setId_user(rs.getString("id_user"));
 		bean.setActivityType(rs.getString("attività"));
 		bean.setUserIns(rs.getString("utente_ins"));
 		Timestamp timestampIns = rs.getTimestamp("data_ins");

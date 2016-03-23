@@ -26,6 +26,15 @@ public class RecordV2Bean {
 	private Date dataIns;
 	private String userMod;
 	private Date dataMod;
+	private String id_user;
+
+	public String getId_user() {
+		return id_user;
+	}
+
+	public void setId_user(String id_user) {
+		this.id_user = id_user;
+	}
 
 	public String getNome() {
 		return nome;
