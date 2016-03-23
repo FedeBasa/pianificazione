@@ -32,7 +32,13 @@ public interface Dao {
 	
 	public void addNextMonth(String user, Integer lastMonth);
 	
-	public void approveMonth(final String user, final int month);
+	public void updateMonthsStatus(final int month, boolean enable);
+	
+	public void updateV2ConfigStatus(final int month, boolean enable);
+	/*
+	public List<V2Bean> getV2ToApprove(final String username);
+	*/
+	public List<V2Bean> getV2Config();
 	
 	public void updateEditable(String user, int month);
 

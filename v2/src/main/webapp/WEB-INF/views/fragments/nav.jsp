@@ -3,7 +3,7 @@
 <spring:url value="/home" var="urlHome" />
 <spring:url value="/excel/upload/employee" var="urlUploadEmployee" />
 <spring:url value="/excel/upload/projects" var="urlUploadProjects" />
-<spring:url value="/admin/approva" var="urlApprova" />
+<spring:url value="/admin/gestione_mese" var="urlApprova" />
 <spring:url value="/logout" var="urlLogout" />
 
 

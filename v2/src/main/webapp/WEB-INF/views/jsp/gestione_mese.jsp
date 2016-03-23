@@ -18,6 +18,8 @@ function validate(form) {
 		return false;
 	}
 }
+
+
 </script>
 </head>
 <jsp:include page="../fragments/nav.jsp" />
@@ -34,8 +36,11 @@ function validate(form) {
 			     <tr>
 					<td><c:out value="${v2.month}" /></td>
 					<td>
-						<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/admin/approva?month=${v2.month}" onsubmit="return validate(this);">
-							<button id="approva" type="submit" class="${v2.editable eq true ? 'btn btn-warning' : 'btn btn-warning disabled'}">Chiudi</button>
+						<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/admin/approva?month=${v2.month}" style="float:left; padding-right:20px" onsubmit="return validate(this);">
+							<button id="chiudi" type="submit" class="${v2.editable eq true ? 'btn btn-warning' : 'btn btn-warning disabled'}">Chiudi</button>
+						</form:form>
+						<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/admin/chiudi?month=${v2.month}" onsubmit="return validate(this);">
+							<button id="apri" type="submit" class="${v2.editable eq false ? 'btn btn-warning' : 'btn btn-warning disabled'}">Apri</button>
 						</form:form>
 					</td>
 				</tr>
