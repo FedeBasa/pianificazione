@@ -3,6 +3,7 @@ package it.soprasteria.pianificazione.v2.web;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,7 @@ public class UploadController {
 	@RequestMapping(value = "/excel/upload/employee", method = RequestMethod.POST)
 	public String uploadEmployee(@ModelAttribute("uploadBean") UploadEmployeeBean uploadBean, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
+		
 		MultipartFile multipartFile = uploadBean.getFile();
 		
 		ExcelEmployeeDigester digester = new ExcelEmployeeDigester();
@@ -56,6 +58,7 @@ public class UploadController {
 
 			// TODO
 			// gestire correttamente, aggiungere messaggio da visualizzare a video
+		
 		}
 		
 		return "upload_risorse";

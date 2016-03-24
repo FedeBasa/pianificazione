@@ -61,10 +61,7 @@
 		$("#employeeDesc").easyAutocomplete(options);
 		var options2 = {
 			url : function(phrase) {
-				var sel = document.getElementById("bu");
-				var selected = sel.options[sel.selectedIndex].value;
-				console.log(selected);
-				return "${pageContext.request.contextPath}/autocomplete/progetto?bu="+selected;
+				return "${pageContext.request.contextPath}/autocomplete/progetto";
 			},
 			getValue : function(result) {
 				return result.description;
@@ -135,21 +132,18 @@
 					$('#employeeDesc').val(data.employeeDesc).change();
 					$('#projectDesc').val(data.projectDesc).change();
 					console.log(data.businessUnit);
-					$('#bu').val(data.businessUnit).change();
 				});
 	}
 
  </script>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
-<body style="font-size:12px">
+<body>
 	
 	<input type="hidden" id="responsecode">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-lg-3">
-				<div class="row">
-					<div class="col-sm-12">
+					<div class="col-sm-4">
 						<div class="btn-group">
 				 			<c:if test="${editable}">
 								<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
@@ -159,14 +153,7 @@
 				 			</c:if>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="panel panel-default" style="margin-top:6px">
-							<div class="panel-heading">
-								<h3 class="panel-title"></h3>
-							</div>
-							<div class="panel-body">
+					<div class="col-sm-8">
 								<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
 								    <form:hidden path="month"/>
 								    <form:hidden path="idRecord"/>
@@ -174,42 +161,25 @@
 									<form:hidden path="badgeNumber"/>
 							
 									<spring:bind path="employeeDesc">
-										<div class="form-group ${status.error ? 'has-error' : ''}">
-											<label class="col-lg-1">Risorsa</label>
-											<div class="col-lg-11">
+											<div class="col-lg-4">
 												<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
 												<form:errors path="employeeDesc" class="control-label" />
 											</div>
-										</div>
 									</spring:bind>
 						
-									<div class="form-group">
-										<label class="col-lg-1">BU</label>
-										<div class="col-lg-11">
-											<select id="bu" class="form-control">
-												<option value ="791">791</option>
-												<option value = "792">792</option>
-											</select>
-										</div>
-									</div>
 									
 									<spring:bind path="projectDesc">
-										<div class="form-group ${status.error ? 'has-error' : ''}">
-											<label class="col-lg-1">Progetto</label>
-											<div class="col-lg-11">
+											<div class="col-lg-4">
 												<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
 												<form:errors path="projectDesc" class="control-label" />
-											</div>
 										</div>
 									</spring:bind>
 							
 								</form:form>
-							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="col-lg-9">
+					<div class = "row">
+			<div class="col-lg-12">
 				<table id="v2" class="table table-bordered table-striped">
 					<thead>
 						<tr>
@@ -245,8 +215,8 @@
 					</tbody>
 				</table>
 			</div>
+			</div>
 		</div>
-	</div>
 	<jsp:include page="../fragments/footer.jsp" />	
 </body>
 

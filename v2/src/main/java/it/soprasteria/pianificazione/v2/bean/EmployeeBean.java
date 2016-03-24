@@ -7,7 +7,6 @@ public class EmployeeBean implements Serializable {
 	private String badgeNumber;
 	private String name;
 	private String surname;
-	private String nameSurname;
 
 	public static EmployeeBean build(String badgeNumber, String name, String surname) {
 		
@@ -20,11 +19,10 @@ public class EmployeeBean implements Serializable {
 	}
 	
 	public String getNameSurname() {
-		return nameSurname;
-	}
-
-	public void setNameSurname(String nameSurname) {
-		this.nameSurname = nameSurname;
+		if (name != null && surname != null && badgeNumber != null) {
+			return   name + " " + surname + " (" +  badgeNumber + ")";
+		}
+		return "";
 	}
 
 	public String getBadgeNumber() {

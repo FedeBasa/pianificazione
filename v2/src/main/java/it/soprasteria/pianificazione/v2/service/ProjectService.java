@@ -30,9 +30,9 @@ public class ProjectService {
 	}
 
 	@Cacheable(value = "projectCache")
-	public List<ProjectBean> findAll(int businessUnit) {
+	public List<ProjectBean> findAll() {
 		LOG.debug("RISORSE AGGIUNTE");
-		return dao.getAllProject(businessUnit);
+		return dao.getAllProject();
 
 	}
 

@@ -110,11 +110,11 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/autocomplete/progetto", method = RequestMethod.GET)
-	public @ResponseBody List<ProjectBean> autocompleta(@RequestParam(name = "bu", required = false) Integer businessUnit) {
+	public @ResponseBody List<ProjectBean> autocompleta() {
 
 		// TODO
 		// inserire parametro per filtrare sul servizio
-		List<ProjectBean> result = projectService.findAll(businessUnit);
+		List<ProjectBean> result = projectService.findAll();
 		return result;
 	}
 

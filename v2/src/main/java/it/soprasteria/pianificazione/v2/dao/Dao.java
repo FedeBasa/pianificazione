@@ -12,7 +12,7 @@ public interface Dao {
 	
 	public List<EmployeeBean> getAllEmployees();
 
-	public List<ProjectBean> getAllProject(int businessUnit);
+	public List<ProjectBean> getAllProject();
 
 	public List<RecordV2Bean> getV2(int month, String user);
 

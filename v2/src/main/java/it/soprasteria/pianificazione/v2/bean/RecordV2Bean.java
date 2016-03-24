@@ -85,8 +85,8 @@ public class RecordV2Bean {
 	}
 
 	public String getEmployeeDesc() {
-		if (nome != null && cognome != null) {
-			return nome + " " + cognome;
+		if (nome != null && cognome != null && badgeNumber != null) {
+			return   nome + " " + cognome + " (" +  badgeNumber + ")";
 		}
 		return "";
 	}

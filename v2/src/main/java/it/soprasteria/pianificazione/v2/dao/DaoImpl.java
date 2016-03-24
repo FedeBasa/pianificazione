@@ -35,11 +35,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		List<EmployeeBean> empl = getJdbcTemplate().query("SELECT * FROM risorse", new RowMapper<EmployeeBean>() {
 			public EmployeeBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				EmployeeBean emplo = new EmployeeBean();
-				String nameSurname;
 				emplo.setName(rs.getString(2));
 				emplo.setSurname(rs.getString(3));
-				nameSurname = emplo.getName() + " " + emplo.getSurname();
-				emplo.setNameSurname(nameSurname);
 				emplo.setBadgeNumber(Integer.toString(rs.getInt("matricola")));
 				return emplo;
 			}
@@ -48,13 +45,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
-	public List<ProjectBean> getAllProject(final int businessUnit) {
-		List<ProjectBean> prog = getJdbcTemplate().query("SELECT * FROM progetti WHERE business_unit = ?", new PreparedStatementSetter() {
-			@Override
-			public void setValues(PreparedStatement pstm) throws SQLException {
-				pstm.setInt(1, businessUnit);
-			}
-		}, new RowMapper<ProjectBean>() {
+	public List<ProjectBean> getAllProject() {
+		List<ProjectBean> prog = getJdbcTemplate().query("SELECT * FROM progetti",  new RowMapper<ProjectBean>() {
 			public ProjectBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				ProjectBean proj = new ProjectBean();
 				proj.setIdProject(rs.getLong("id_progetto"));
@@ -62,7 +54,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				proj.setCustomer(rs.getString("cliente"));
 				proj.setCurrency(rs.getString("valuta"));
 				proj.setType(rs.getString("attività"));
-				proj.setBusinessUnit(businessUnit);
 				return proj;
 			}
 		});
