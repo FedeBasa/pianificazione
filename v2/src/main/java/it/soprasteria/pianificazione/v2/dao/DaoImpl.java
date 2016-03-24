@@ -433,7 +433,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 	@Override
 	public void addNextMonth(final String username, final Integer lastMonth) {
-
+/*
 		List<V2Bean> result = new ArrayList<V2Bean>();
 		
 		StringBuilder sb = new StringBuilder();
@@ -462,25 +462,46 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 
 		});
-
+*/
 		StringBuilder insertSql = new StringBuilder();
-		insertSql.append(" INSERT INTO v2 (mese, id_user, editable)");
-		insertSql.append(" VALUES (?, ?, ?)");
+		insertSql.append(" INSERT INTO v2 (mese, id_user, editable, business_unit)");
+		insertSql.append("VALUES");
+		insertSql.append(" (?, ?, ?, ?),");
+		insertSql.append(" (?, ?, ?, ?)");
 
 		int nextMonth = 0;
 		int currentMonth = 0;
 		
-		V2Bean v2 = result.get(0);
-		currentMonth = v2.getMonth();
-		nextMonth = DateUtil.nextMonth(v2.getMonth());
+	//	V2Bean v2 = result.get(0);
+	//	currentMonth = v2.getMonth();
+	//	nextMonth = DateUtil.nextMonth(v2.getMonth());
+		nextMonth = DateUtil.nextMonth(lastMonth);
+		int editable = 1;
 		
 		LOG.info("######### [" + currentMonth + "] [" + nextMonth + "]");
 		
-		Object[] params = new Object[] { nextMonth, username, 1 };
-		int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.INTEGER };
+		Object[] params = new Object[] { nextMonth, username, editable, 791, nextMonth, username, editable, 792 };
+		int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER };
 		getJdbcTemplate().update(insertSql.toString(), params, types);
 
 		addProjectsResources(username, currentMonth, nextMonth);
+	}
+	
+	@Override
+	public void addNextConfigMonth(final Integer lastMonth) {
+		
+		StringBuilder insertSql = new StringBuilder();
+		insertSql.append(" INSERT INTO v2_config (mese, enable)");
+		insertSql.append(" VALUES (?, ?)");
+
+		int nextMonth = 0;
+		
+		nextMonth = DateUtil.nextMonth(lastMonth);
+				
+		Object[] params = new Object[] { nextMonth, 1 };
+		int[] types = new int[] { Types.INTEGER, Types.INTEGER };
+		getJdbcTemplate().update(insertSql.toString(), params, types);
+
 	}
 
 	@Override
@@ -639,6 +660,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		bean.setMonth(rs.getInt("mese"));
 		bean.setUser(rs.getString("id_user"));
 		bean.setEditable(rs.getInt("editable") == 1 ? true : false);
+		bean.setBusiness_unit(rs.getInt("business_unit"));
 	}
 	/*
 	@Override
@@ -665,7 +687,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	*/
 	@Override
 	public List<V2Bean> getV2Config() {
-		List<V2Bean> v2List = getJdbcTemplate().query("SELECT * FROM v2_config", new RowMapper<V2Bean>() {
+		List<V2Bean> v2List = getJdbcTemplate().query("SELECT * FROM v2_config order by mese", new RowMapper<V2Bean>() {
 			public V2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 				V2Bean bean = new V2Bean();

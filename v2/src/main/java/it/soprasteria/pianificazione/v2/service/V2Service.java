@@ -102,6 +102,15 @@ public class V2Service {
 		return false;
 	}
 	
+	public void addNextConfigMonth() {
+		
+		List<Integer> listConfig = dao.getMonthsConfig();
+		Integer lastMonthConfig = listConfig.get(listConfig.size()-1);
+		
+		dao.addNextConfigMonth(lastMonthConfig);
+		
+	}
+
 	public void updateEditable(String user, int month) {
 		dao.updateEditable(user, month);
 	}

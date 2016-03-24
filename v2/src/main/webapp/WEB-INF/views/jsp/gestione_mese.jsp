@@ -46,6 +46,10 @@ function validate(form) {
 				</tr>
 			 </c:forEach>
 		</table>
+		
+		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/addConfigMonth">
+	       <button type="submit" class="btn btn-primary">Aggiungi Mese</button>       
+		</form:form>
 	</div>
 </body>
 </html>

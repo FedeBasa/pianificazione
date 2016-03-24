@@ -44,11 +44,18 @@ public class AdminController {
 	@RequestMapping(value = "/admin/gestione_mese", method = RequestMethod.GET)
 	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
 
-		String user = SessionHelper.getUser().getUsername();
-	//	List<V2Bean> v2List = service.getV2ToApprove(user);
 		List<V2Bean> v2List = service.getV2Config();
 		model.addAttribute("v2List",v2List);
 		
 		return "gestione_mese";
 	}
+	
+	@RequestMapping(value = "/addConfigMonth", method = RequestMethod.POST)
+	public String addMonth(Model model, RedirectAttributes redirectAttributes) {
+
+		service.addNextConfigMonth();
+
+		return "redirect:/admin/gestione_mese";
+
+	} 
 }
