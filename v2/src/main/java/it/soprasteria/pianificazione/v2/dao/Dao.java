@@ -32,6 +32,8 @@ public interface Dao {
 	
 	public void addNextMonth(String user, Integer lastMonth);
 	
+	public void addNextConfigMonth(Integer lastMonth);
+	
 	public void updateMonthsStatus(final int month, boolean enable);
 	
 	public void updateV2ConfigStatus(final int month, boolean enable);
