@@ -101,10 +101,6 @@
 			
 			var url = "${pageContext.request.contextPath}/update?id="+ id +"&colname="+colname+"&value="+data;
 			
-			//$.post(url, function( data ) {
-			//	console.log(data);
-			//});
-			
 			$.ajax({
 				type: 'POST',
 				url: url,
@@ -162,6 +158,7 @@
 							
 									<spring:bind path="employeeDesc">
 											<div class="col-lg-4">
+											<label>Risorsa :</label>
 												<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
 												<form:errors path="employeeDesc" class="control-label" />
 											</div>
@@ -170,6 +167,7 @@
 									
 									<spring:bind path="projectDesc">
 											<div class="col-lg-4">
+											<label>Progetto :</label>
 												<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
 												<form:errors path="projectDesc" class="control-label" />
 										</div>
@@ -200,10 +198,10 @@
 					<c:forEach items="${list}" var="item">
 						<tr onclick="detail(${item.idRecord})" rowId="${item.idRecord}">
 						    <td><c:out value="${item.employeeDesc}" /></td>
-							<td><c:out value="${item.activityType}" /></td>
+							<td colname="activity"><c:out value="${item.activityType}" /></td>
 							<td><c:out value="${item.projectDesc}" /></td>
 							<td colname="price"><c:out value="${item.price}" /></td>
-							<td><c:out value="${item.currency}" /></td>
+							<td colname="currency"><c:out value="${item.currency}" /></td>
 							<td colname="cons0"><c:out value="${item.cons0}" /></td>
 							<td colname="prod0"><c:out value="${item.prod0}" /></td>
 							<td colname="cons1"><c:out value="${item.cons1}" /></td>

@@ -25,7 +25,7 @@
 		class="it.soprasteria.pianificazione.v2.service.EmployeeService" />
 	<bean id="Project" class="it.soprasteria.pianificazione.v2.service.ProjectService" />
 	<bean id="User" class="it.soprasteria.pianificazione.v2.service.UserService" />
-
+	<bean id="Enum" class="it.soprasteria.pianificazione.v2.service.EnumService"/>
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
 	</bean>
@@ -38,6 +38,11 @@
 	<bean id="DaoImpl" class="it.soprasteria.pianificazione.v2.dao.DaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<bean id="EnumDaoImpl" class="it.soprasteria.pianificazione.v2.dao.EnumDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
 
 	<!-- JMX for ehcache -->
 	<bean id="managementService" class="net.sf.ehcache.management.ManagementService"
@@ -49,6 +54,7 @@
 		<constructor-arg index="4" value="true" />
 		<constructor-arg index="5" value="true" />
 	</bean>
+	
 	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
 		<property name="locateExistingServerIfPossible" value="true" />
 

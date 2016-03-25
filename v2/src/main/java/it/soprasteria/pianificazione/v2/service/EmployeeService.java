@@ -30,7 +30,6 @@ public class EmployeeService {
 	
 	@Transactional
 	public void save(List<EmployeeBean> list) {
-		
 		dao.persist(list);
 	}
 

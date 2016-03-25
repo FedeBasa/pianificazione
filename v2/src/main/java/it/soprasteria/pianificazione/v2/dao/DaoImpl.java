@@ -221,7 +221,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setString(i++, rec.getCognome());
 				ps.setString(i++, rec.getProjectDesc());
 				ps.setString(i++, rec.getActivityType());
-				ps.setString(i++, rec.getCurrency());
+				ps.setString(i++, "EUR");
 				ps.setString(i++, rec.getCustomer());
 				ps.setInt(i++, rec.getBusinessUnit());
 				ps.setString(i++, rec.getUserIns());
@@ -314,6 +314,37 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 		});
 	}
+	
+	
+	
+	
+	public void updateTable(final Long id, final String colname, final String value, final String username) {
+
+		final StringBuilder sb = new StringBuilder();
+
+		sb.append("UPDATE u_progetti_risorse");
+		sb.append(" SET ").append(colname).append(" = ?");
+		sb.append(" , utente_mod = ?");
+		sb.append(" , data_mod = ?");
+		sb.append(" WHERE id_unione = ?");
+
+		// TODO
+		// fare check sul valore di ritorno
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+				PreparedStatement ps = conn.prepareStatement(sb.toString());
+				int i = 1;
+				ps.setString(i++, value);
+				ps.setString(i++, username);
+				ps.setTimestamp(i++, new Timestamp(new Date().getTime()));
+				ps.setLong(i++, id);
+				return ps;
+			}
+		});
+	}
+	
+	
 
 	@Override
 	public List<Integer> getMonths(final String username) {

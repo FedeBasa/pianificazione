@@ -48,10 +48,7 @@ public class V2Service {
 		item.setCognome(eb.getSurname());
 		Long id = item.getIdProject();
 		ProjectBean prb = dao.getProject(id);
-
 		item.setProjectDesc(prb.getDescription());
-		item.setCurrency(prb.getCurrency());
-		item.setActivityType(prb.getType());
 		item.setCustomer(prb.getCustomer());
 		item.setBusinessUnit(prb.getBusinessUnit());
 	}
@@ -126,6 +123,11 @@ public class V2Service {
 		List<V2Bean> v2List = dao.getV2Config();
 		
 		return v2List;
+	}
+
+
+	public void v2Update(long id, String realColname , String value , String username) {
+		dao.updateTable(id, realColname, value, username);
 	}
 
 }

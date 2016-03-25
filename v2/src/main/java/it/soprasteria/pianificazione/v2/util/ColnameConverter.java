@@ -16,6 +16,8 @@ public class ColnameConverter {
 		mapColname.put("prod0", "prodotto_1");
 		mapColname.put("prod1", "prodotto_2");
 		mapColname.put("prod2", "prodotto_3");
+		mapColname.put("currency","valuta");
+		mapColname.put("activity", "attività");
 	}
 	
 	public static String convertColname(String colname) {

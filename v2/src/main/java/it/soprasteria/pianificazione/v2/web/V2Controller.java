@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.soprasteria.pianificazione.v2.bean.EnumBean;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.service.EmployeeService;
+import it.soprasteria.pianificazione.v2.service.EnumService;
 import it.soprasteria.pianificazione.v2.service.ProjectService;
 import it.soprasteria.pianificazione.v2.service.V2Service;
 import it.soprasteria.pianificazione.v2.util.ColnameConverter;
@@ -46,6 +48,8 @@ public class V2Controller {
 	private ProjectService projectService;
 	@Autowired
 	private FormValidator formValidator;
+	@Autowired
+	private EnumService enumservice;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -277,7 +281,26 @@ public class V2Controller {
 		if (ColnameConverter.existsColname(colname)) {
 
 			String realColname = ColnameConverter.convertColname(colname);
+			
+			LOG.debug("realcolname :" + realColname);
+			LOG.debug("data :" + data);
+			
+			if(realColname.equals("valuta")||realColname.equals("attività")){
+				if(!enumservice.getSet(realColname).contains(data)){
+					
+					return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore  non valido ");
+					
+				}else{
+				service.v2Update( Long.parseLong(id), realColname, data, SessionHelper.getUser().getUsername());
+
+				return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
+				}
+				
+				
+			}else {
+				
 			Integer value = 0;
+			
 			try {
 				value = Integer.parseInt(data);
 			} catch (NumberFormatException e) {
@@ -287,8 +310,9 @@ public class V2Controller {
 			service.v2Update(Long.parseLong(id), realColname, value, SessionHelper.getUser().getUsername());
 
 			return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
+			}
+			
 		}
-
 		return JsonResponse.build(JsonResponse.CODE_INVALID_COLNAME, "Colonna [" + colname + "] non valida");
 	}
 
