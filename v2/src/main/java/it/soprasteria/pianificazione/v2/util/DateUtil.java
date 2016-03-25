@@ -25,20 +25,24 @@ public class DateUtil {
 		}
 	}
 
-	public static int nextMonth(int month) {
+	public static int addMonth(int month, int num) {
 		
 		try {
 			Date parsedMonth = SDF_MONTH.parse(String.valueOf(month));
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(parsedMonth);
-			cal.add(Calendar.MONTH, 1);
+			cal.add(Calendar.MONTH, num);
 			
 			return Integer.parseInt(SDF_MONTH.format(cal.getTime()));
 			
 		} catch(ParseException e) {
 			return 0;
 		}
+	}
+
+	public static int nextMonth(int month) {
+		return addMonth(month, 1);
 	}
 	
 	public static boolean checkMonth(int mese) {

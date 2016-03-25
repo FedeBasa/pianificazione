@@ -57,5 +57,8 @@ public interface Dao {
 	public List<V2Bean> findByUser(String username);
 	
 	public UserBean login(String username,String password);
-
+	
+	public int getTotDays(int month);
+	
+	public int getConsDays(int badgeNumber,String colname, int mese);
 }

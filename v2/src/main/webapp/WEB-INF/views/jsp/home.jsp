@@ -13,7 +13,7 @@
 <body>
 	<div class="container-fluid">
 		<c:if test="${rejected}">
-			<p class="alert alert-danger">Impossibile aggiungere il mese</p>
+			<p class="alert alert-danger">Impossibile effettuare operazione : il nuovo mese non è ancora stato abilitato alla modifica</p>
 		</c:if>
 
 		<table class="table table-bordered table-striped">

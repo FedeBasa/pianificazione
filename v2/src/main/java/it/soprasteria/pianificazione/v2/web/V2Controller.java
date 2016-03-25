@@ -311,9 +311,14 @@ public class V2Controller {
 					return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore della colonna [" + colname + "] non valida");
 				}
 
-				service.v2Update(Long.parseLong(id), realColname, value, SessionHelper.getUser().getUsername());
+				boolean updated = service.v2Update(Long.parseLong(id), month, realColname, value, SessionHelper.getUser().getUsername());
+				
+				if (updated) {
+					return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
+				}
+				
+				return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore  non valido ");
 
-				return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
 			}
 
 		}

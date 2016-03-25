@@ -231,8 +231,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	public void insert(final RecordV2Bean rec) {
 		
 		final StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,matricola,id_user,nome_risorsa,cognome_risorsa,desc_progetto,attività,valuta,cliente,business_unit,utente_ins,data_ins)");
-		sb.append("  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,consolidato_1,consolidato_2,consolidato_3,matricola,id_user,nome_risorsa,cognome_risorsa,desc_progetto,attività,valuta,cliente,business_unit,utente_ins,data_ins)");
+		sb.append("  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
@@ -240,6 +240,9 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
 				ps.setInt(i++, rec.getMonth());
 				ps.setLong(i++, rec.getIdProject() == null ? 0 : rec.getIdProject());
+				ps.setInt(i++, rec.getCons0());
+				ps.setInt(i++, rec.getCons1());
+				ps.setInt(i++, rec.getCons2());
 				ps.setInt(i++, Integer.parseInt(rec.getBadgeNumber()));
 				ps.setString(i++, rec.getUserIns());
 				ps.setString(i++, rec.getNome());
@@ -810,6 +813,59 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				return ps;
 			}
 		});
+	}
+
+	@Override
+	public int getTotDays(final int month) {
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT tot_giornate");
+		sql.append(" FROM calendar_config");
+		sql.append(" WHERE mese = ?");
+		
+		List<Integer> totGiornate = getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter(){
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				int i = 1;
+				ps.setInt(i++, month);
+			}
+		},new RowMapper<Integer>(){
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int tot = rs.getInt("tot_giornate");
+				return tot;
+			}
+		});
+		
+		return totGiornate.get(0);
+	}
+
+	@Override
+	public int getConsDays(final int badgeNumber, final String colname ,final int mese) {
+		LOG.debug("COLNAME DAO "+ colname);
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT SUM(" + colname +") AS " + colname );
+		sql.append(" FROM u_progetti_risorse");
+		sql.append(" WHERE matricola = ?");
+		sql.append(" AND mese = ?");
+		
+		List<Integer> consDays = getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter(){
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				int i = 1;
+				ps.setInt(i++, badgeNumber);
+				ps.setInt(i++, mese);
+			}
+		},new RowMapper<Integer>(){
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int tot = rs.getInt(colname);
+				return tot;
+			}
+		});
+		
+		 return consDays.get(0);
+		
 	}
 
 }
