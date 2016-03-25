@@ -147,7 +147,7 @@ public class V2Controller {
 			// è in sessione
 		}
 
-		if (v2.getEditable()) {
+		if (v2.getStato() == 100) {
 			// TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -200,7 +200,7 @@ public class V2Controller {
 			// è in sessione
 		}
 
-		if (v2.getEditable()) {
+		if (v2.getStato() == 100) {
 			// TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -247,7 +247,7 @@ public class V2Controller {
 			// è in sessione
 		}
 
-		if (v2.getEditable()) {
+		if (v2.getStato() == 100) {
 			// TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
@@ -277,7 +277,7 @@ public class V2Controller {
 		// l'utente sta cercando di modificare un mese diverso da quello che è
 		// in sessione
 		// }
-		if (v2.getEditable()) {
+		if (v2.getStato() == 100) {
 			// TODO
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile

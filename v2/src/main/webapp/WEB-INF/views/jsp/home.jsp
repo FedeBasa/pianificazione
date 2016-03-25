@@ -24,12 +24,12 @@
 			</tr>
 			<c:forEach items="${lista}" var = "bean">
 			<tr>
-				<c:if test="${bean.editable}">
+				<c:if test="${bean.stato == 100}">
 					<td>
 						<a href="${pageContext.request.contextPath}/edit/v2?month=${bean.month}&bu=${bean.businessUnit}"><c:out value="${bean.month}" /></a>
 					</td>
 				</c:if>
-				<c:if test="${!bean.editable}">
+				<c:if test="${bean.stato == 10}">
 					<td>
 						<c:out value="${bean.month}" />
 					</td>
@@ -38,10 +38,10 @@
 					<c:out value="${bean.businessUnit}" />				
 				</td>
 				<td>
-					<c:if test="${bean.editable}">
+					<c:if test="${bean.stato == 100}">
 						Aperto
 					</c:if>
-					<c:if test="${!bean.editable}">
+					<c:if test="${bean.stato == 10}">
 						Chiuso
 					</c:if>
 				</td>

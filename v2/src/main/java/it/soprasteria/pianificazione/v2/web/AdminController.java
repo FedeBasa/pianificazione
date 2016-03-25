@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.service.V2Service;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
+import it.soprasteria.pianificazione.v2.util.V2StatusKeys;
 
 @Controller
 public class AdminController {
@@ -27,8 +28,8 @@ public class AdminController {
 	public String chiudi(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 
 		String user = SessionHelper.getUser().getUsername();
-		service.updateV2ConfigStatus(month, false);
-		service.updateMonthsStatus(month, false);
+		service.updateV2ConfigStatus(month, V2StatusKeys.OPEN);
+		service.updateMonthsStatus(month, V2StatusKeys.OPEN);
 		return "redirect:/admin/gestione_mese";
 	}
 	
@@ -36,8 +37,8 @@ public class AdminController {
 	public String approva(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 
 		String user = SessionHelper.getUser().getUsername();
-		service.updateV2ConfigStatus(month, true);
-		service.updateMonthsStatus(month, true);
+		service.updateV2ConfigStatus(month, V2StatusKeys.CLOSE);
+		service.updateMonthsStatus(month, V2StatusKeys.CLOSE);
 		return "redirect:/admin/gestione_mese";
 	}
 

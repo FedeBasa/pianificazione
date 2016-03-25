@@ -36,9 +36,9 @@ public interface Dao {
 	
 	public void addNextConfigMonth(Integer lastMonth);
 	
-	public void updateMonthsStatus(final int month, boolean enable);
+	public void updateMonthsStatus(final int month, int enable);
 	
-	public void updateV2ConfigStatus(final int month, boolean enable);
+	public void updateV2ConfigStatus(final int month, int enable);
 	/*
 	public List<V2Bean> getV2ToApprove(final String username);
 	*/

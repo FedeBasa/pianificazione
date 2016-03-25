@@ -122,11 +122,11 @@ public class V2Service {
 		dao.updateEditable(user, month);
 	}
 	
-	public void updateMonthsStatus(int month, boolean enable) {
+	public void updateMonthsStatus(int month, int enable) {
 		dao.updateMonthsStatus(month, enable);
 	}
 
-	public void updateV2ConfigStatus(int month, boolean enable) {
+	public void updateV2ConfigStatus(int month, int enable) {
 		dao.updateV2ConfigStatus(month, enable);
 	}
 	/*
