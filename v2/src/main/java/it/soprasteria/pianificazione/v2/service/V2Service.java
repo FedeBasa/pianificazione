@@ -10,6 +10,7 @@ import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.dao.DaoImpl;
+import it.soprasteria.pianificazione.v2.util.DateUtil;
 
 public class V2Service {
 	private static final Logger LOG = Logger.getLogger(V2Service.class);
@@ -17,15 +18,15 @@ public class V2Service {
 	@Autowired
 	private DaoImpl dao;
 
-	public V2Bean findByMonth(int month, String username) {
+	public V2Bean findByMonth(int month, int businessUnit, String username) {
 		
-		return dao.findByMonth(month, username);
+		return dao.findByMonth(month, businessUnit, username);
 	}
 	
 	
-	public List<RecordV2Bean> getV2(int month, String user) {
+	public List<RecordV2Bean> getV2(int month, int businessUnit, String user) {
 
-		List<RecordV2Bean> list = dao.getV2(month, user);
+		List<RecordV2Bean> list = dao.getV2(month, businessUnit, user);
 
 		for (RecordV2Bean item : list) {
 			completeRecord(item);
@@ -85,12 +86,21 @@ public class V2Service {
 	public boolean addNextMonth(String username) {
 		
 		List<Integer> list = dao.getMonths(username);
-		Integer lastMonth = list.get(list.size()-1);
-		
 		List<Integer> listConfig = dao.getMonthsConfig();
-		Integer lastMonthConfig = listConfig.get(listConfig.size()-1);
+
+		Integer lastMonth = 0;
+		Integer lastMonthConfig = 0;
+		boolean check = false;
 		
-		boolean check = lastMonth.intValue() < lastMonthConfig.intValue();
+		if (list.isEmpty()) {
+			check = !listConfig.isEmpty();
+			lastMonth = DateUtil.previousMonth(listConfig.get(0));
+		} else {
+			lastMonth = list.get(list.size()-1);
+			lastMonthConfig = listConfig.get(listConfig.size()-1);
+			check = lastMonth.intValue() < lastMonthConfig.intValue();
+		}
+		
 		if (check) {
 			dao.addNextMonth(username, lastMonth);
 			return true;

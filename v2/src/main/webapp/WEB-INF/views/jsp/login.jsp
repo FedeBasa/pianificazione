@@ -10,14 +10,15 @@
 		<jsp:include page="../fragments/head.jsp" />
 	
 	</head>
+<jsp:include page="../fragments/nav.jsp" />	
 <body>
-	<div class="container">
+	<div class="container-fluid">
 		<form:form method="POST" class="form-horizontal" modelAttribute="userbean" action="${pageContext.request.contextPath}/login">
 	
 			<spring:bind path="username">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
 					<label class="col-sm-2 control-label">Utente</label>
-					<div class="col-sm-10">
+					<div class="col-sm-4">
 						<form:input path="username" type="text" class="form-control" placeholder="Username" />
 						<form:errors path="username" class="control-label" />
 					</div>
@@ -27,7 +28,7 @@
 			<spring:bind path="password">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
 					<label class="col-sm-2 control-label">Password</label>
-					<div class="col-sm-10">
+					<div class="col-sm-4">
 						<form:password path="password" class="form-control" placeholder="Password" />
 						<form:errors path="password" class="control-label" />
 					</div>

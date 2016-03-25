@@ -19,13 +19,14 @@
 		<table class="table table-bordered table-striped">
 			<tr>
 				<th>Mese</th>
+				<th>Business Unit</th>
 				<th>Stato</th>
 			</tr>
 			<c:forEach items="${lista}" var = "bean">
 			<tr>
 				<c:if test="${bean.editable}">
 					<td>
-						<a href="${pageContext.request.contextPath}/edit/v2?month=${bean.month}&bu=${bean.business_unit}"><c:out value="${bean.month}" /></a>
+						<a href="${pageContext.request.contextPath}/edit/v2?month=${bean.month}&bu=${bean.businessUnit}"><c:out value="${bean.month}" /></a>
 					</td>
 				</c:if>
 				<c:if test="${!bean.editable}">
@@ -33,6 +34,9 @@
 						<c:out value="${bean.month}" />
 					</td>
 				</c:if>
+				<td>
+					<c:out value="${bean.businessUnit}" />				
+				</td>
 				<td>
 					<c:if test="${bean.editable}">
 						Aperto

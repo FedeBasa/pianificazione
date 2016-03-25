@@ -61,7 +61,7 @@
 		$("#employeeDesc").easyAutocomplete(options);
 		var options2 = {
 			url : function(phrase) {
-				return "${pageContext.request.contextPath}/autocomplete/progetto";
+				return "${pageContext.request.contextPath}/autocomplete/progetto?bu=${v2Bean.businessUnit}";
 			},
 			getValue : function(result) {
 				return result.description;
@@ -99,7 +99,7 @@
 			var colname = $(evt.target).attr('colname');
 			var id = $(evt.target).parent().attr('rowId');
 			
-			var url = "${pageContext.request.contextPath}/update?id="+ id +"&colname="+colname+"&value="+data;
+			var url = "${pageContext.request.contextPath}/update?month=${v2Bean.month}&bu=${v2Bean.businessUnit}&id="+ id +"&colname="+colname+"&value="+data;
 			
 			$.ajax({
 				type: 'POST',
@@ -141,7 +141,7 @@
 		<div class="row">
 					<div class="col-sm-4">
 						<div class="btn-group">
-				 			<c:if test="${editable}">
+				 			<c:if test="${v2Bean.editable}">
 								<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
 								<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
 								<button id="delete" type="button" class="btn btn-primary">Elimina</button>
@@ -152,6 +152,7 @@
 					<div class="col-sm-8">
 								<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
 								    <form:hidden path="month"/>
+								    <form:hidden path="businessUnit"/>
 								    <form:hidden path="idRecord"/>
 								    <form:hidden path="idProject"/>
 									<form:hidden path="badgeNumber"/>

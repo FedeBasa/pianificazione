@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.soprasteria.pianificazione.v2.bean.EnumBean;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
@@ -51,7 +50,7 @@ public class V2Controller {
 	@Autowired
 	private EnumService enumservice;
 
-	@InitBinder
+	@InitBinder(value="v2Form")
 	protected void initBinder(WebDataBinder binder) {
 		binder.setValidator(formValidator);
 	}
@@ -82,7 +81,7 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/edit/v2", method = RequestMethod.GET)
-	public ModelAndView method1(@RequestParam(required = false, name = "month") int month) throws SQLException {
+	public ModelAndView method1(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit) throws SQLException {
 
 		ModelAndView model = new ModelAndView();
 		model.setViewName("index");
@@ -90,15 +89,17 @@ public class V2Controller {
 		String username = SessionHelper.getUser().getUsername();
 		List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
 
-		V2Bean v2Bean = service.findByMonth(month, username);
+		V2Bean v2Bean = service.findByMonth(month, businessUnit, username);
 		SessionHelper.storeV2(v2Bean);
 
-		list = service.getV2(month, SessionHelper.getUser().getUsername());
+		list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
 
 		model.addObject("list", list);
-		model.addObject("v2Form", new RecordV2Bean());
-		model.addObject("editable", (v2Bean.getEditable()));
-		model.addObject("month", month);
+		RecordV2Bean recordV2Bean = new RecordV2Bean();
+		recordV2Bean.setMonth(month);
+		recordV2Bean.setBusinessUnit(businessUnit);
+		model.addObject("v2Form", recordV2Bean);
+		model.addObject("v2Bean", v2Bean);
 
 		return model;
 	}
@@ -114,26 +115,26 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/autocomplete/progetto", method = RequestMethod.GET)
-	public @ResponseBody List<ProjectBean> autocompleta() {
+	public @ResponseBody List<ProjectBean> autocompleta(@RequestParam(required = true, name = "bu") int businessUnit) {
 
 		// TODO
 		// inserire parametro per filtrare sul servizio
-		List<ProjectBean> result = projectService.findAll();
+		List<ProjectBean> result = projectService.findByBusinessUnit(businessUnit);
 		return result;
 	}
 
-	 @RequestMapping(value = "/record/detail/{id}", method = RequestMethod.GET)
-	 public @ResponseBody RecordV2Bean detail(@PathVariable(value="id") Long id) throws SQLException {
-	
+	@RequestMapping(value = "/record/detail/{id}", method = RequestMethod.GET)
+	public @ResponseBody RecordV2Bean detail(@PathVariable(value = "id") Long id) throws SQLException {
+
 		LOG.debug("*********************************************************************************SONO QUI");
-		
+
 		return service.getRecord(id);
 	}
 
 	@RequestMapping(value = "/record/update", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-		V2Bean v2 = SessionHelper.getV2();
+		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
 			// return codice errore http permission denied
@@ -145,7 +146,7 @@ public class V2Controller {
 			// l'utente sta cercando di modificare un mese diverso da quello che
 			// è in sessione
 		}
-		
+
 		if (v2.getEditable()) {
 			// TODO
 			// return codice errore
@@ -161,7 +162,7 @@ public class V2Controller {
 
 			// ricarico la lista così nella jsp continuo a vedere la lista
 			List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
-			list = service.getV2(record.getMonth(), SessionHelper.getUser().getUsername());
+			list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
 
 			model.addAttribute("list", list);
 
@@ -169,7 +170,7 @@ public class V2Controller {
 		} else {
 
 			record.setUserMod(SessionHelper.getUser().getUsername());
-			
+
 			service.updateRecord(record);
 
 			// TODO
@@ -178,8 +179,7 @@ public class V2Controller {
 			redirectAttributes.addFlashAttribute("css", "success");
 			redirectAttributes.addFlashAttribute("msg", "Record aggiornato!");
 
-
-			return "redirect:/edit/v2?month=" + record.getMonth();
+			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
 		}
 	}
 
@@ -187,7 +187,7 @@ public class V2Controller {
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		LOG.debug("SONO NELL'INSERT");
 
-		V2Bean v2 = SessionHelper.getV2();
+		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
 			// return codice errore http permission denied
@@ -199,7 +199,7 @@ public class V2Controller {
 			// l'utente sta cercando di modificare un mese diverso da quello che
 			// è in sessione
 		}
-		
+
 		if (v2.getEditable()) {
 			// TODO
 			// return codice errore
@@ -212,7 +212,7 @@ public class V2Controller {
 			// come per il metodo di modifica anche qui bisogna ricaricare la
 			// lista
 			List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
-			list = service.getV2(record.getMonth(), SessionHelper.getUser().getUsername());
+			list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
 			model.addAttribute("list", list);
 
 			return "index";
@@ -221,8 +221,12 @@ public class V2Controller {
 			record.setUserIns(SessionHelper.getUser().getUsername());
 			service.insertRecord(record);
 
-			return "redirect:/edit/v2?month=" + record.getMonth();
+			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
 		}
+	}
+
+	private String buildRedirectV2Edit(int month, int businessUnit) {
+		return "redirect:/edit/v2?month=" + month + "&bu=" + businessUnit;
 	}
 
 	@RequestMapping(value = "/record/delete", method = RequestMethod.POST)
@@ -230,7 +234,7 @@ public class V2Controller {
 
 		LOG.debug("SONO NEL DELETE");
 
-		V2Bean v2 = SessionHelper.getV2();
+		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
 			// return codice errore http permission denied
@@ -242,7 +246,7 @@ public class V2Controller {
 			// l'utente sta cercando di modificare un mese diverso da quello che
 			// è in sessione
 		}
-		
+
 		if (v2.getEditable()) {
 			// TODO
 			// return codice errore
@@ -252,13 +256,14 @@ public class V2Controller {
 		Long id = record.getIdRecord();
 		service.deleteRecord(id);
 
-		return "redirect:/edit/v2?month=" + record.getMonth();
+		return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public @ResponseBody JsonResponse newUpdate(@RequestParam(name = "id") String id, @RequestParam(name = "colname") String colname, @RequestParam(name = "value") String data) {
+	public @ResponseBody JsonResponse newUpdate(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, 
+			@RequestParam(required = true, name = "id") String id, @RequestParam(required = true, name = "colname") String colname, @RequestParam(name = "value") String data) {
 
-		V2Bean v2 = SessionHelper.getV2();
+		V2Bean v2 = SessionHelper.getV2(month, businessUnit);
 		if (v2 == null) {
 			// TODO
 			// return codice errore http permission denied
@@ -281,40 +286,38 @@ public class V2Controller {
 		if (ColnameConverter.existsColname(colname)) {
 
 			String realColname = ColnameConverter.convertColname(colname);
-			
+
 			LOG.debug("realcolname :" + realColname);
 			LOG.debug("data :" + data);
-			
-			if(realColname.equals("valuta")||realColname.equals("attività")){
-				if(!enumservice.getSet(realColname).contains(data)){
-					
+
+			if (realColname.equals("valuta") || realColname.equals("attività")) {
+				if (!enumservice.getSet(realColname).contains(data)) {
+
 					return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore  non valido ");
-					
-				}else{
-				service.v2Update( Long.parseLong(id), realColname, data, SessionHelper.getUser().getUsername());
+
+				} else {
+					service.v2Update(Long.parseLong(id), realColname, data, SessionHelper.getUser().getUsername());
+
+					return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
+				}
+
+			} else {
+
+				Integer value = 0;
+
+				try {
+					value = Integer.parseInt(data);
+				} catch (NumberFormatException e) {
+					return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore della colonna [" + colname + "] non valida");
+				}
+
+				service.v2Update(Long.parseLong(id), realColname, value, SessionHelper.getUser().getUsername());
 
 				return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
-				}
-				
-				
-			}else {
-				
-			Integer value = 0;
-			
-			try {
-				value = Integer.parseInt(data);
-			} catch (NumberFormatException e) {
-				return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore della colonna [" + colname + "] non valida");
 			}
 
-			service.v2Update(Long.parseLong(id), realColname, value, SessionHelper.getUser().getUsername());
-
-			return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
-			}
-			
 		}
 		return JsonResponse.build(JsonResponse.CODE_INVALID_COLNAME, "Colonna [" + colname + "] non valida");
 	}
-
 
 }

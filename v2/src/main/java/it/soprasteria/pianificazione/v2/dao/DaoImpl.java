@@ -49,11 +49,32 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		List<ProjectBean> prog = getJdbcTemplate().query("SELECT * FROM progetti",  new RowMapper<ProjectBean>() {
 			public ProjectBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				ProjectBean proj = new ProjectBean();
-				proj.setIdProject(rs.getLong("id_progetto"));
-				proj.setDescription(rs.getString("progetto"));
-				proj.setCustomer(rs.getString("cliente"));
-				proj.setCurrency(rs.getString("valuta"));
-				proj.setType(rs.getString("attività"));
+				enrichProjectBean(rs, proj);
+				return proj;
+			}
+
+		});
+		return prog;
+	}
+
+	@Override
+	public List<ProjectBean> findProjectsByBusinessUnit(final int businessUnit) {
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * FROM progetti");
+		sql.append(" WHERE business_unit = ?");
+		
+		List<ProjectBean> prog = getJdbcTemplate().query(sql.toString(),  new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				
+				int i = 1;
+				pstm.setInt(i++, businessUnit);
+			}
+		}, new RowMapper<ProjectBean>() {
+			public ProjectBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				ProjectBean proj = new ProjectBean();
+				enrichProjectBean(rs, proj);
 				return proj;
 			}
 		});
@@ -61,19 +82,23 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
-	public List<RecordV2Bean> getV2(final int month, final String user) {
+	public List<RecordV2Bean> getV2(final int month, final int businessUnit, final String user) {
 		List<RecordV2Bean> result = new ArrayList<RecordV2Bean>();
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT *");
 		sb.append(" FROM u_progetti_risorse");
 		sb.append(" WHERE mese = ?");
+		sb.append(" AND business_unit = ?");
 		sb.append(" AND id_user = ?");
 
 		result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
-				pstm.setInt(1, month);
-				pstm.setString(2, user);
+				
+				int i = 1;
+				pstm.setInt(i++, month);
+				pstm.setInt(i++, businessUnit);
+				pstm.setString(i++, user);
 			}
 		}, new RowMapper<RecordV2Bean>() {
 			@Override
@@ -558,13 +583,16 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
-	public V2Bean findByMonth(final int month, final String username) {
+	public V2Bean findByMonth(final int month, final int businessUnit, final String username) {
 
-		List<V2Bean> mesi = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ? AND mese = ?", new PreparedStatementSetter() {
+		List<V2Bean> mesi = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ? AND mese = ? and business_unit = ?", new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
-				pstm.setString(1, username);
-				pstm.setInt(2, month);
+				
+				int i = 1;
+				pstm.setString(i++, username);
+				pstm.setInt(i++, month);
+				pstm.setInt(i++, businessUnit);
 			}
 		}, new RowMapper<V2Bean>() {
 			public V2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -691,8 +719,18 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		bean.setMonth(rs.getInt("mese"));
 		bean.setUser(rs.getString("id_user"));
 		bean.setEditable(rs.getInt("editable") == 1 ? true : false);
-		bean.setBusiness_unit(rs.getInt("business_unit"));
+		bean.setBusinessUnit(rs.getInt("business_unit"));
 	}
+	
+	private void enrichProjectBean(ResultSet rs, ProjectBean proj) throws SQLException {
+		proj.setIdProject(rs.getLong("id_progetto"));
+		proj.setDescription(rs.getString("progetto"));
+		proj.setCustomer(rs.getString("cliente"));
+		proj.setCurrency(rs.getString("valuta"));
+		proj.setType(rs.getString("attività"));
+		proj.setBusinessUnit(rs.getInt("business_unit"));
+	}
+
 	/*
 	@Override
 	public List<V2Bean> getV2ToApprove(final String username) {

@@ -31,10 +31,16 @@ public class ProjectService {
 
 	@Cacheable(value = "projectCache")
 	public List<ProjectBean> findAll() {
-		LOG.debug("RISORSE AGGIUNTE");
 		return dao.getAllProject();
 
 	}
+	
+	@Cacheable(value = "projectCache")
+	public List<ProjectBean> findByBusinessUnit(int businessUnit) {
+		return dao.findProjectsByBusinessUnit(businessUnit);
+
+	}
+	
 
 	public ProjectBean details(long id) throws SQLException {
 		return dao.getProject(id);

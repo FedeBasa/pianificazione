@@ -17,6 +17,8 @@ public class ColnameConverter {
 		mapColname.put("prod1", "prodotto_2");
 		mapColname.put("prod2", "prodotto_3");
 		mapColname.put("currency","valuta");
+		//TODO
+		// eliminare accento, attenzione anche su DB
 		mapColname.put("activity", "attività");
 	}
 	

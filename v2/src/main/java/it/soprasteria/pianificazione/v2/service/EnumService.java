@@ -6,9 +6,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 
 import it.soprasteria.pianificazione.v2.bean.EnumBean;
-import it.soprasteria.pianificazione.v2.dao.DaoImpl;
 import it.soprasteria.pianificazione.v2.dao.EnumDao;
 
 
@@ -19,20 +19,19 @@ public class EnumService  {
 	@Autowired
 	private EnumDao enumdao;
 	
-	
-	public Set<String> getSet(String realcolname){
+	@Cacheable(value = "enumCache")
+	public Set<String> getSet(String type){
 		
-		List<EnumBean> enumList = enumdao.findByType(realcolname);
+		List<EnumBean> enumList = enumdao.findByType(type);
 		
 		Set<String> set = new HashSet<String>();
 		
-		
-			for(EnumBean enumbean : enumList){
-				
-				LOG.debug("value "+enumbean.getValue());
-				
-				set.add(enumbean.getValue());
-			}
+		for (EnumBean enumbean : enumList) {
+
+			LOG.debug("value " + enumbean.getValue());
+
+			set.add(enumbean.getValue());
+		}
 			
 		return set;
 	}

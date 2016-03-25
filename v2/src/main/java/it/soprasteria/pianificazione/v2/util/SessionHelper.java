@@ -69,16 +69,16 @@ public class SessionHelper {
 		
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 	    HttpSession session = attr.getRequest().getSession();
-	    session.setAttribute(V2_SESSION_KEY, bean);
+	    session.setAttribute(V2_SESSION_KEY + "_" + bean.getMonth() +  "_" + bean.getBusinessUnit(), bean);
 
 	}
 	
-	public static V2Bean getV2() {
+	public static V2Bean getV2(int month, int businessUnit) {
 		
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 	    HttpSession session = attr.getRequest().getSession();
 
-	    return (V2Bean)session.getAttribute(V2_SESSION_KEY);
+	    return (V2Bean)session.getAttribute(V2_SESSION_KEY + "_" + month + "_" + businessUnit);
 
 	}
 }

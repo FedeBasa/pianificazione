@@ -9,6 +9,22 @@ public class DateUtil {
 
 	private static final SimpleDateFormat SDF_MONTH = new SimpleDateFormat("yyyyMM");
 	
+	public static int previousMonth(int month) {
+		
+		try {
+			Date parsedMonth = SDF_MONTH.parse(String.valueOf(month));
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(parsedMonth);
+			cal.add(Calendar.MONTH, -1);
+			
+			return Integer.parseInt(SDF_MONTH.format(cal.getTime()));
+			
+		} catch(ParseException e) {
+			return 0;
+		}
+	}
+
 	public static int nextMonth(int month) {
 		
 		try {

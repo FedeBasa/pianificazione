@@ -1,3 +1,4 @@
+<%@page import="it.soprasteria.pianificazione.v2.util.SessionHelper"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url value="/home" var="urlHome" />
@@ -12,6 +13,9 @@
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#">Project Name</a>
 		</div>
+		<%
+		if (SessionHelper.getUser() != null) {
+		%>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="${urlHome}">Home</a></li>
@@ -26,5 +30,8 @@
 				<li class=""><a href="${urlLogout}">Logout</a></li>
 			</ul>
 		</div>
+		<%
+		}
+		%>
 	</div>
 </nav>

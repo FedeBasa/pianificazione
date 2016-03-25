@@ -13,8 +13,10 @@ public interface Dao {
 	public List<EmployeeBean> getAllEmployees();
 
 	public List<ProjectBean> getAllProject();
+	
+	public List<ProjectBean> findProjectsByBusinessUnit(int businessUnit);
 
-	public List<RecordV2Bean> getV2(int month, String user);
+	public List<RecordV2Bean> getV2(int month, int businessUnit, String user);
 
 	public EmployeeBean getEmployee(String id);
 
@@ -50,7 +52,7 @@ public interface Dao {
 	
 	public void updateTable(Long id, String colname, Integer modify, String username);
 
-	public V2Bean findByMonth(int month, String username);
+	public V2Bean findByMonth(int month, int businessUnit, String username);
 
 	public List<V2Bean> findByUser(String username);
 	
