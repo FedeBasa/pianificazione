@@ -25,6 +25,7 @@ import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.bean.V2ConfigBean;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
+import it.soprasteria.pianificazione.v2.util.V2StatusKeys;
 
 public class DaoImpl extends JdbcDaoSupport implements Dao {
 	
@@ -535,7 +536,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	//	currentMonth = v2.getMonth();
 	//	nextMonth = DateUtil.nextMonth(v2.getMonth());
 		nextMonth = DateUtil.nextMonth(lastMonth);
-		int editable = 1;
+		int editable = V2StatusKeys.OPEN;
 		
 		LOG.info("######### [" + currentMonth + "] [" + nextMonth + "]");
 		
@@ -577,7 +578,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, 1);
+				ps.setInt(i++, V2StatusKeys.OPEN);
 				ps.setString(i++, user);
 				ps.setInt(i++, month);
 				return ps;
@@ -721,7 +722,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		
 		bean.setMonth(rs.getInt("mese"));
 		bean.setUser(rs.getString("id_user"));
-		bean.setEditable(rs.getInt("editable") == 1 ? true : false);
+		bean.setStato(rs.getInt("editable"));
 		bean.setBusinessUnit(rs.getInt("business_unit"));
 	}
 	
@@ -766,7 +767,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				bean.setMonth(rs.getInt("mese"));
 				bean.setUser("");
-				bean.setEditable(rs.getInt("enable") == 1 ? true : false);
+				bean.setStato(rs.getInt("enable"));
 				
 				return bean;
 				
@@ -777,7 +778,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 	
 	@Override
-	public void updateMonthsStatus(final int month, final boolean enable) {
+	public void updateMonthsStatus(final int month, final int enable) {
 
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE v2");
@@ -788,7 +789,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, enable ? 0 : 1);
+				ps.setInt(i++, enable);
 				ps.setInt(i++, month);
 				return ps;
 			}
@@ -796,7 +797,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 	
 	@Override
-	public void updateV2ConfigStatus(final int month, final boolean enable) {
+	public void updateV2ConfigStatus(final int month, final int enable) {
 
 		final StringBuilder sb = new StringBuilder();
 		sb.append("UPDATE v2_config");
@@ -808,7 +809,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, enable ? 0 : 1);
+				ps.setInt(i++, enable);
 				ps.setInt(i++, month);
 				return ps;
 			}
