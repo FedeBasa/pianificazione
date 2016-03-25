@@ -141,12 +141,10 @@
 		<div class="row">
 					<div class="col-sm-4">
 						<div class="btn-group">
-				 			<c:if test="${v2Bean.editable}">
-								<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
-								<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
-								<button id="delete" type="button" class="btn btn-primary">Elimina</button>
-								<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>
-				 			</c:if>
+							<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
+							<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
+							<button id="delete" type="button" class="btn btn-primary">Elimina</button>
+							<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>
 						</div>
 					</div>
 					<div class="col-sm-8">

@@ -156,13 +156,8 @@ public class V2Service {
 	public void updateEditable(String user, int month) {
 		dao.updateEditable(user, month);
 	}
-<<<<<<< HEAD
 
-	public void updateMonthsStatus(int month, boolean enable) {
-=======
-	
 	public void updateMonthsStatus(int month, int enable) {
->>>>>>> a2a7f8fa023ef05ff9dadf67e8704a7590f5c0b4
 		dao.updateMonthsStatus(month, enable);
 	}
 
