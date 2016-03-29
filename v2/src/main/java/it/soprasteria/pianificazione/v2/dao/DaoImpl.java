@@ -406,7 +406,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		sb.append("SELECT mese");
 		sb.append(" FROM v2_config");
-		sb.append(" WHERE enable = 1");
+		sb.append(" WHERE enable = " + V2StatusKeys.OPEN);
 		sb.append(" ORDER BY mese");
 
 		result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>() {
@@ -679,7 +679,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		} ,new RowMapper<UserBean>(){
 			@Override
 			public UserBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
-				UserBean user = UserBean.build(rs.getString("profilo"), rs.getString("nome"), rs.getString("cognome"), rs.getString("profilo"));
+				UserBean user = UserBean.build(rs.getString("username"), rs.getString("nome"), rs.getString("cognome"), rs.getString("profilo"));
 				return user;
 			}
 		});
