@@ -62,11 +62,6 @@ public class V2Controller {
 
 		model.addAttribute("lista", service.findByUser(username));
 		
-		System.out.println("USERNAME: " + username);
-		System.out.println("NAME: " + SessionHelper.getUser().getName());
-		System.out.println("SURNAME: " + SessionHelper.getUser().getSurname());
-		System.out.println("PROFILO: " + SessionHelper.getUser().getProfilo());
-		
 		return "home";
 	}
 
