@@ -869,4 +869,45 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		
 	}
 
+	@Override
+	public void setValidateState(final String user, final int month) {
+			
+	 	final StringBuilder sb = new StringBuilder();
+	 	sb.append("UPDATE v2");
+	 	sb.append(" SET editable= ?");
+	 	sb.append(" WHERE id_user = ? AND");
+	 	sb.append(" mese = ?");
+	 	getJdbcTemplate().update(new PreparedStatementCreator() {
+	 
+	 		@Override
+	 		public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+	 			int i = 1;
+	 			PreparedStatement ps = conn.prepareStatement(sb.toString());
+	 			ps.setInt(i++, V2StatusKeys.VALIDATE);
+	 			ps.setString(i++, user);
+	 			ps.setInt(i++, month);
+	 			return ps;
+	 		}
+	 	});
+	 }
+		
+	//recupera lo stato del mese
+	public int getEditableState(final String username, final int month) {
+	 		
+	 	List<Integer> mesi = getJdbcTemplate().query("SELECT editable FROM v2 WHERE id_user = ? AND mese = ?",new PreparedStatementSetter(){
+	 		@Override
+	 		public void setValues(PreparedStatement pstm) throws SQLException {
+	                        pstm.setString(1, username);
+	                        pstm.setInt(2, month);
+	 		}
+	 	}, new RowMapper<Integer>() {
+	 		public Integer mapRow(ResultSet rs, int rowNumb) throws SQLException {			
+	 			int editable = (rs.getInt("editable"));
+	 			return editable;
+	 		}
+	 	});
+	 	
+	 	return mesi.get(0);
+ 	}
+	
 }

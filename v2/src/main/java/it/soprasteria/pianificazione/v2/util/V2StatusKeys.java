@@ -6,5 +6,5 @@ public class V2StatusKeys {
 	
 	public final static int CLOSE = 10;
 	
-	public final static int VERIFY = 50;
+	public final static int VALIDATE = 50;
 }

@@ -61,4 +61,8 @@ public interface Dao {
 	public int getTotDays(int month);
 	
 	public int getConsDays(int badgeNumber,String colname, int mese);
+	
+	public void setValidateState(final String user, final int month);
+	
+	public int getEditableState(String username, int month);
 }

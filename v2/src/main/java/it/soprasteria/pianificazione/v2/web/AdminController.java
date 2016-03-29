@@ -24,24 +24,30 @@ public class AdminController {
 	@Autowired
 	private V2Service service;
 
-	@RequestMapping(value = "/admin/chiudi", method = RequestMethod.POST)
-	public String chiudi(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/admin/apri", method = RequestMethod.POST)
+	public String apri(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 
-		String user = SessionHelper.getUser().getUsername();
 		service.updateV2ConfigStatus(month, V2StatusKeys.OPEN);
 		service.updateMonthsStatus(month, V2StatusKeys.OPEN);
 		return "redirect:/admin/gestione_mese";
 	}
 	
-	@RequestMapping(value = "/admin/approva", method = RequestMethod.POST)
-	public String approva(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/admin/chiudi", method = RequestMethod.POST)
+	public String chiudi(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 
-		String user = SessionHelper.getUser().getUsername();
 		service.updateV2ConfigStatus(month, V2StatusKeys.CLOSE);
 		service.updateMonthsStatus(month, V2StatusKeys.CLOSE);
 		return "redirect:/admin/gestione_mese";
 	}
 
+	@RequestMapping(value = "/valida", method = RequestMethod.POST)
+	 	public String valida(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, Model model, RedirectAttributes redirectAttributes) {
+	 	    
+	 	    String user = SessionHelper.getUser().getUsername();
+	 	    service.setValidateState(user, month);
+	 		return "redirect:/edit/v2?month=" + month + "&bu=" + 791;
+	 }
+	
 	@RequestMapping(value = "/admin/gestione_mese", method = RequestMethod.GET)
 	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
 

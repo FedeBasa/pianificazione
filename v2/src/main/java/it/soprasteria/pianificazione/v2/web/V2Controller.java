@@ -93,13 +93,17 @@ public class V2Controller {
 		SessionHelper.storeV2(v2Bean);
 
 		list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
-
+		int editable = service.getEditableState(username, month);
+	//	int editable = 60;
 		model.addObject("list", list);
 		RecordV2Bean recordV2Bean = new RecordV2Bean();
 		recordV2Bean.setMonth(month);
 		recordV2Bean.setBusinessUnit(businessUnit);
 		model.addObject("v2Form", recordV2Bean);
 		model.addObject("v2Bean", v2Bean);
+		model.addObject("editable", editable);
+		model.addObject("month", month);
+		model.addObject("businessUnit", businessUnit);
 
 		return model;
 	}

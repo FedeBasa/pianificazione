@@ -203,4 +203,12 @@ public class V2Service {
 		return result;
 	}
 
+	public void setValidateState(String user, int month) {
+		dao.setValidateState(user, month);
+	}
+	
+	public int getEditableState(String username, int month) {
+		
+		return dao.getEditableState(username, month);
+	}
 }

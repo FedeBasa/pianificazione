@@ -131,6 +131,15 @@
 				});
 	}
 
+	function validate(form) {
+		if(confirm("Vuoi approvare questo mese?")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
  </script>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
@@ -146,6 +155,12 @@
 							<button id="delete" type="button" class="btn btn-primary">Elimina</button>
 							<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>
 						</div>
+						
+						<div class="btn-group">
+					 		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/valida?month=${month}&bu=${businessUnit}" onsubmit="return validate(this);">
+					 			<button id="valida" type="submit" class="${editable != 50 ? 'btn btn-warning' : 'btn btn-warning disabled'}">Approva</button>
+					 		</form:form>
+ 						</div>
 					</div>
 					<div class="col-sm-8">
 								<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
