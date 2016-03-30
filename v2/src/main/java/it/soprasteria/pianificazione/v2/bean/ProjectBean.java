@@ -10,6 +10,17 @@ public class ProjectBean {
 	private int businessUnit;
 	
 	
+public static ProjectBean build(long idProject, String description, String customer, int businessUnit) {
+		
+		ProjectBean instance = new ProjectBean();
+		instance.idProject = idProject;
+		instance.description = description;
+		instance.customer = customer;
+		instance.businessUnit = businessUnit;
+		
+		return instance;
+	}
+	
 	public void setBusinessUnit(int businessUnit) {
 		this.businessUnit = businessUnit;
 	}

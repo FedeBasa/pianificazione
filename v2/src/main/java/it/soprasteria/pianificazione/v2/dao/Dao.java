@@ -65,4 +65,8 @@ public interface Dao {
 	public void setValidateState(final String user, final int month);
 	
 	public int getEditableState(String username, int month);
+
+	void persistProject(List<ProjectBean> list);
+
+	void deleteAllProjects();
 }

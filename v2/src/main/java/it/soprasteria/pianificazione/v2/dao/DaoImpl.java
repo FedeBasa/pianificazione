@@ -290,6 +290,17 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		getJdbcTemplate().update(sb.toString());
 	}
+	
+	
+	@Override
+	public void deleteAllProjects() {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("DELETE FROM progetti");
+
+		getJdbcTemplate().update(sb.toString());
+	}
 
 	@Override
 	public void persist(final List<EmployeeBean> list) {
@@ -316,6 +327,34 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 		});
 	}
+	
+	
+	@Override
+	public void persistProject(final List<ProjectBean> list) {
+
+		final StringBuilder sb = new StringBuilder();
+
+		sb.append("INSERT INTO progetti(id_progetto, progetto, cliente,business_unit)");
+		sb.append(" VALUES(?,?,?,?)");
+
+		getJdbcTemplate().batchUpdate(sb.toString(), new BatchPreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm, int i) throws SQLException {
+
+				ProjectBean item = list.get(i);
+
+				pstm.setLong(1, item.getIdProject());
+				pstm.setString(2, item.getDescription());
+				pstm.setString(3, item.getCurrency());
+				pstm.setInt(4, item.getBusinessUnit());
+			}
+			@Override
+			public int getBatchSize() {
+				return list.size();
+			}
+		});
+	}
+	
 
 	@Override
 	public void updateTable(final Long id, final String colname, final Integer value, final String username) {
