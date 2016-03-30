@@ -45,11 +45,20 @@ public class ExcelProjectDigester implements Serializable {
 			rowIterator.next();
 	
 			while(rowIterator.hasNext()) {
-				
+				String project;
+				String[] progetto = new String[2];
 				XSSFRow row = (XSSFRow)rowIterator.next();
 				String bu = row.getCell(1).getStringCellValue().substring(0, 3);
+				
 				String customer = row.getCell(2).getStringCellValue();
-				String project =  row.getCell(3).getStringCellValue();
+				
+				if(row.getCell(3).getStringCellValue().contains("/")){
+					progetto = row.getCell(3).getStringCellValue().split("/");
+					project =  progetto[1];
+				}else{
+					project = row.getCell(3).getStringCellValue();
+				}
+				
 				String idProject  = row.getCell(42).getRawValue();
 				
 				if(row.getCell(20).getStringCellValue().equals("Y")){
