@@ -237,8 +237,8 @@ public class V2Controller {
 	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
 		LOG.debug("SONO NEL DELETE");
-
-		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
+		try{
+			V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
 			// return codice errore http permission denied
@@ -256,12 +256,20 @@ public class V2Controller {
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
 		}
+		
+		
+          	Long id = record.getIdRecord();
+        	service.deleteRecord(id);
+        
 
-		Long id = record.getIdRecord();
-		service.deleteRecord(id);
+		}catch(NullPointerException ex){
+			return "redirect:/home";
+	    }
+
 
 		return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
 	}
+	
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public @ResponseBody JsonResponse newUpdate(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, 
