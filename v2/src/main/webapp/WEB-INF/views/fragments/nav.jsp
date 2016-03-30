@@ -7,7 +7,7 @@
 <spring:url value="/admin/gestione_mese" var="urlApprova" />
 <spring:url value="/logout" var="urlLogout" />
 
-
+  
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="navbar-header">
