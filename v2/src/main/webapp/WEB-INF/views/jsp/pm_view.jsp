@@ -5,7 +5,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
- 
 <head>
 
 	<jsp:include page="../fragments/head.jsp" />
@@ -13,9 +12,9 @@
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body> 
-   
+  <div class="col-lg-12">
    <div class="container-fluid">
-		<table class="table table-bordered table-striped">
+		<table id = "projectManager" class="table table-bordered table-striped">
 			<thead>
 				<tr>
 				 <th>ProjectManager</th>
@@ -35,6 +34,7 @@
 				</tr>
 			 </c:forEach>
 		</table>
+	</div>
 	</div>
    
 </body>
