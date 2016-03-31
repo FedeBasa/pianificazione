@@ -2,6 +2,8 @@ package it.soprasteria.pianificazione.v2.web;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import it.soprasteria.pianificazione.v2.util.SessionHelper;
 @Controller
 public class UploadProjectController {
 	
+	private static final Logger LOG = Logger.getLogger(V2Controller.class);
 	
 	@Autowired
 	private ProjectService projectService;
@@ -52,11 +55,10 @@ public class UploadProjectController {
 			
 			SessionHelper.storeProjectDigester(digester);
 			
-		} catch(DigestException | IOException e) {
+		} catch(Exception e) {
 
-			// TODO
-			// gestire correttamente, aggiungere messaggio da visualizzare a video
-		
+			e.printStackTrace();
+			return "error_message_project";
 		}
 		
 		return "upload_progetti";
@@ -64,27 +66,33 @@ public class UploadProjectController {
 	@RequestMapping(value = "/excel/save/project", method = RequestMethod.POST)
 	public String saveProject(Model model) {
 	
+		try{
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
 		
 		projectService.save(digester.getList());
 		
 		SessionHelper.clearProjectDigester();
-		
-		// TODO
-		// aggiungere messaggio di conferma operazione
-		
+		   
+		}catch(Exception e) {
+			e.printStackTrace();
+			return "error_message_project";
+		}
 		return "redirect:/excel/upload/project";
 	}	
 
 	@RequestMapping(value = "/excel/replace/project", method = RequestMethod.POST)
 	public String replaceProject(Model model) {
-	
+	try{
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
 		
 		projectService.replace(digester.getList());
 		
 		SessionHelper.clearProjectDigester();
 		
+	}catch(Exception e){
+		e.printStackTrace();
+		return "error_message_project";
+	}
 		// TODO
 		// aggiungere messaggio di conferma operazione
 

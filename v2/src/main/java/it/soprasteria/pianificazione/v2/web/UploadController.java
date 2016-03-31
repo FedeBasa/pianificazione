@@ -54,11 +54,9 @@ public class UploadController {
 			
 			SessionHelper.storeEmployeeDigester(digester);
 			
-		} catch(DigestException | IOException e) {
-
-			// TODO
-			// gestire correttamente, aggiungere messaggio da visualizzare a video
-		
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "error_message_employees";			
 		}
 		
 		return "upload_risorse";
@@ -67,30 +65,33 @@ public class UploadController {
 	@RequestMapping(value = "/excel/save/employee", method = RequestMethod.POST)
 	public String saveEmployee(Model model) {
 	
+		try{
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
 		
 		service.save(digester.getList());
-		
+
 		SessionHelper.clearEmployeeDigester();
 		
-		// TODO
-		// aggiungere messaggio di conferma operazione
-		
+		}catch(Exception e ){
+			e.printStackTrace();
+			return "error_message_employees";	
+		}
 		return "redirect:/excel/upload/employee";
 	}	
 
 	@RequestMapping(value = "/excel/replace/employee", method = RequestMethod.POST)
 	public String replaceEmployee(Model model) {
 	
+		try{
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
 		
 		service.replace(digester.getList());
 		
 		SessionHelper.clearEmployeeDigester();
-		
-		// TODO
-		// aggiungere messaggio di conferma operazione
-
+		}catch(Exception e){
+			e.printStackTrace();
+			return "error_message_employees";	
+		}
 		return "redirect:/excel/upload/employee";
 	}	
 

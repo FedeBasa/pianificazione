@@ -30,7 +30,6 @@
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body> 
- 
     <div class="container">
     
 		<div class="btn-group">

@@ -78,6 +78,7 @@ public class ExcelProjectDigester implements Serializable {
 		} catch(IOException e) {
 			
 			throw new DigestException(e);
+			
 		}
 	}
 	
