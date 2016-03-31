@@ -33,7 +33,7 @@ function validate(form) {
 			 </thead>
 			 <c:forEach items="${v2List}" var = "v2">
 			     <tr>
-					<td><c:out value="${v2.month}" /></td>
+					<td><a href = "/v2/pmView?month=${v2.month}"><c:out value="${v2.month}" /></a></td>
 					<td>
 						<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/admin/chiudi?month=${v2.month}" style="float:left; padding-right:20px" onsubmit="return validate(this);">
 							<button id="chiudi" type="submit" class="${v2.stato == 100 ? 'btn btn-warning' : 'btn btn-warning disabled'}">Chiudi</button>

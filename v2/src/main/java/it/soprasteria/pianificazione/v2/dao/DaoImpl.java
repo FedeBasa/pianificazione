@@ -445,6 +445,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 		sb.append("SELECT mese");
 		sb.append(" FROM v2_config");
+		sb.append(" WHERE enable = " + V2StatusKeys.OPEN);
 		sb.append(" ORDER BY mese");
 
 		result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>() {
@@ -596,7 +597,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		
 		nextMonth = DateUtil.nextMonth(lastMonth);
 				
-		Object[] params = new Object[] { nextMonth, V2StatusKeys.OPEN };
+		Object[] params = new Object[] { nextMonth, 1 };
 		int[] types = new int[] { Types.INTEGER, Types.INTEGER };
 		getJdbcTemplate().update(insertSql.toString(), params, types);
 
@@ -875,7 +876,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				return tot;
 			}
 		});
-		
+		LOG.debug("TOTALE "+  totGiornate.get(0));
 		return totGiornate.get(0);
 	}
 
@@ -903,6 +904,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 		});
 		
+		LOG.debug("GIORNATE CONSOLIDATE " + consDays.get(0));
 		 return consDays.get(0);
 		
 	}

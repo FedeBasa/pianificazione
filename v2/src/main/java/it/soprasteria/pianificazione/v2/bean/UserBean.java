@@ -7,6 +7,10 @@ public class UserBean {
 	private String name;
 	private String surname;
 	private String profilo;
+	private String active;
+	private int bu;
+	
+
 
 	public static UserBean build(String username, String name, String surname, String profilo) {
 
@@ -18,6 +22,23 @@ public class UserBean {
 		result.profilo = profilo;
 
 		return result;
+	}
+	
+	public int getBu() {
+		return bu;
+	}
+
+	public void setBu(int bu) {
+		this.bu = bu;
+	}
+
+	
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
 	}
 
 	public String getUsername() {

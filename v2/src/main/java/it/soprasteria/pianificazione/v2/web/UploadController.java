@@ -1,9 +1,6 @@
 package it.soprasteria.pianificazione.v2.web;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.soprasteria.pianificazione.v2.bean.upload.UploadEmployeeBean;
 import it.soprasteria.pianificazione.v2.digester.ExcelEmployeeDigester;
-import it.soprasteria.pianificazione.v2.exception.DigestException;
 import it.soprasteria.pianificazione.v2.service.EmployeeService;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 

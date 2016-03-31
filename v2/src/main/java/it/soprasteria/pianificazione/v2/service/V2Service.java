@@ -79,11 +79,13 @@ public class V2Service {
 		if (!"tariffa".equals(colname)) {
 		
 			RecordV2Bean recordV2Bean = dao.getRecord(id);
-			int checkValue = value - getColvalue(recordV2Bean, colname);
+			int checkValue = value - getColvalue(recordV2Bean, colname)   ;
 			
 			int leftDays = getLeftDays(Integer.parseInt(recordV2Bean.getBadgeNumber()), month, colname);
-	
-			if (checkValue > leftDays&&"consolitato_1".equals(colname)||"consolidato_2".equals(colname)||"consolidato_3".equals(colname)) {
+			LOG.debug("LEFTDAYS" + leftDays);
+			LOG.debug("CHECKVALUE" + checkValue);
+			
+			if (checkValue > leftDays && "consolidato_1".equals(colname)||"consolidato_2".equals(colname)||"consolidato_3".equals(colname)) {
 				return false;
 			}
 		}		
