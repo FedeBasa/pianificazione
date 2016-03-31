@@ -27,14 +27,13 @@ public class DateUtil {
 
 	public static int addMonth(int month, int num) {
 		
-		System.out.println("ADD MONTH MESE: " + month);
 		try {
 			Date parsedMonth = SDF_MONTH.parse(String.valueOf(month));
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(parsedMonth);
 			cal.add(Calendar.MONTH, num);
-			System.out.println("ADD MONTH MESE DOPO: " + Integer.parseInt(SDF_MONTH.format(cal.getTime())));
+
 			return Integer.parseInt(SDF_MONTH.format(cal.getTime()));
 			
 		} catch(ParseException e) {
