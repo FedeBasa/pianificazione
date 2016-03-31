@@ -83,7 +83,7 @@ public class V2Service {
 			
 			int leftDays = getLeftDays(Integer.parseInt(recordV2Bean.getBadgeNumber()), month, colname);
 	
-			if (checkValue > leftDays) {
+			if (checkValue > leftDays&&"consolitato_1".equals(colname)||"consolidato_2".equals(colname)||"consolidato_3".equals(colname)) {
 				return false;
 			}
 		}		
