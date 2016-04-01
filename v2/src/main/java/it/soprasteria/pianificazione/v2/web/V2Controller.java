@@ -111,8 +111,6 @@ public class V2Controller {
 	@RequestMapping(value = "/autocomplete/risorse", method = RequestMethod.GET)
 	public @ResponseBody List<EmployeeBean> autocomplete() throws SQLException {
 
-		// TODO
-		// inserire parametro per filtrare sul servizio
 		List<EmployeeBean> result = employeeService.findAll();
 
 		return result;
@@ -120,11 +118,10 @@ public class V2Controller {
 
 	@RequestMapping(value = "/autocomplete/progetto", method = RequestMethod.GET)
 	public @ResponseBody List<ProjectBean> autocompleta(@RequestParam(required = true, name = "bu") int businessUnit) {
-
-		// TODO
-		// inserire parametro per filtrare sul servizio
+	
 		List<ProjectBean> result = projectService.findByBusinessUnit(businessUnit);
 		return result;
+	
 	}
 
 	@RequestMapping(value = "/record/detail/{id}", method = RequestMethod.GET)
@@ -138,6 +135,7 @@ public class V2Controller {
 	@RequestMapping(value = "/record/update", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
+		try{
 		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
@@ -185,12 +183,17 @@ public class V2Controller {
 
 			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
 		}
+		}catch(NumberFormatException e){
+			LOG.debug("ECCEZIONE" );
+			return "redirect:/home";
+		}
 	}
 
 	@RequestMapping(value = "/record/insert", method = RequestMethod.POST)
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		LOG.debug("SONO NELL'INSERT");
 
+		try{
 		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
@@ -226,6 +229,9 @@ public class V2Controller {
 			service.insertRecord(record);
 
 			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
+		}
+		}catch(NumberFormatException e){
+			return "redirect:/home";
 		}
 	}
 
