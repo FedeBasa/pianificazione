@@ -1,5 +1,7 @@
 package it.soprasteria.pianificazione.v2.bean;
 
+import java.util.Date;
+
 public class ProjectBean {
 
 	private long idProject;
@@ -8,19 +10,23 @@ public class ProjectBean {
 	private String type;
 	private String currency;
 	private int businessUnit;
-	
-	
-public static ProjectBean build(long idProject, String description, String customer, int businessUnit) {
-		
+	private String utenteIns;
+	private Date dataIns;
+	private String utenteMod;
+	private Date dataMod;
+
+	public static ProjectBean build(long idProject, String description, String customer, int businessUnit, String utenteIns) {
+
 		ProjectBean instance = new ProjectBean();
 		instance.idProject = idProject;
 		instance.description = description;
 		instance.customer = customer;
 		instance.businessUnit = businessUnit;
-		
+		instance.utenteIns = utenteIns;
+
 		return instance;
 	}
-	
+
 	public void setBusinessUnit(int businessUnit) {
 		this.businessUnit = businessUnit;
 	}
@@ -67,6 +73,38 @@ public static ProjectBean build(long idProject, String description, String custo
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+
+	public String getUtenteIns() {
+		return utenteIns;
+	}
+
+	public void setUtenteIns(String utenteIns) {
+		this.utenteIns = utenteIns;
+	}
+
+	public Date getDataIns() {
+		return dataIns;
+	}
+
+	public void setDataIns(Date dataIns) {
+		this.dataIns = dataIns;
+	}
+
+	public String getUtenteMod() {
+		return utenteMod;
+	}
+
+	public void setUtenteMod(String utenteMod) {
+		this.utenteMod = utenteMod;
+	}
+
+	public Date getDataMod() {
+		return dataMod;
+	}
+
+	public void setDataMod(Date dataMod) {
+		this.dataMod = dataMod;
 	}
 
 }

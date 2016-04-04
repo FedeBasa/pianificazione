@@ -50,7 +50,7 @@ public class V2Controller {
 	@Autowired
 	private EnumService enumservice;
 
-	@InitBinder(value="v2Form")
+	@InitBinder(value = "v2Form")
 	protected void initBinder(WebDataBinder binder) {
 		binder.setValidator(formValidator);
 	}
@@ -61,7 +61,7 @@ public class V2Controller {
 		String username = SessionHelper.getUser().getUsername();
 
 		model.addAttribute("lista", service.findByUser(username));
-		
+
 		return "home";
 	}
 
@@ -94,7 +94,6 @@ public class V2Controller {
 
 		list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
 		int editable = service.getEditableState(username, month);
-	//	int editable = 60;
 		model.addObject("list", list);
 		RecordV2Bean recordV2Bean = new RecordV2Bean();
 		recordV2Bean.setMonth(month);
@@ -118,16 +117,14 @@ public class V2Controller {
 
 	@RequestMapping(value = "/autocomplete/progetto", method = RequestMethod.GET)
 	public @ResponseBody List<ProjectBean> autocompleta(@RequestParam(required = true, name = "bu") int businessUnit) {
-	
+
 		List<ProjectBean> result = projectService.findByBusinessUnit(businessUnit);
 		return result;
-	
+
 	}
 
 	@RequestMapping(value = "/record/detail/{id}", method = RequestMethod.GET)
 	public @ResponseBody RecordV2Bean detail(@PathVariable(value = "id") Long id) throws SQLException {
-
-		LOG.debug("*********************************************************************************SONO QUI");
 
 		return service.getRecord(id);
 	}
@@ -135,7 +132,6 @@ public class V2Controller {
 	@RequestMapping(value = "/record/update", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-		try{
 		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
@@ -160,7 +156,6 @@ public class V2Controller {
 		// automatico
 
 		if (result.hasErrors()) {
-			LOG.warn("EERRRRROOOOOOOREEEEEEE");
 
 			// ricarico la lista così nella jsp continuo a vedere la lista
 			List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
@@ -183,17 +178,11 @@ public class V2Controller {
 
 			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
 		}
-		}catch(NumberFormatException e){
-			LOG.debug("ECCEZIONE" );
-			return "redirect:/home";
-		}
 	}
 
 	@RequestMapping(value = "/record/insert", method = RequestMethod.POST)
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-		LOG.debug("SONO NELL'INSERT");
 
-		try{
 		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
@@ -214,7 +203,6 @@ public class V2Controller {
 		}
 
 		if (result.hasErrors()) {
-			LOG.debug("EERRRRROOOOOOOREEEEEEE " + result.getFieldError());
 			// TODO
 			// come per il metodo di modifica anche qui bisogna ricaricare la
 			// lista
@@ -230,9 +218,6 @@ public class V2Controller {
 
 			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
 		}
-		}catch(NumberFormatException e){
-			return "redirect:/home";
-		}
 	}
 
 	private String buildRedirectV2Edit(int month, int businessUnit) {
@@ -242,9 +227,7 @@ public class V2Controller {
 	@RequestMapping(value = "/record/delete", method = RequestMethod.POST)
 	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-		LOG.debug("SONO NEL DELETE");
-		try{
-			V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
+		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
 		if (v2 == null) {
 			// TODO
 			// return codice errore http permission denied
@@ -262,24 +245,16 @@ public class V2Controller {
 			// return codice errore
 			// l'utente prova a modificare un v2 non editabile
 		}
-		
-		
-          	Long id = record.getIdRecord();
-        	service.deleteRecord(id);
-        
 
-		}catch(NullPointerException ex){
-			return "redirect:/home";
-	    }
-
+		Long id = record.getIdRecord();
+		service.deleteRecord(id);
 
 		return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
 	}
-	
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public @ResponseBody JsonResponse newUpdate(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, 
-			@RequestParam(required = true, name = "id") String id, @RequestParam(required = true, name = "colname") String colname, @RequestParam(name = "value") String data) {
+	public @ResponseBody JsonResponse newUpdate(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, @RequestParam(required = true, name = "id") String id,
+			@RequestParam(required = true, name = "colname") String colname, @RequestParam(name = "value") String data) {
 
 		V2Bean v2 = SessionHelper.getV2(month, businessUnit);
 		if (v2 == null) {
@@ -330,11 +305,11 @@ public class V2Controller {
 				}
 
 				boolean updated = service.v2Update(Long.parseLong(id), month, realColname, value, SessionHelper.getUser().getUsername());
-				
+
 				if (updated) {
 					return JsonResponse.build(JsonResponse.CODE_SUCCESS, "Aggiornamento effettuato correttamente");
 				}
-				
+
 				return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore  non valido ");
 
 			}

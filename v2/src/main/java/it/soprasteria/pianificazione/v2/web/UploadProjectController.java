@@ -3,7 +3,6 @@ package it.soprasteria.pianificazione.v2.web;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,61 +37,45 @@ public class UploadProjectController {
 	}
 	
 	@RequestMapping(value = "/excel/upload/project", method = RequestMethod.POST)
-	public String uploadProject(@ModelAttribute("uploadProjectBean") UploadProjectBean uploadProjectBean, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+	public String uploadProject(@ModelAttribute("uploadProjectBean") UploadProjectBean uploadProjectBean, BindingResult result, Model model, RedirectAttributes redirectAttributes) throws DigestException, IOException {
 
 		
 		MultipartFile multipartFile = uploadProjectBean.getFile();
 		
 		ExcelProjectDigester digester = new ExcelProjectDigester();
 		
-		try {
+		digester.load(multipartFile.getInputStream());
 		
-			digester.load(multipartFile.getInputStream());
-			
-			digester.validate();
-			
-			model.addAttribute("digester", digester);
-			
-			SessionHelper.storeProjectDigester(digester);
-			
-		} catch(Exception e) {
-
-			e.printStackTrace();
-			return "error_message_project";
-		}
+		digester.validate(SessionHelper.getUser().getUsername());
 		
+		model.addAttribute("digester", digester);
+		
+		SessionHelper.storeProjectDigester(digester);
+			
 		return "upload_progetti";
 	}
+	
 	@RequestMapping(value = "/excel/save/project", method = RequestMethod.POST)
 	public String saveProject(Model model) {
 	
-		try{
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
 		
 		projectService.save(digester.getList());
 		
 		SessionHelper.clearProjectDigester();
 		   
-		}catch(Exception e) {
-			e.printStackTrace();
-			return "error_message_project";
-		}
 		return "redirect:/excel/upload/project";
 	}	
 
 	@RequestMapping(value = "/excel/replace/project", method = RequestMethod.POST)
 	public String replaceProject(Model model) {
-	try{
+
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
 		
 		projectService.replace(digester.getList());
 		
 		SessionHelper.clearProjectDigester();
 		
-	}catch(Exception e){
-		e.printStackTrace();
-		return "error_message_project";
-	}
 		// TODO
 		// aggiungere messaggio di conferma operazione
 

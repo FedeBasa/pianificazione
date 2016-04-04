@@ -1,5 +1,7 @@
 package it.soprasteria.pianificazione.v2.web;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.soprasteria.pianificazione.v2.bean.upload.UploadEmployeeBean;
 import it.soprasteria.pianificazione.v2.digester.ExcelEmployeeDigester;
+import it.soprasteria.pianificazione.v2.exception.DigestException;
 import it.soprasteria.pianificazione.v2.service.EmployeeService;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 
@@ -33,61 +36,45 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value = "/excel/upload/employee", method = RequestMethod.POST)
-	public String uploadEmployee(@ModelAttribute("uploadBean") UploadEmployeeBean uploadBean, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+	public String uploadEmployee(@ModelAttribute("uploadBean") UploadEmployeeBean uploadBean, BindingResult result, Model model, RedirectAttributes redirectAttributes) throws DigestException, IOException {
 
 		
 		MultipartFile multipartFile = uploadBean.getFile();
 		
 		ExcelEmployeeDigester digester = new ExcelEmployeeDigester();
 		
-		try {
+		digester.load(multipartFile.getInputStream());
 		
-			digester.load(multipartFile.getInputStream());
-			
-			digester.validate();
-			
-			model.addAttribute("digester", digester);
-			
-			SessionHelper.storeEmployeeDigester(digester);
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-			return "error_message_employees";			
-		}
+		digester.validate(SessionHelper.getUser().getUsername());
 		
+		model.addAttribute("digester", digester);
+		
+		SessionHelper.storeEmployeeDigester(digester);
+			
 		return "upload_risorse";
 	}
 	
 	@RequestMapping(value = "/excel/save/employee", method = RequestMethod.POST)
 	public String saveEmployee(Model model) {
 	
-		try{
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
 		
 		service.save(digester.getList());
 
 		SessionHelper.clearEmployeeDigester();
 		
-		}catch(Exception e ){
-			e.printStackTrace();
-			return "error_message_employees";	
-		}
 		return "redirect:/excel/upload/employee";
 	}	
 
 	@RequestMapping(value = "/excel/replace/employee", method = RequestMethod.POST)
 	public String replaceEmployee(Model model) {
 	
-		try{
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
 		
 		service.replace(digester.getList());
 		
 		SessionHelper.clearEmployeeDigester();
-		}catch(Exception e){
-			e.printStackTrace();
-			return "error_message_employees";	
-		}
+
 		return "redirect:/excel/upload/employee";
 	}	
 
