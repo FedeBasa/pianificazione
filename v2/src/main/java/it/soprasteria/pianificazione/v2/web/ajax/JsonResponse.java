@@ -5,6 +5,7 @@ public class JsonResponse {
 	public static final int CODE_SUCCESS = 0;
 	public static final int CODE_INVALID_COLNAME = -1;
 	public static final int CODE_INVALID_COLVALUE = -2;
+	public static final int CODE_INVALID_OPERATION = -3;
 	
 	private int code;
 	private String message;

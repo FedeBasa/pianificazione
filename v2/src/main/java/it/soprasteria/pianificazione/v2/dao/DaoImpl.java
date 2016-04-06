@@ -352,8 +352,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setString(2, item.getDescription());
 				pstm.setString(3, item.getCustomer());
 				pstm.setInt(4, item.getBusinessUnit());
-				pstm.setString(4, item.getUtenteIns());
-				pstm.setTimestamp(5, new java.sql.Timestamp(now.getTime()));
+				pstm.setString(5, item.getUtenteIns());
+				pstm.setTimestamp(6, new java.sql.Timestamp(now.getTime()));
 			}
 
 			@Override

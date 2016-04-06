@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.service.V2Service;
-import it.soprasteria.pianificazione.v2.util.SessionHelper;
 import it.soprasteria.pianificazione.v2.util.V2StatusKeys;
 
 @Controller
@@ -49,13 +48,11 @@ public class AdminController {
 		return "gestione_mese";
 	}
 	
-	// TODO sistemare path con /admin/valida
-	@RequestMapping(value = "/addConfigMonth", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/addConfigMonth", method = RequestMethod.POST)
 	public String addMonth(Model model, RedirectAttributes redirectAttributes) {
 
 		service.addNextConfigMonth();
 
 		return "redirect:/admin/gestione_mese";
-
 	} 
 }

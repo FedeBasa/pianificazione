@@ -1,5 +1,6 @@
 package it.soprasteria.pianificazione.v2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -199,9 +200,16 @@ public class V2Service {
 		return result;
 	}
 
-	public void setValidateState(String user, int month, int businessUnit) {
+	public List<String> setValidateState(String user, int month, int businessUnit) {
+
+		List<String> messageList = new ArrayList<String>();
+		
+		// TODO
+		// implementare eventuali controlli di validità
 		
 		dao.setValidateState(user, month, businessUnit);
+		
+		return messageList;
 	}
 	
 }

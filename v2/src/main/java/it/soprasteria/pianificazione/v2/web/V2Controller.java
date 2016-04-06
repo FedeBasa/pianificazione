@@ -33,6 +33,7 @@ import it.soprasteria.pianificazione.v2.service.V2Service;
 import it.soprasteria.pianificazione.v2.util.ColnameConverter;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
+import it.soprasteria.pianificazione.v2.util.V2StatusKeys;
 import it.soprasteria.pianificazione.v2.validator.FormValidator;
 import it.soprasteria.pianificazione.v2.web.ajax.JsonResponse;
 
@@ -137,28 +138,10 @@ public class V2Controller {
 	@RequestMapping(value = "/record/update", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
-		if (v2 == null) {
-			// TODO
-			// return codice errore http permission denied
+		String errorPage = checkGeneralConditions(record.getMonth(), record.getBusinessUnit());
+		if (errorPage != null) {
+			return errorPage;
 		}
-
-		if (v2.getMonth() != record.getMonth()) {
-			// TODO
-			// return codice errore
-			// l'utente sta cercando di modificare un mese diverso da quello che
-			// è in sessione
-		}
-
-		if (v2.getStato() == 100) {
-			// TODO
-			// return codice errore
-			// l'utente prova a modificare un v2 non editabile
-		}
-
-		// il bean deve essere dichiarato @Validated
-		// non bisogna invocare il metodo di validazione sul form fa Spring in
-		// automatico
 
 		if (result.hasErrors()) {
 
@@ -175,9 +158,6 @@ public class V2Controller {
 
 			service.updateRecord(record);
 
-			// TODO
-			// provare a verificare se ritornando sulla pagina si riescono a
-			// gestire dopo la redirect
 			redirectAttributes.addFlashAttribute("css", "success");
 			redirectAttributes.addFlashAttribute("msg", "Record aggiornato!");
 
@@ -188,29 +168,13 @@ public class V2Controller {
 	@RequestMapping(value = "/record/insert", method = RequestMethod.POST)
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
-		if (v2 == null) {
-			// TODO
-			// return codice errore http permission denied
-		}
-
-		if (v2.getMonth() != record.getMonth()) {
-			// TODO
-			// return codice errore
-			// l'utente sta cercando di modificare un mese diverso da quello che
-			// è in sessione
-		}
-
-		if (v2.getStato() == 100) {
-			// TODO
-			// return codice errore
-			// l'utente prova a modificare un v2 non editabile
+		String errorPage = checkGeneralConditions(record.getMonth(), record.getBusinessUnit());
+		if (errorPage != null) {
+			return errorPage;
 		}
 
 		if (result.hasErrors()) {
-			// TODO
-			// come per il metodo di modifica anche qui bisogna ricaricare la
-			// lista
+
 			List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
 			list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
 			model.addAttribute("list", list);
@@ -225,32 +189,14 @@ public class V2Controller {
 		}
 	}
 
-	private String buildRedirectV2Edit(int month, int businessUnit) {
-		return "redirect:/edit/v2?month=" + month + "&bu=" + businessUnit;
-	}
-
 	@RequestMapping(value = "/record/delete", method = RequestMethod.POST)
 	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-		V2Bean v2 = SessionHelper.getV2(record.getMonth(), record.getBusinessUnit());
-		if (v2 == null) {
-			// TODO
-			// return codice errore http permission denied
+		String errorPage = checkGeneralConditions(record.getMonth(), record.getBusinessUnit());
+		if (errorPage != null) {
+			return errorPage;
 		}
-
-		if (v2.getMonth() != record.getMonth()) {
-			// TODO
-			// return codice errore
-			// l'utente sta cercando di modificare un mese diverso da quello che
-			// è in sessione
-		}
-
-		if (v2.getStato() == 100) {
-			// TODO
-			// return codice errore
-			// l'utente prova a modificare un v2 non editabile
-		}
-
+		
 		Long id = record.getIdRecord();
 		service.deleteRecord(id);
 
@@ -261,37 +207,18 @@ public class V2Controller {
 	public @ResponseBody JsonResponse newUpdate(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, @RequestParam(required = true, name = "id") String id,
 			@RequestParam(required = true, name = "colname") String colname, @RequestParam(name = "value") String data) {
 
-		V2Bean v2 = SessionHelper.getV2(month, businessUnit);
-		if (v2 == null) {
-			// TODO
-			// return codice errore http permission denied
-		}
-
-		// TODO
-		// passare anche id del mese per controllo coerenza
-		// if(v2.getMonth() != record.getMonth()) {
-		// TODO
-		// return codice errore
-		// l'utente sta cercando di modificare un mese diverso da quello che è
-		// in sessione
-		// }
-		if (v2.getStato() == 100) {
-			// TODO
-			// return codice errore
-			// l'utente prova a modificare un v2 non editabile
+		if (checkGeneralConditions(month, businessUnit) != null) {
+			return JsonResponse.build(JsonResponse.CODE_INVALID_OPERATION, "Operazione non valida");
 		}
 
 		if (ColnameConverter.existsColname(colname)) {
 
 			String realColname = ColnameConverter.convertColname(colname);
 
-			LOG.debug("realcolname :" + realColname);
-			LOG.debug("data :" + data);
-
 			if (realColname.equals("valuta") || realColname.equals("attività")) {
 				if (!enumservice.getSet(realColname).contains(data)) {
 
-					return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore  non valido ");
+					return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore non valido");
 
 				} else {
 					service.v2Update(Long.parseLong(id), realColname, data, SessionHelper.getUser().getUsername());
@@ -330,7 +257,29 @@ public class V2Controller {
 		
 		service.setValidateState(user, month, businessUnit);
 
+		return buildRedirectV2Edit(month, businessUnit);
+	}
+	
+	private String checkGeneralConditions(int month, int businessUnit) {
+		
+		V2Bean v2 = SessionHelper.getV2(month, businessUnit);
+		if (v2 == null) {
+			return "/error/403";
+		}
+
+		if (v2.getMonth() != month) {
+			return "/error/403";
+		}
+
+		if (v2.getStato() != V2StatusKeys.OPEN) {
+			return "/error/403";
+		}
+
+		return null;
+	}
+	
+	private String buildRedirectV2Edit(int month, int businessUnit) {
 		return "redirect:/edit/v2?month=" + month + "&bu=" + businessUnit;
 	}
-
+	
 }
