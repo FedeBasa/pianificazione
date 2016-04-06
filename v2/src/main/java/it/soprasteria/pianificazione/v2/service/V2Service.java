@@ -17,6 +17,9 @@ public class V2Service {
 
 	@Autowired
 	private DaoImpl dao;
+	
+	@Autowired
+	private CalendarConfigService calendarConfigService;
 
 	public V2Bean findByMonth(int month, int businessUnit, String username) {
 
@@ -168,13 +171,6 @@ public class V2Service {
 		dao.updateV2ConfigStatus(month, enable);
 	}
 
-	/*
-	 * public List<V2Bean> getV2ToApprove(String user) {
-	 * 
-	 * List<V2Bean> v2List = dao.getV2ToApprove(user);
-	 * 
-	 * return v2List; }
-	 */
 	public List<V2Bean> getV2Config() {
 
 		List<V2Bean> v2List = dao.getV2Config();
@@ -194,24 +190,18 @@ public class V2Service {
 		} else if ("consolidato_3".equals(colname)) {
 			config = 2;
 		}
-		LOG.debug("COLNAME " + colname);
-		int totDays = dao.getTotDays(DateUtil.addMonth(month, config));
+
+		int totDays = calendarConfigService.getConfig(DateUtil.addMonth(month, config));
 		int consDays = dao.getConsDays(badgeNumber, colname, month);
-		LOG.debug("totDays :" + totDays);
-		LOG.debug("consDays :" + consDays);
 
 		int result = totDays - consDays;
 
-		LOG.debug("RESULT " + result);
 		return result;
 	}
 
-	public void setValidateState(String user, int month) {
-		dao.setValidateState(user, month);
+	public void setValidateState(String user, int month, int businessUnit) {
+		
+		dao.setValidateState(user, month, businessUnit);
 	}
 	
-	public int getEditableState(String username, int month) {
-		
-		return dao.getEditableState(username, month);
-	}
 }

@@ -40,17 +40,6 @@ public class AdminController {
 		return "redirect:/admin/gestione_mese";
 	}
 
-	// TODO sistemare path con /admin/valida
-	@RequestMapping(value = "/valida", method = RequestMethod.POST)
-	 	public String valida(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, Model model, RedirectAttributes redirectAttributes) {
-	 	    
-	 	    String user = SessionHelper.getUser().getUsername();
-	 	    service.setValidateState(user, month);
-	 	    
-	 	    // TODO sistemare
-	 		return "redirect:/edit/v2?month=" + month + "&bu=" + 791;
-	 }
-	
 	@RequestMapping(value = "/admin/gestione_mese", method = RequestMethod.GET)
 	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
 

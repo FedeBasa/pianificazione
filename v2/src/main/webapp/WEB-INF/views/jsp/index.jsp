@@ -16,15 +16,10 @@
 	$(document).ready(function() {
 
 		 $('#v2').DataTable({
-			"paging":         false}
-		);
-		function getUrlVars() {
-		    var vars = {};
-		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-		        vars[key] = value;
-		    });
-		    return vars;
-		}
+			"paging":         false
+		});
+		 
+		<c:if test="${v2Bean.stato == 100}">
 		
 		$("#aggiungi").click(function(){
 			var path="${pageContext.request.contextPath}/record/insert";
@@ -91,6 +86,7 @@
 			}
 		}
 		$("#projectDesc").easyAutocomplete(options2);
+		
 		$('#v2').editableTableWidget();
 		
 		$('#v2').on('change', function(evt,newValue){
@@ -114,9 +110,12 @@
 				return false;
 			}
 		});
+		
+		</c:if>
 
 	});
-	 
+	
+	<c:if test="${v2Bean.stato == 100}">
 	function detail(id) {
 		$.get("${pageContext.request.contextPath}/record/detail/" + id,
 				function(data) {
@@ -127,7 +126,6 @@
 					}
 					$('#employeeDesc').val(data.employeeDesc).change();
 					$('#projectDesc').val(data.projectDesc).change();
-					console.log(data.businessUnit);
 				});
 	}
 
@@ -139,7 +137,15 @@
 			return false;
 		}
 	}
-
+	
+	function getUrlVars() {
+	    var vars = {};
+	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+	        vars[key] = value;
+	    });
+	    return vars;
+	}
+	</c:if>
  </script>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
@@ -147,50 +153,52 @@
 	
 	<input type="hidden" id="responsecode">
 	<div class="container-fluid">
+		<c:if test="${v2Bean.stato == 100}">
 		<div class="row">
-					<div class="col-sm-4">
-						<div class="btn-group">
-							<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
-							<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
-							<button id="delete" type="button" class="btn btn-primary">Elimina</button>
-							<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>
-						</div>
-						
-						<div class="btn-group">
-					 		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/valida?month=${month}&bu=${businessUnit}" onsubmit="return validate(this);">
-					 			<button id="valida" type="submit" class="${editable != 50 ? 'btn btn-warning' : 'btn btn-warning disabled'}">Approva</button>
-					 		</form:form>
- 						</div>
+			<div class="col-sm-4">
+				<div class="btn-group">
+					<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
+					<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
+					<button id="delete" type="button" class="btn btn-primary">Elimina</button>
+					<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>
+				</div>
+				
+				<div class="btn-group">
+			 		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/valida?month=${month}&bu=${businessUnit}" onsubmit="return validate(this);">
+			 			<button id="valida" type="submit" class="${v2Bean.stato == 100 ? 'btn btn-warning' : 'btn btn-warning disabled'}">Valida</button>
+			 		</form:form>
 					</div>
-					<div class="col-sm-8">
-								<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
-								    <form:hidden path="month"/>
-								    <form:hidden path="businessUnit"/>
-								    <form:hidden path="idRecord"/>
-								    <form:hidden path="idProject"/>
-									<form:hidden path="badgeNumber"/>
-							
-									<spring:bind path="employeeDesc">
-											<div class="col-lg-4">
-											<label>Risorsa :</label>
-												<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
-												<form:errors path="employeeDesc" class="control-label" />
-											</div>
-									</spring:bind>
-						
-									
-									<spring:bind path="projectDesc">
-											<div class="col-lg-4">
-											<label>Progetto :</label>
-												<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
-												<form:errors path="projectDesc" class="control-label" />
-										</div>
-									</spring:bind>
-							
-								</form:form>
+			</div>
+			<div class="col-sm-8">
+				<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
+				    <form:hidden path="month"/>
+				    <form:hidden path="businessUnit"/>
+				    <form:hidden path="idRecord"/>
+				    <form:hidden path="idProject"/>
+					<form:hidden path="badgeNumber"/>
+			
+					<spring:bind path="employeeDesc">
+							<div class="col-lg-4">
+							<label>Risorsa :</label>
+								<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
+								<form:errors path="employeeDesc" class="control-label" />
+							</div>
+					</spring:bind>
+		
+					
+					<spring:bind path="projectDesc">
+							<div class="col-lg-4">
+							<label>Progetto :</label>
+								<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
+								<form:errors path="projectDesc" class="control-label" />
 						</div>
-					</div>
-					<div class = "row">
+					</spring:bind>
+			
+				</form:form>
+			</div>
+		</div>
+		</c:if>
+		<div class = "row">
 			<div class="col-lg-12">
 				<table id="v2" class="table table-bordered table-striped">
 					<thead>
@@ -200,11 +208,11 @@
 							<th>Progetto</th>
 							<th>Tariffa</th>
 							<th>Valuta</th>
-							<th>Cons 1</th>
+							<th>Cons 1 (<c:out value="${cons1}"/>)</th>
 							<th>Prod 1</th>
-							<th>Cons 2</th>
+							<th>Cons 2 (<c:out value="${cons2}"/>)</th>
 							<th>Prod 2</th>
-							<th>Cons 3</th>
+							<th>Cons 3 (<c:out value="${cons3}"/>)</th>
 							<th>Prod 3</th>
 						</tr>
 					</thead>
@@ -227,8 +235,8 @@
 					</tbody>
 				</table>
 			</div>
-			</div>
 		</div>
+	</div>
 	<jsp:include page="../fragments/footer.jsp" />	
 </body>
 

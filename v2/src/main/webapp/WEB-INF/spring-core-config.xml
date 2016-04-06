@@ -12,21 +12,20 @@
 	<cache:annotation-driven />
 	<context:component-scan base-package="it.soprasteria.pianificazione.v2" />
 
-	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/pianificazione" expected-type="javax.sql.DataSource" />
-	
-	<!-- 
-	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:comp/env/jdbc/pianificazione" />
-	</bean>
-	 -->
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/pianificazione"
+		expected-type="javax.sql.DataSource" />
+
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+		<property name="jndiName" value="java:comp/env/jdbc/pianificazione" /> </bean> -->
 
 	<bean id="V2Service" class="it.soprasteria.pianificazione.v2.service.V2Service" />
-	<bean id="Employee"
-		class="it.soprasteria.pianificazione.v2.service.EmployeeService" />
+	<bean id="Employee" class="it.soprasteria.pianificazione.v2.service.EmployeeService" />
 	<bean id="Project" class="it.soprasteria.pianificazione.v2.service.ProjectService" />
 	<bean id="User" class="it.soprasteria.pianificazione.v2.service.UserService" />
-	<bean id="Enum" class="it.soprasteria.pianificazione.v2.service.EnumService"/>
-	<bean id="Pm" class="it.soprasteria.pianificazione.v2.service.PmService"/>
+	<bean id="Enum" class="it.soprasteria.pianificazione.v2.service.EnumService" />
+	<bean id="Pm" class="it.soprasteria.pianificazione.v2.service.PmService" />
+	<bean id="CalendarConfig" class="it.soprasteria.pianificazione.v2.service.CalendarConfigService" />
+	
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
 	</bean>
@@ -39,15 +38,14 @@
 	<bean id="DaoImpl" class="it.soprasteria.pianificazione.v2.dao.DaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<bean id="EnumDaoImpl" class="it.soprasteria.pianificazione.v2.dao.EnumDaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<bean id="PmDaoImpl" class="it.soprasteria.pianificazione.v2.dao.PmDaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
 
 	<!-- JMX for ehcache -->
 	<bean id="managementService" class="net.sf.ehcache.management.ManagementService"
@@ -59,7 +57,7 @@
 		<constructor-arg index="4" value="true" />
 		<constructor-arg index="5" value="true" />
 	</bean>
-	
+
 	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
 		<property name="locateExistingServerIfPossible" value="true" />
 
