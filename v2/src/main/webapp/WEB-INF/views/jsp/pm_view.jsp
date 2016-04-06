@@ -24,12 +24,12 @@
 			 </thead>
 			 <c:forEach items="${list}" var = "stato">
 			     <tr>
-					<td><c:out value="${stato.profilo}" /></td>
+					<td><c:out value="${stato.pm}" /></td>
 					<td>
-					<c:out value = "${stato.bu}"/>
+					<c:out value = "${stato.mese}"/>
 					</td>
 					<td>
-					<c:out value = "${stato.active}"/>
+					<c:out value = "${stato.stato}"/>
 					</td>
 				</tr>
 			 </c:forEach>
