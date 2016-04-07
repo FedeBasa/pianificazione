@@ -20,6 +20,7 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="${urlHome}">Home</a></li>
 	           	<li class="dropdown">
+	           	<%if(SessionHelper.getUser().getProfilo().equals("admin")){ %>
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Amministrazione <span class="caret"></span></a>
 					<ul class="dropdown-menu open">
 					    <li><a class="" href="${urlUploadEmployee}">Caricamento Risorse</a></li>
@@ -27,6 +28,7 @@
 					    <li><a class="" href="${urlApprova}">Gestione V2</a></li>
 					</ul>
 				</li>
+		 <%} %>
 				<li class=""><a href="${urlLogout}">Logout</a></li>
 			</ul>
 		</div>
