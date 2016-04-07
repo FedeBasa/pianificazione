@@ -18,16 +18,12 @@
 			<thead>
 				<tr>
 				 <th>ProjectManager</th>
-				 <th>Business Unit</th>
 				 <th>Stato V2</th>
 				</tr>
 			 </thead>
 			 <c:forEach items="${list}" var = "stato">
 			     <tr>
 					<td><c:out value="${stato.pm}" /></td>
-					<td>
-					<c:out value = "${stato.mese}"/>
-					</td>
 					<td>
 					<c:out value = "${stato.stato}"/>
 					</td>

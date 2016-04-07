@@ -34,12 +34,6 @@ public class ExcelEmployeeDigester implements Serializable {
 		
 		try (XSSFWorkbook workbook = new XSSFWorkbook (inputStream)) {
 	
-			// TODO
-			// leggere cella di controllo per verificare che il file caricato derivi dal template
-//			if (!checkWorkbook(workbook)) {
-//				throw new DigestException("Invalid input file");
-//			}
-
 			XSSFSheet sheet = workbook.getSheetAt(0);
 	
 			Iterator<Row> rowIterator = sheet.iterator();
@@ -72,7 +66,7 @@ public class ExcelEmployeeDigester implements Serializable {
 		}
 	}
 	
-	public void validate() {
+	public void validate(String username) {
 
 		this.list.clear();
 
@@ -80,7 +74,7 @@ public class ExcelEmployeeDigester implements Serializable {
 			
 			// TODO
 			// implementare la validazione del contenuto
-			this.list.add(EmployeeBean.build(rowContent[2], rowContent[1], rowContent[0]));
+			this.list.add(EmployeeBean.build(rowContent[2], rowContent[1], rowContent[0], username));
 		}
 		
 		this.infoMessages.add(this.list.size() + " elementi pronti per il salvataggio");

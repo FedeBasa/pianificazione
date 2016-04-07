@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.service.V2Service;
-import it.soprasteria.pianificazione.v2.util.SessionHelper;
 import it.soprasteria.pianificazione.v2.util.V2StatusKeys;
 
 @Controller
@@ -40,14 +39,6 @@ public class AdminController {
 		return "redirect:/admin/gestione_mese";
 	}
 
-	@RequestMapping(value = "/valida", method = RequestMethod.POST)
-	 	public String valida(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, Model model, RedirectAttributes redirectAttributes) {
-	 	    
-	 	    String user = SessionHelper.getUser().getUsername();
-	 	    service.setValidateState(user, month);
-	 		return "redirect:/edit/v2?month=" + month + "&bu=" + 791;
-	 }
-	
 	@RequestMapping(value = "/admin/gestione_mese", method = RequestMethod.GET)
 	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
 
@@ -57,12 +48,11 @@ public class AdminController {
 		return "gestione_mese";
 	}
 	
-	@RequestMapping(value = "/addConfigMonth", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/addConfigMonth", method = RequestMethod.POST)
 	public String addMonth(Model model, RedirectAttributes redirectAttributes) {
 
 		service.addNextConfigMonth();
 
 		return "redirect:/admin/gestione_mese";
-
 	} 
 }

@@ -18,7 +18,6 @@ function validate(form) {
 		return false;
 	}
 }
-
 </script>
 </head>
 <jsp:include page="../fragments/nav.jsp" />
@@ -46,7 +45,7 @@ function validate(form) {
 			 </c:forEach>
 		</table>
 		
-		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/addConfigMonth">
+		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/admin/addConfigMonth">
 	       <button type="submit" class="btn btn-primary">Aggiungi Mese</button>       
 		</form:form>
 	</div>

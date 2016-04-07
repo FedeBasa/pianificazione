@@ -39,9 +39,7 @@ public interface Dao {
 	public void updateMonthsStatus(final int month, int enable);
 	
 	public void updateV2ConfigStatus(final int month, int enable);
-	/*
-	public List<V2Bean> getV2ToApprove(final String username);
-	*/
+
 	public List<V2Bean> getV2Config();
 	
 	public void updateEditable(String user, int month);
@@ -62,11 +60,9 @@ public interface Dao {
 	
 	public int getConsDays(int badgeNumber,String colname, int mese);
 	
-	public void setValidateState(final String user, final int month);
+	public void setValidateState(String user, int month, int businessUnit);
 	
-	public int getEditableState(String username, int month);
+	public void persistProject(List<ProjectBean> list);
 
-	void persistProject(List<ProjectBean> list);
-
-	void deleteAllProjects();
+	public void deleteAllProjects();
 }

@@ -38,6 +38,15 @@ public class SessionFilter implements Filter {
 			return;
 		}
 		
+		if (requestURI.startsWith("/v2/admin/")) {
+			
+			if (!"admin".equalsIgnoreCase(user.getProfilo())) {
+				((HttpServletResponse)response).sendRedirect("/v2/home");
+				return;
+			}
+		}
+
+		
 		chain.doFilter(request, response);
 	}
 

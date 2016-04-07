@@ -40,4 +40,16 @@
 	<persistence strategy="localTempSwap" />
 	</cache>
 	
+	<cache name="calendarConfigCache"
+	maxEntriesLocalHeap="20"
+	maxEntriesLocalDisk="20"
+	eternal="false" 
+	diskSpoolBufferSizeMB="1"
+	timeToIdleSeconds="300"
+    timeToLiveSeconds="86400"
+	memoryStoreEvictionPolicy="LFU"
+	transactionalMode="off">
+	<persistence strategy="localTempSwap" />
+	</cache>
+
 </ehcache>
