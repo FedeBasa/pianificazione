@@ -19,7 +19,7 @@ public class ExportV2Service {
 
 	public byte[] export(List<RecordV2Bean> record) throws InvalidFormatException, IOException {
 
-		XSSFWorkbook workbook = new XSSFWorkbook(new File("D:\\Profiles\\fbasanese\\V2Export.xlsx"));
+		XSSFWorkbook workbook = new XSSFWorkbook(new File("D://Profiles//fbasanese//workspace//v2//src//main//resources//excel//template.xlsx"));
 
 		XSSFSheet sheet = workbook.getSheet("Foglio1");
 
@@ -37,14 +37,14 @@ public class ExportV2Service {
 			cell3.setCellValue(org.apache.commons.lang.StringUtils.leftPad(bean.getBadgeNumber().toString(), 6, "0"));
 			Cell cell4 = row.createCell(3);
 			cell4.setCellValue(bean.getCognome());
-			/*
+		
 			Cell cell5 = row.createCell(4);
 			if (bean.getActivityType().equals("forfait")) {
 				cell5.setCellValue("f");
 			} else if (bean.getActivityType().equals("regie")) {
 				cell5.setCellValue("r");
 			}
-			*/
+		
 			Cell cell6 = row.createCell(5);
 			cell6.setCellValue(bean.getProjectDesc());
 			Cell cell7 = row.createCell(6);

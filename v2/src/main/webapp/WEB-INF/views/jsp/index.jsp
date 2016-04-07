@@ -17,6 +17,9 @@
 		 $('#v2').DataTable({
 			"paging":         false
 		});
+		 $("#download").click(function(){
+			 $.get("${pageContext.request.contextPath}/export/v2?month=${v2Bean.month}&bu=${v2Bean.businessUnit}");			 
+		 });
 		 
 		<c:if test="${v2Bean.stato == 100}">
 		
@@ -154,7 +157,7 @@
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="btn-group">
-					<button id="download" type="button" class="btn btn-primary" onclick="tableToExcel('v2','v2')">Export</button>
+					<button id="download" type="button" class="btn btn-primary" >Export</button>
 					<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
 					<button id="delete" type="button" class="btn btn-primary">Elimina</button>
 					<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>

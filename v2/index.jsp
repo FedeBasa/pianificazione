@@ -15,7 +15,6 @@
 </script>
 <script
 	src="${pageContext.request.contextPath}/resources/EasyAutocomplete-1.3.3/jquery.easy-autocomplete.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/table.js"></script>
 <script>
 	$(document).ready(function() {
 		
