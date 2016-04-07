@@ -27,6 +27,7 @@
 	<bean id="User" class="it.soprasteria.pianificazione.v2.service.UserService" />
 	<bean id="Enum" class="it.soprasteria.pianificazione.v2.service.EnumService"/>
 	<bean id="Pm" class="it.soprasteria.pianificazione.v2.service.PmService"/>
+	<bean id="Export" class="it.soprasteria.pianificazione.v2.service.ExportV2Service"/>
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
 	</bean>
