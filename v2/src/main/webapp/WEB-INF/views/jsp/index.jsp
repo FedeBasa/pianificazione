@@ -18,7 +18,7 @@
 			"paging":         false
 		});
 		 $("#download").click(function(){
-			 $.get("${pageContext.request.contextPath}/export/v2?month=${v2Bean.month}&bu=${v2Bean.businessUnit}");			 
+			 window.location = "${pageContext.request.contextPath}/export/v2?month=${v2Bean.month}&bu=${v2Bean.businessUnit}";			 
 		 });
 		 
 		<c:if test="${v2Bean.stato == 100}">

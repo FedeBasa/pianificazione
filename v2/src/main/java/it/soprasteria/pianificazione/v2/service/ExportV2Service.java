@@ -1,10 +1,8 @@
 package it.soprasteria.pianificazione.v2.service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -14,12 +12,15 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.util.DateUtil;
 
 public class ExportV2Service {
 
-	public byte[] export(List<RecordV2Bean> record) throws InvalidFormatException, IOException {
+	public byte[] export(List<RecordV2Bean> record) throws InvalidFormatException, IOException, ParseException {
 
-		XSSFWorkbook workbook = new XSSFWorkbook(new File("D://Profiles//fbasanese//workspace//v2//src//main//resources//excel//template.xlsx"));
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		
+		XSSFWorkbook workbook = new XSSFWorkbook(classLoader.getResourceAsStream("excel/template.xlsx"));
 
 		XSSFSheet sheet = workbook.getSheet("Foglio1");
 
@@ -30,7 +31,7 @@ public class ExportV2Service {
 			Row row = sheet.createRow(i);
 			
 			Cell cell = row.createCell(0);
-			cell.setCellValue(bean.getMonth());
+			cell.setCellValue(DateUtil.convertExportFormat(bean.getMonth()));
 			Cell cell2 = row.createCell(1);
 			cell2.setCellValue(org.apache.commons.lang.StringUtils.leftPad(bean.getBusinessUnit().toString(), 4, "0"));
 			Cell cell3 = row.createCell(2);
@@ -40,9 +41,9 @@ public class ExportV2Service {
 		
 			Cell cell5 = row.createCell(4);
 			if (bean.getActivityType().equals("forfait")) {
-				cell5.setCellValue("f");
+				cell5.setCellValue("F");
 			} else if (bean.getActivityType().equals("regie")) {
-				cell5.setCellValue("r");
+				cell5.setCellValue("R");
 			}
 		
 			Cell cell6 = row.createCell(5);

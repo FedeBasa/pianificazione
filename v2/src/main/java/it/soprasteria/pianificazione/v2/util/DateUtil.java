@@ -9,6 +9,7 @@ public class DateUtil {
 
 	private static final SimpleDateFormat SDF_MONTH = new SimpleDateFormat("yyyyMM");
 	private static final SimpleDateFormat SDF_EXPORT = new SimpleDateFormat("MM/yyyy");
+	
 	public static int previousMonth(int month) {
 		
 		try {
@@ -69,12 +70,11 @@ public class DateUtil {
 		return false;
 	}
 	
-	
-	public static String exportFormat(int month) throws ParseException{
+	public static String convertExportFormat(int month) throws ParseException {
 		
 		Date parsedMonth = SDF_MONTH.parse(String.valueOf(month));
 		
-		return (SDF_MONTH.format(SDF_MONTH.toString()));
+		return SDF_EXPORT.format(parsedMonth);
 	}
 	
 }
