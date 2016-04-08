@@ -46,7 +46,7 @@ public class SessionFilter implements Filter {
 		
 		if (requestURI.startsWith("/v2/admin/")) {
 			
-			if (!"admin".equalsIgnoreCase(user.getProfilo())||!logService.firstlogin(user.getUsername())==1) {
+			if (!"admin".equalsIgnoreCase(user.getProfilo())||logService.firstlogin(user.getUsername())==1) {
 				((HttpServletResponse)response).sendRedirect("/v2/home");
 				return;
 			}
