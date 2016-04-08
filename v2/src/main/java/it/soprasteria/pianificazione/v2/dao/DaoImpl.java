@@ -879,5 +879,36 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 		});
 	}
+	
+	@Override
+	public int controlLogin(final String userid){
+		
+		StringBuilder sb = new StringBuilder();
+			
+		sb.append("SELECT first_login");
+		sb.append(" FROM users");
+		sb.append(" WHERE username = ?");
+		
+		List<Integer> firstLog= getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter(){
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+				
+				ps.setString(1, userid);
+				
+			}
+		},new RowMapper<Integer>(){
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				
+				int firstlogin;
+				
+				firstlogin = rs.getInt("first_login");
+				LOG.debug("FIRSTLOGIN " + firstlogin);
+				return firstlogin;
+			}
+		});
+		
+		return firstLog.get(0);
+	}
 
 }

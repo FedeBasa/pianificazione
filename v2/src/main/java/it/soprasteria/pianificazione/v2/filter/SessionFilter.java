@@ -11,11 +11,17 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import it.soprasteria.pianificazione.v2.bean.UserBean;
+import it.soprasteria.pianificazione.v2.service.LoginService;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 
 public class SessionFilter implements Filter {
 
+	@Autowired
+	LoginService logService;
+	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
@@ -40,7 +46,7 @@ public class SessionFilter implements Filter {
 		
 		if (requestURI.startsWith("/v2/admin/")) {
 			
-			if (!"admin".equalsIgnoreCase(user.getProfilo())) {
+			if (!"admin".equalsIgnoreCase(user.getProfilo())||!logService.firstlogin(user.getUsername())==1) {
 				((HttpServletResponse)response).sendRedirect("/v2/home");
 				return;
 			}
