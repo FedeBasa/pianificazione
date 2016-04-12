@@ -9,9 +9,8 @@ public class UserBean {
 	private String profilo;
 	private String active;
 	private int bu;
+	private int firstlogin;
 	
-
-
 	public static UserBean build(String username, String name, String surname, String profilo) {
 
 		UserBean result = new UserBean();
@@ -22,6 +21,14 @@ public class UserBean {
 		result.profilo = profilo;
 
 		return result;
+	}
+	
+	public int getFirstlogin() {
+		return firstlogin;
+	}
+
+	public void setFirstlogin(int firstlogin) {
+		this.firstlogin = firstlogin;
 	}
 	
 	public int getBu() {

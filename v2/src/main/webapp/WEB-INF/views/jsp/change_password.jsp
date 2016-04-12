@@ -12,11 +12,18 @@
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body> 
-  <div class="col-lg-12">
+  <div class="col-lg-4">
    <div class="container-fluid">
-   
-   			
+   <form>
+         <label >Vecchia password</label>
+         <input type = "password"  class="form-control" id = "oldPw">
+         <label>Nuova password</label>
+         <input type = "password" class="form-control" id = "newPw">
+         <br><br>
+        &nbsp <input type = "submit" id="submit" class="btn btn-primary" value = "Salva nuova password">
+     </form>    
 	</div>
 	</div>
-   
+     
 </body>
+</html>

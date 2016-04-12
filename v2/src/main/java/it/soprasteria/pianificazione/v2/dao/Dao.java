@@ -66,5 +66,7 @@ public interface Dao {
 
 	public void deleteAllProjects();
 	
-	public int controlLogin(String userid);
+	public int controlChangePassword(String userid);
+	
+	public void changePassword(String userId, String password, String prevPw);
 }

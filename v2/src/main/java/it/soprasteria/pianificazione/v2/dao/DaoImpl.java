@@ -686,6 +686,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			@Override
 			public UserBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				UserBean user = UserBean.build(rs.getString("username"), rs.getString("nome"), rs.getString("cognome"), rs.getString("profilo"));
+				user.setFirstlogin(rs.getInt("first_login"));
 				return user;
 			}
 		});
@@ -881,7 +882,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 	
 	@Override
-	public int controlLogin(final String userid){
+	public int controlChangePassword(final String userid){
 		
 		StringBuilder sb = new StringBuilder();
 			
@@ -908,7 +909,44 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 		});
 		
+		LOG.debug("LOGIN STATUS : "+ firstLog.get(0) );
+		
 		return firstLog.get(0);
+	}
+	
+	@Override
+	public void changePassword(final String userId,final String password,final String prevPw){
+		final StringBuilder sb = new StringBuilder();
+		
+		sb.append("UPDATE users");
+		sb.append(" SET password = ? , first_login = 1");
+		sb.append(" WHERE id_user = ?");
+		if(prevPw.equals(getJdbcTemplate().query("SELECT password FROM users WHERE id_user = ? ", new PreparedStatementSetter(){
+			@Override
+			public void setValues(PreparedStatement ps) throws SQLException {
+                     ps.setString(1, prevPw);				
+			}
+		},new RowMapper<String>(){
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				String oldPw  = rs.getString("password");
+				return oldPw;
+			}
+		}).get(0))){
+			
+			getJdbcTemplate().update(new PreparedStatementCreator(){
+				@Override
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+					PreparedStatement pstm = con.prepareStatement(sb.toString());
+					pstm.setString(1,password);
+					pstm.setString(2, userId);
+					
+					return pstm;
+				}
+			});
+		}
+		
 	}
 
 }

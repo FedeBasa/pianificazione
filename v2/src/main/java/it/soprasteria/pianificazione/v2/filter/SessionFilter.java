@@ -11,22 +11,25 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.log4j.Logger;
 
 import it.soprasteria.pianificazione.v2.bean.UserBean;
-import it.soprasteria.pianificazione.v2.service.LoginService;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 
-public class SessionFilter implements Filter {
 
-	@Autowired
-	LoginService logService;
+
+public class SessionFilter implements Filter {
 	
+	private static final Logger LOG = Logger.getLogger(SessionFilter.class);
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
 		String requestURI = httpServletRequest.getRequestURI();
+		
+		
+		
 		
 		if (requestURI.endsWith("/login") || requestURI.endsWith(".css") || requestURI.endsWith(".js")) {
 			
@@ -36,22 +39,36 @@ public class SessionFilter implements Filter {
 		
 		UserBean user = SessionHelper.getUser(httpServletRequest.getSession());
 		
+		
+		
 		if (user == null) {
 			// l'utente non si è mai loggato
 			// lo rimango sulla schermata di login
 			
 			((HttpServletResponse)response).sendRedirect("/v2/login");
 			return;
+			
+		} 
+		
+		if(requestURI.endsWith("changepw")||requestURI.endsWith("logout")){
+
+			chain.doFilter(request, response);
+			return;
 		}
 		
 		if (requestURI.startsWith("/v2/admin/")) {
 			
-			if (!"admin".equalsIgnoreCase(user.getProfilo())||logService.firstlogin(user.getUsername())==1) {
+			if (!"admin".equalsIgnoreCase(user.getProfilo())) {
 				((HttpServletResponse)response).sendRedirect("/v2/home");
 				return;
 			}
 		}
-
+		
+		if(user.getFirstlogin()==0){
+			LOG.debug("USERSTATUS :" + user.getFirstlogin());
+			((HttpServletResponse)response).sendRedirect("/v2/changepw");
+			return;
+		}
 		
 		chain.doFilter(request, response);
 	}

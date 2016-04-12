@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.soprasteria.pianificazione.v2.bean.UserBean;
@@ -69,5 +70,22 @@ public class LoginController {
 		
 		return "redirect:/login";
 	}	
+	
+	@RequestMapping(value = "/changepw", method = RequestMethod.GET)
+	public String changepw(Model model){
+		
+		return("change_password");
+		
+	}
+	
+	@RequestMapping(value = "/saveNewPassword", method = RequestMethod.POST)
+	public String saveNewPassword(@RequestParam(name = "userid")String userid , @RequestParam(name = "npw") String npw , @RequestParam(name = "opw") String opw){
+		
+		service.changePw(userid, npw, opw);
+		
+		return "redirect:/login";
+	}
+	
+	
 
 }
