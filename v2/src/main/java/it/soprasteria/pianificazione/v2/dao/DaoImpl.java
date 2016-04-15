@@ -686,6 +686,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			@Override
 			public UserBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				UserBean user = UserBean.build(rs.getString("username"), rs.getString("nome"), rs.getString("cognome"), rs.getString("profilo"));
+				user.setPassword(rs.getString("password"));
 				user.setFirstlogin(rs.getInt("first_login"));
 				return user;
 			}
@@ -920,16 +921,20 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		
 		sb.append("UPDATE users");
 		sb.append(" SET password = ? , first_login = 1");
-		sb.append(" WHERE id_user = ?");
-		if(prevPw.equals(getJdbcTemplate().query("SELECT password FROM users WHERE id_user = ? ", new PreparedStatementSetter(){
+		sb.append(" WHERE username = ?");
+		
+		if(prevPw.equals(getJdbcTemplate().query("SELECT password FROM users WHERE username = ? ", new PreparedStatementSetter(){
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
-                     ps.setString(1, prevPw);				
+                     ps.setString(1, userId);
+                     LOG.debug(userId);
 			}
 		},new RowMapper<String>(){
 			@Override
 			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				LOG.debug(prevPw);
 				String oldPw  = rs.getString("password");
+				LOG.debug("VECCHIA PASSWORD " + oldPw);
 				return oldPw;
 			}
 		}).get(0))){

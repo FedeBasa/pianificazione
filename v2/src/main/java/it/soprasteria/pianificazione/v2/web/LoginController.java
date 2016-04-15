@@ -42,8 +42,6 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@ModelAttribute("userbean") @Validated UserBean userBean, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		
-		// TODO
-		// aggiungere validator per check username e password non vuoti
 		if (result.hasErrors()) {
 
 			LOG.warn("Dati inseriti non validi");
@@ -79,9 +77,11 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/saveNewPassword", method = RequestMethod.POST)
-	public String saveNewPassword(@RequestParam(name = "userid")String userid , @RequestParam(name = "npw") String npw , @RequestParam(name = "opw") String opw){
+	public String saveNewPassword(@RequestParam(name = "npw") String npw ){
+		LOG.debug("CHIAMATO NEW PASSWORD");
 		
-		service.changePw(userid, npw, opw);
+		service.changePw(SessionHelper.getUser().getUsername(), npw,SessionHelper.getUser().getPassword());
+		SessionHelper.logout();
 		
 		return "redirect:/login";
 	}

@@ -50,7 +50,7 @@ public class SessionFilter implements Filter {
 			
 		} 
 		
-		if(requestURI.endsWith("changepw")||requestURI.endsWith("logout")){
+		if(requestURI.endsWith("changepw")||requestURI.endsWith("logout")||requestURI.endsWith("saveNewPassword")){
 
 			chain.doFilter(request, response);
 			return;

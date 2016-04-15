@@ -26,6 +26,4 @@ public class PmViewController {
 		return "pm_view";
 	}
 	
-	
-	
 }
