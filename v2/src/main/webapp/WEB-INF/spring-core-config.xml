@@ -26,6 +26,7 @@
 	<bean id="Pm" class="it.soprasteria.pianificazione.v2.service.PmService" />
 	<bean id="Export" class="it.soprasteria.pianificazione.v2.service.ExportV2Service" />
 	<bean id="CalendarConfig" class="it.soprasteria.pianificazione.v2.service.CalendarConfigService" />
+	<bean id="WorkloadService" class="it.soprasteria.pianificazione.v2.service.WorkloadService" />
 	
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
@@ -45,6 +46,10 @@
 	</bean>
 
 	<bean id="PmDaoImpl" class="it.soprasteria.pianificazione.v2.dao.PmDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="WorkloadDaoImpl" class="it.soprasteria.pianificazione.v2.dao.WorkloadDaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 

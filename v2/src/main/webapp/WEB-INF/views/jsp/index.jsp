@@ -20,6 +20,9 @@
 		 $("#download").click(function(){
 			 window.location = "${pageContext.request.contextPath}/export/v2?month=${v2Bean.month}&bu=${v2Bean.businessUnit}";			 
 		 });
+		 $("#workload").click(function(){
+			 window.location = "${pageContext.request.contextPath}/workload?month=${v2Bean.month}&bu=${v2Bean.businessUnit}";			 
+		 });
 		 
 		<c:if test="${v2Bean.stato == 100}">
 		
@@ -158,6 +161,7 @@
 			<div class="col-sm-4">
 				<div class="btn-group">
 					<button id="download" type="button" class="btn btn-primary" >Export</button>
+					<button id="workload" type="button" class="btn btn-primary" >Workload</button>
 					<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
 					<button id="delete" type="button" class="btn btn-primary">Elimina</button>
 					<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>
@@ -208,12 +212,12 @@
 							<th>Progetto</th>
 							<th>Tariffa</th>
 							<th>Valuta</th>
-							<th>Cons 1 (<c:out value="${cons1}"/>)</th>
-							<th>Prod 1</th>
-							<th>Cons 2 (<c:out value="${cons2}"/>)</th>
-							<th>Prod 2</th>
-							<th>Cons 3 (<c:out value="${cons3}"/>)</th>
-							<th>Prod 3</th>
+							<th>Cons M (<c:out value="${cons1}"/>)</th>
+							<th>Prod M</th>
+							<th>Cons M+1 (<c:out value="${cons2}"/>)</th>
+							<th>Prod M+1</th>
+							<th>Cons M+2 (<c:out value="${cons3}"/>)</th>
+							<th>Prod M+2</th>
 						</tr>
 					</thead>
 					<tbody>	

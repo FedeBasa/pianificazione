@@ -11,7 +11,7 @@
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#">Project Name</a>
+			<a class="navbar-brand" href="#">Pianificazione Risorse</a>
 		</div>
 		<%
 		if (SessionHelper.getUser() != null) {

@@ -26,7 +26,7 @@
 			<tr>
 				<c:if test="${bean.stato == 50 || bean.stato == 100}">
 					<td>
-						<a href="${pageContext.request.contextPath}/edit/v2?month=${bean.month}&bu=${bean.businessUnit}"><c:out value="${bean.month}" /></a>
+						<a href="${pageContext.request.contextPath}/edit/v2?month=${bean.month}&bu=${bean.businessUnit}"><c:out value="${bean.formattedMonth}" /></a>
 					</td>
 				</c:if>
 				<c:if test="${bean.stato == 10}">

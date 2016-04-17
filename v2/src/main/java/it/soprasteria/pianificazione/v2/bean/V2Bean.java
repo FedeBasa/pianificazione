@@ -1,5 +1,9 @@
 package it.soprasteria.pianificazione.v2.bean;
 
+import java.text.ParseException;
+
+import it.soprasteria.pianificazione.v2.util.DateUtil;
+
 public class V2Bean {
 
 	private int month;
@@ -13,6 +17,14 @@ public class V2Bean {
 
 	public void setMonth(int month) {
 		this.month = month;
+	}
+	
+	public String getFormattedMonth() {
+		try {
+			return DateUtil.convertExportFormat(month);
+		} catch(ParseException e) {
+			return String.valueOf(month);
+		}
 	}
 
 	public String getUser() {

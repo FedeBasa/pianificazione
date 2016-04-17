@@ -1,6 +1,5 @@
 package it.soprasteria.pianificazione.v2.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,12 +18,12 @@ public class EmployeeService {
 	private Dao dao;
 
 	@Cacheable(value = "employeeCache")
-	public List<EmployeeBean> findAll() throws SQLException {
+	public List<EmployeeBean> findAll() {
 
 		return dao.getAllEmployees();
 	}
 
-	public EmployeeBean findById(String id) throws SQLException {
+	public EmployeeBean findById(String id) {
 		return dao.getEmployee(id);
 	}
 	
