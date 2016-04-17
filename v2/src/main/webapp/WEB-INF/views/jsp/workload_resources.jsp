@@ -11,7 +11,7 @@
 
 <script>
 	$(document).ready(function() {
-		 $('#v2').DataTable({
+		 $('#table1').DataTable({
 			"paging":         false
 		});
 		 
@@ -40,9 +40,10 @@
 					<button id="edit" type="button" class="btn btn-primary" >Edit</button>
 				</div>
 			</div>
+		</div>
 		<div class = "row">
 			<div class="col-lg-12">
-				<table id="v2" class="table table-bordered table-striped">
+				<table id="table1" class="table table-bordered table-striped">
 					<thead>
 						<tr>
 							<th>Risorsa</th>
@@ -63,7 +64,12 @@
 					<tbody>	
 					<c:forEach items="${list}" var="item">
 						<tr>
-						    <td><c:out value="${item.employeeDesc}" /></td>
+						    <td>
+							    <a href="javascript:window.open('${pageContext.request.contextPath}/workload/detail/${item.badgeNumber}?month=${month}', '', 'width=1000,height=400')">
+							    	<c:out value="${item.employeeDesc}" />
+							    </a>
+						    </td>
+						    
 							<td><c:out value="${item.work1}" /></td>
 							<td><c:out value="${item.recognized1}" /></td>
 							<td class="<c:out value="${item.nit1 gt 0 ? 'nit' : ''}"/>"><c:out value="${item.nit1}" /></td>

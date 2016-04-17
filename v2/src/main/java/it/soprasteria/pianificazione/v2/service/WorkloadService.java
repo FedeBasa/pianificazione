@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
+import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 import it.soprasteria.pianificazione.v2.dao.WorkloadDao;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
 
@@ -42,6 +43,11 @@ public class WorkloadService {
 		}
 		
 		return list;
+	}
+	
+	public List<WorkloadDetailBean> findWorkloadDetail(int month, String badgeNumber) {
+	
+		return this.dao.findWorkloadDetails(month, badgeNumber);
 	}
 	
 }

@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
+import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 import it.soprasteria.pianificazione.v2.service.WorkloadService;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 
@@ -35,4 +37,21 @@ public class WorkloadController {
 		
 		return model;
 	}
+	
+	@RequestMapping(value = "/workload/detail/{badgeNumber}", method = RequestMethod.GET)
+	public ModelAndView home(@PathVariable(value="badgeNumber") String badgeNumber, @RequestParam(required = true, name = "month") int month) {
+
+		String username = SessionHelper.getUser().getUsername();
+		
+		List<WorkloadDetailBean> list = service.findWorkloadDetail(month, badgeNumber);
+		
+		ModelAndView model = new ModelAndView();
+		model.setViewName("workload_details");
+		
+		model.addObject("list", list);
+		model.addObject("month", month);
+		
+		return model;
+	}
+
 }

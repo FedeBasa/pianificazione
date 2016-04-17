@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
+import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 
 public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 
@@ -43,6 +44,47 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 				bean.setRecognized2(rs.getInt("rec2"));
 				bean.setWork3(rs.getInt("work3"));
 				bean.setRecognized3(rs.getInt("rec3"));
+				
+				return bean;
+			}
+		});
+
+		return result;
+	}
+	
+	@Override
+	public List<WorkloadDetailBean> findWorkloadDetails(final int month, final String badgeNumber) {
+		
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("select matricola, nome_risorsa, cognome_risorsa, desc_progetto, consolidato_1, prodotto_1, consolidato_2, prodotto_2, consolidato_3, prodotto_3, utente_ins");
+		sql.append(" from u_progetti_risorse");
+		sql.append(" where mese = ?");
+		sql.append(" and matricola = ?");
+
+		List<WorkloadDetailBean> result = getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+
+				int i = 1;
+				pstm.setInt(i++, month);
+				pstm.setString(i++, badgeNumber);
+			}
+		}, new RowMapper<WorkloadDetailBean>() {
+			public WorkloadDetailBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				
+				WorkloadDetailBean bean = new WorkloadDetailBean();
+				bean.setBadgeNumber(rs.getString("matricola"));
+				bean.setName(rs.getString("nome_risorsa"));
+				bean.setSurname(rs.getString("cognome_risorsa"));
+				bean.setDescProgetto(rs.getString("desc_progetto"));
+				bean.setCons1(rs.getInt("consolidato_1"));
+				bean.setCons2(rs.getInt("consolidato_2"));
+				bean.setCons3(rs.getInt("consolidato_3"));
+				bean.setProd1(rs.getInt("prodotto_1"));
+				bean.setProd2(rs.getInt("prodotto_2"));
+				bean.setProd3(rs.getInt("prodotto_3"));
+				bean.setUsernameIns(rs.getString("utente_ins"));
 				
 				return bean;
 			}
