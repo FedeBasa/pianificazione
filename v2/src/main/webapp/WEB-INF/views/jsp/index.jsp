@@ -150,6 +150,16 @@
 	}
 	</c:if>
  </script>
+ 	<style>
+ 	
+ 	.border-left {
+ 		border-left: 1px solid black !important;
+ 	}
+ 	
+ 	.text-center {
+ 		text-align: center;
+ 	}
+ 	</style>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
 <body>
@@ -207,16 +217,26 @@
 				<table id="v2" class="table table-bordered table-striped">
 					<thead>
 						<tr>
+							<th> </th>
+							<th> </th>
+							<th> </th>
+							<th> </th>
+							<th> </th>
+							<th colspan="2" class="border-left text-center">${currentMonth}</th>
+							<th colspan="2" class="border-left text-center">${nextMonth}</th>
+							<th colspan="2" class="border-left text-center">${lastMonth}</th>
+						</tr>
+						<tr>
 							<th>Risorsa</th>
 							<th>Attivita'</th>
 							<th>Progetto</th>
 							<th>Tariffa</th>
 							<th>Valuta</th>
-							<th>Cons M (<c:out value="${cons1}"/>)</th>
+							<th class="border-left">Cons M (<c:out value="${cons1}"/>)</th>
 							<th>Prod M</th>
-							<th>Cons M+1 (<c:out value="${cons2}"/>)</th>
+							<th class="border-left">Cons M+1 (<c:out value="${cons2}"/>)</th>
 							<th>Prod M+1</th>
-							<th>Cons M+2 (<c:out value="${cons3}"/>)</th>
+							<th class="border-left">Cons M+2 (<c:out value="${cons3}"/>)</th>
 							<th>Prod M+2</th>
 						</tr>
 					</thead>
@@ -228,11 +248,11 @@
 							<td><c:out value="${item.projectDesc}" /></td>
 							<td colname="price"><c:out value="${item.price}" /></td>
 							<td colname="currency"><c:out value="${item.currency}" /></td>
-							<td colname="cons0"><c:out value="${item.cons0}" /></td>
+							<td colname="cons0" class="border-left"><c:out value="${item.cons0}" /></td>
 							<td colname="prod0"><c:out value="${item.prod0}" /></td>
-							<td colname="cons1"><c:out value="${item.cons1}" /></td>
+							<td colname="cons1" class="border-left"><c:out value="${item.cons1}" /></td>
 							<td colname="prod1"><c:out value="${item.prod1}" /></td>
-							<td colname="cons2"><c:out value="${item.cons2}" /></td>
+							<td colname="cons2" class="border-left"><c:out value="${item.cons2}" /></td>
 							<td colname="prod2"><c:out value="${item.prod2}" /></td>
 						</tr>
 					</c:forEach>

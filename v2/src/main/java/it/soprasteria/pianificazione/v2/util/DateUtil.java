@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateUtil {
 
@@ -76,5 +77,23 @@ public class DateUtil {
 		
 		return SDF_EXPORT.format(parsedMonth);
 	}
-	
+
+	public static String getMonthName(int month) {
+		return getMonthName(month, 0);
+	}
+
+	public static String getMonthName(int month, int add) {
+		
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("MMMM", Locale.ITALY);
+			
+			Date date = SDF_MONTH.parse(String.valueOf(DateUtil.addMonth(month, add)));
+			
+			return sdf.format(date);
+			
+		} catch(ParseException e) {
+			return "";
+		}
+	}
+
 }

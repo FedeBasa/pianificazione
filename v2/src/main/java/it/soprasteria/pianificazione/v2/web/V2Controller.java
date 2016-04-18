@@ -109,6 +109,10 @@ public class V2Controller {
 		model.addObject("cons1", calendarConfigService.getConfig(DateUtil.addMonth(month, 0)));
 		model.addObject("cons2", calendarConfigService.getConfig(DateUtil.addMonth(month, 1)));
 		model.addObject("cons3", calendarConfigService.getConfig(DateUtil.addMonth(month, 2)));
+		
+		model.addObject("currentMonth", DateUtil.getMonthName(month));
+		model.addObject("nextMonth", DateUtil.getMonthName(month, 1));
+		model.addObject("lastMonth", DateUtil.getMonthName(month, 2));
 
 		return model;
 	}
