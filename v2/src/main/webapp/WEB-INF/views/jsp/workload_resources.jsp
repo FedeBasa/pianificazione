@@ -28,6 +28,13 @@
  		.nonProj {
  			background-color:orange;
  		}
+	 	.border-left {
+	 		border-left: 1px solid black !important;
+	 	}
+	 	
+	 	.text-center {
+	 		text-align: center;
+	 	} 		
  	</style>
 	</head>
 	<jsp:include page="../fragments/nav.jsp" />
@@ -46,16 +53,22 @@
 				<table id="table1" class="table table-bordered table-striped">
 					<thead>
 						<tr>
+							<th> </th>
+							<th colspan="4" class="border-left text-center">${currentMonth}</th>
+							<th colspan="4" class="border-left text-center">${nextMonth}</th>
+							<th colspan="4" class="border-left text-center">${lastMonth}</th>
+						</tr>
+						<tr>
 							<th>Risorsa</th>
-							<th>Work M</th>
+							<th class="border-left">Work M</th>
 							<th>Rec M</th>
 							<th>NIT M</th>
 							<th>Non Proj M</th>
-							<th>Work M+1</th>
+							<th class="border-left">Work M+1</th>
 							<th>Rec M+1</th>
 							<th>NIT M+1</th>
 							<th>Non Proj M+1</th>
-							<th>Work M+2</th>
+							<th class="border-left">Work M+2</th>
 							<th>Rec M+2</th>
 							<th>NIT M+2</th>
 							<th>Non Proj M+2</th>
@@ -70,15 +83,15 @@
 							    </a>
 						    </td>
 						    
-							<td><c:out value="${item.work1}" /></td>
+							<td class="border-left"><c:out value="${item.work1}" /></td>
 							<td><c:out value="${item.recognized1}" /></td>
 							<td class="<c:out value="${item.nit1 gt 0 ? 'nit' : ''}"/>"><c:out value="${item.nit1}" /></td>
 							<td class="<c:out value="${item.nonProject1 gt 0 ? 'nonProj' : ''}"/>"><c:out value="${item.nonProject1}" /></td>
-							<td><c:out value="${item.work2}" /></td>
+							<td class="border-left"><c:out value="${item.work2}" /></td>
 							<td><c:out value="${item.recognized2}" /></td>
 							<td class="<c:out value="${item.nit2 gt 0 ? 'nit' : ''}"/>"><c:out value="${item.nit2}" /></td>
 							<td class="<c:out value="${item.nonProject2 gt 0 ? 'nonProj' : ''}"/>"><c:out value="${item.nonProject2}" /></td>
-							<td><c:out value="${item.work2}" /></td>
+							<td class="border-left"><c:out value="${item.work2}" /></td>
 							<td><c:out value="${item.recognized3}" /></td>
 							<td class="<c:out value="${item.nit3 gt 0 ? 'nit' : ''}"/>"><c:out value="${item.nit3}" /></td>
 							<td class="<c:out value="${item.nonProject3 gt 0 ? 'nonProj' : ''}"/>"><c:out value="${item.nonProject3}" /></td>

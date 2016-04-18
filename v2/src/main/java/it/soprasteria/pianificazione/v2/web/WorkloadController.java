@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 import it.soprasteria.pianificazione.v2.service.WorkloadService;
+import it.soprasteria.pianificazione.v2.util.DateUtil;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 
 @Controller
@@ -35,6 +36,10 @@ public class WorkloadController {
 		model.addObject("month", month);
 		model.addObject("businessUnit", businessUnit);
 		
+		model.addObject("currentMonth", DateUtil.getMonthName(month));
+		model.addObject("nextMonth", DateUtil.getMonthName(month, 1));
+		model.addObject("lastMonth", DateUtil.getMonthName(month, 2));
+		
 		return model;
 	}
 	
@@ -50,6 +55,10 @@ public class WorkloadController {
 		
 		model.addObject("list", list);
 		model.addObject("month", month);
+		
+		model.addObject("currentMonth", DateUtil.getMonthName(month));
+		model.addObject("nextMonth", DateUtil.getMonthName(month, 1));
+		model.addObject("lastMonth", DateUtil.getMonthName(month, 2));		
 		
 		return model;
 	}

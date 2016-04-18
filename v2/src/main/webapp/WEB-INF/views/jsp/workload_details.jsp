@@ -24,6 +24,13 @@
  		.nonProj {
  			background-color:orange;
  		}
+		.border-left {
+	 		border-left: 1px solid black !important;
+	 	}
+	 	
+	 	.text-center {
+	 		text-align: center;
+	 	}  		
  	</style>
 	</head>
 <body>
@@ -34,13 +41,21 @@
 				<table id="table1" class="table table-bordered table-striped">
 					<thead>
 						<tr>
+							<th> </th>
+							<th> </th>
+							<th colspan="2" class="border-left text-center">${currentMonth}</th>
+							<th colspan="2" class="border-left text-center">${nextMonth}</th>
+							<th colspan="2" class="border-left text-center">${lastMonth}</th>
+							<th> </th>
+						</tr>					
+						<tr>
 							<th>Risorsa</th>
 							<th>Progetto</th>
-							<th>Cons M</th>
+							<th class="border-left">Cons M</th>
 							<th>Prod M</th>
-							<th>Cons M+1</th>
+							<th class="border-left">Cons M+1</th>
 							<th>Prod M+1</th>
-							<th>Cons M+2</th>
+							<th class="border-left">Cons M+2</th>
 							<th>Prod M+2</th>
 							<th>Utente Ins</th>
 						</tr>
@@ -50,11 +65,11 @@
 						<tr>
 						    <td><c:out value="${item.employeeDesc}" /></td>
 							<td><c:out value="${item.descProgetto}" /></td>
-							<td><c:out value="${item.cons1}" /></td>
+							<td class="border-left"><c:out value="${item.cons1}" /></td>
 							<td><c:out value="${item.prod1}" /></td>
-							<td><c:out value="${item.cons2}" /></td>
+							<td class="border-left"><c:out value="${item.cons2}" /></td>
 							<td><c:out value="${item.prod2}" /></td>
-							<td><c:out value="${item.cons3}" /></td>
+							<td class="border-left"><c:out value="${item.cons3}" /></td>
 							<td><c:out value="${item.prod3}" /></td>
 							<td><c:out value="${item.usernameIns}" /></td>
 						</tr>
