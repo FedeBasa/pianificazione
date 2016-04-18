@@ -6,12 +6,11 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-	<title>Spring MVC</title>
 	<jsp:include page="../fragments/head.jsp" />
 </head>
-<jsp:include page="../fragments/nav.jsp" />
 <body>
-	<div class="container-fluid">
+	<jsp:include page="../fragments/nav.jsp" />
+	<div class="container-custom">
 		<c:if test="${rejected}">
 			<p class="alert alert-danger">Impossibile effettuare operazione : il nuovo mese non è ancora stato abilitato alla modifica</p>
 		</c:if>
@@ -56,5 +55,6 @@
 	       <button type="submit" class="btn btn-primary">Aggiungi Mese</button>       
 		</form:form>
 	</div>
+	<jsp:include page="../fragments/footer.jsp" />	
 </body>
 </html>

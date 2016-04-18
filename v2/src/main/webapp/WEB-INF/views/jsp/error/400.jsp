@@ -6,12 +6,11 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-	<title>Pianificazione Risorse - Errore Generico</title>
 	<jsp:include page="../../fragments/head.jsp" />
 </head>
 <jsp:include page="../../fragments/nav.jsp" />
 <body>
-	<div class="container-fluid">
+	<div class="container-custom">
 		Si è verificato un errore generico
 	</div>
 </body>

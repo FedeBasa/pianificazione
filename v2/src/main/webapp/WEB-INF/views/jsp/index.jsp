@@ -6,7 +6,7 @@
 
 <!DOCTYPE html>
 <html lang="it">
-	<head>	
+	<head>
 		<jsp:include page="../fragments/head.jsp" />
 
 <script  src= 
@@ -165,7 +165,7 @@
 <body>
 	
 	<input type="hidden" id="responsecode">
-	<div class="container-fluid">
+	<div class="container-custom">
 		<c:if test="${v2Bean.stato == 100}">
 		<div class="row">
 			<div class="col-sm-4">
@@ -222,9 +222,9 @@
 							<th> </th>
 							<th> </th>
 							<th> </th>
-							<th colspan="2" class="border-left text-center">${currentMonth}</th>
-							<th colspan="2" class="border-left text-center">${nextMonth}</th>
-							<th colspan="2" class="border-left text-center">${lastMonth}</th>
+							<th colspan="2" class="border-left text-center">${currentMonth} (<c:out value="${cons1}"/>)</th>
+							<th colspan="2" class="border-left text-center">${nextMonth} (<c:out value="${cons2}"/>)</th>
+							<th colspan="2" class="border-left text-center">${lastMonth} (<c:out value="${cons3}"/>)</th>
 						</tr>
 						<tr>
 							<th>Risorsa</th>
@@ -232,11 +232,11 @@
 							<th>Progetto</th>
 							<th>Tariffa</th>
 							<th>Valuta</th>
-							<th class="border-left">Cons M (<c:out value="${cons1}"/>)</th>
+							<th class="border-left">Cons M</th>
 							<th>Prod M</th>
-							<th class="border-left">Cons M+1 (<c:out value="${cons2}"/>)</th>
+							<th class="border-left">Cons M+1</th>
 							<th>Prod M+1</th>
-							<th class="border-left">Cons M+2 (<c:out value="${cons3}"/>)</th>
+							<th class="border-left">Cons M+2</th>
 							<th>Prod M+2</th>
 						</tr>
 					</thead>

@@ -22,7 +22,7 @@
 <jsp:include page="../fragments/nav.jsp" />
 <body> 
   <div class="col-lg-4">
-   <div class="container-fluid">
+   <div class="container-custom">
    <form id  = "pwForm" action = "${pageContext.request.contextPath}/saveNewPassword" method="post">
          <label >Vecchia password</label>
          <input type = "password"  class="form-control" id = "oldPw">

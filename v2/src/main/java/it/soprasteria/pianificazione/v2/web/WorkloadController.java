@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
+import it.soprasteria.pianificazione.v2.service.CalendarConfigService;
 import it.soprasteria.pianificazione.v2.service.WorkloadService;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
@@ -21,6 +22,8 @@ public class WorkloadController {
 
 	@Autowired
 	private WorkloadService service;
+	@Autowired
+	private CalendarConfigService calendarConfigService;
 	
 	@RequestMapping(value = "/workload", method = RequestMethod.GET)
 	public ModelAndView home(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit) {
@@ -36,6 +39,10 @@ public class WorkloadController {
 		model.addObject("month", month);
 		model.addObject("businessUnit", businessUnit);
 		
+		model.addObject("cons1", calendarConfigService.getConfig(DateUtil.addMonth(month, 0)));
+		model.addObject("cons2", calendarConfigService.getConfig(DateUtil.addMonth(month, 1)));
+		model.addObject("cons3", calendarConfigService.getConfig(DateUtil.addMonth(month, 2)));
+
 		model.addObject("currentMonth", DateUtil.getMonthName(month));
 		model.addObject("nextMonth", DateUtil.getMonthName(month, 1));
 		model.addObject("lastMonth", DateUtil.getMonthName(month, 2));
@@ -55,6 +62,10 @@ public class WorkloadController {
 		
 		model.addObject("list", list);
 		model.addObject("month", month);
+		
+		model.addObject("cons1", calendarConfigService.getConfig(DateUtil.addMonth(month, 0)));
+		model.addObject("cons2", calendarConfigService.getConfig(DateUtil.addMonth(month, 1)));
+		model.addObject("cons3", calendarConfigService.getConfig(DateUtil.addMonth(month, 2)));
 		
 		model.addObject("currentMonth", DateUtil.getMonthName(month));
 		model.addObject("nextMonth", DateUtil.getMonthName(month, 1));

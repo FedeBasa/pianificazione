@@ -7,7 +7,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <jsp:include page="../fragments/head.jsp" />
-<title>Approva mese</title>
 
 <script>
 function validate(form) {
@@ -22,7 +21,7 @@ function validate(form) {
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body>
-	<div class="container-fluid">
+	<div class="container-custom">
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>

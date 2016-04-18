@@ -1,0 +1,59 @@
+header{
+}
+.navbar-custom{
+    background-color:#CF022D;
+}
+.navbar-custom a{
+    color:#fff;
+}
+.navbar-custom .open>a, .navbar-custom .open>a:focus, .navbar-custom .open>a:hover{
+    background-color:#9F002D;
+}
+.navbar-custom a:hover,.navbar-custom .nav a:hover,.navbar-custom .open a:focus{
+    background-color:#9F002D;
+}
+.dropdown-custom{
+    background-color:#CF022D;
+}
+.dropdown-custom ul{
+    padding:0;
+}
+.dropdown-custom li > a{
+    background-color:#CF022D;
+    color:#fff;
+    padding: 10px 15px;
+}
+.dropdown-custom>li>a:focus, .dropdown-custom>li>a:hover{
+    background-color:#CF022D;
+    color:#fff;
+}
+.button-container{
+    padding:10px 0;
+}
+.search-container{
+    padding:20px 0;
+}
+.table-container{
+    padding:10px 0;
+}
+.container-custom{
+  padding:20px;
+  overflow:hidden;
+}
+.form-login{
+    margin-top:50%;
+    padding:25px;
+}
+.btn-action{
+  float:left;
+}
+.btn-validate{
+  float:right;
+}
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color:#CF022D;
+    color:#fff;
+}

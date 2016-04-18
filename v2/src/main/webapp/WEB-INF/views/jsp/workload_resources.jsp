@@ -26,7 +26,7 @@
  			background-color:yellow;
  		}
  		.nonProj {
- 			background-color:orange;
+ 			background-color:yellow;
  		}
 	 	.border-left {
 	 		border-left: 1px solid black !important;
@@ -40,7 +40,7 @@
 	<jsp:include page="../fragments/nav.jsp" />
 <body>
 	
-	<div class="container-fluid">
+	<div class="container-custom">
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="btn-group">
@@ -54,9 +54,9 @@
 					<thead>
 						<tr>
 							<th> </th>
-							<th colspan="4" class="border-left text-center">${currentMonth}</th>
-							<th colspan="4" class="border-left text-center">${nextMonth}</th>
-							<th colspan="4" class="border-left text-center">${lastMonth}</th>
+							<th colspan="4" class="border-left text-center">${currentMonth} (<c:out value="${cons1}"/>)</th>
+							<th colspan="4" class="border-left text-center">${nextMonth} (<c:out value="${cons2}"/>)</th>
+							<th colspan="4" class="border-left text-center">${lastMonth} (<c:out value="${cons3}"/>)</th>
 						</tr>
 						<tr>
 							<th>Risorsa</th>
@@ -85,15 +85,15 @@
 						    
 							<td class="border-left"><c:out value="${item.work1}" /></td>
 							<td><c:out value="${item.recognized1}" /></td>
-							<td class="<c:out value="${item.nit1 gt 0 ? 'nit' : ''}"/>"><c:out value="${item.nit1}" /></td>
+							<td class="<c:out value="${item.nit1 ne 0 ? 'nit' : ''}"/>"><c:out value="${item.nit1}" /></td>
 							<td class="<c:out value="${item.nonProject1 gt 0 ? 'nonProj' : ''}"/>"><c:out value="${item.nonProject1}" /></td>
 							<td class="border-left"><c:out value="${item.work2}" /></td>
 							<td><c:out value="${item.recognized2}" /></td>
-							<td class="<c:out value="${item.nit2 gt 0 ? 'nit' : ''}"/>"><c:out value="${item.nit2}" /></td>
+							<td class="<c:out value="${item.nit2 ne 0 ? 'nit' : ''}"/>"><c:out value="${item.nit2}" /></td>
 							<td class="<c:out value="${item.nonProject2 gt 0 ? 'nonProj' : ''}"/>"><c:out value="${item.nonProject2}" /></td>
 							<td class="border-left"><c:out value="${item.work2}" /></td>
 							<td><c:out value="${item.recognized3}" /></td>
-							<td class="<c:out value="${item.nit3 gt 0 ? 'nit' : ''}"/>"><c:out value="${item.nit3}" /></td>
+							<td class="<c:out value="${item.nit3 ne 0 ? 'nit' : ''}"/>"><c:out value="${item.nit3}" /></td>
 							<td class="<c:out value="${item.nonProject3 gt 0 ? 'nonProj' : ''}"/>"><c:out value="${item.nonProject3}" /></td>
 						</tr>
 					</c:forEach>

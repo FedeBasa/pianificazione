@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<title>Spring MVC</title>
+<title>Pianificazione Risorse</title>
 </head>
 <body>
 	<table>

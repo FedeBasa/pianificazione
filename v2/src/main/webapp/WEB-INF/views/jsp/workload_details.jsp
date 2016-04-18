@@ -35,7 +35,7 @@
 	</head>
 <body>
 	
-	<div class="container-fluid">
+	<div class="container-custom">
 		<div class = "row">
 			<div class="col-lg-12">
 				<table id="table1" class="table table-bordered table-striped">
@@ -43,9 +43,9 @@
 						<tr>
 							<th> </th>
 							<th> </th>
-							<th colspan="2" class="border-left text-center">${currentMonth}</th>
-							<th colspan="2" class="border-left text-center">${nextMonth}</th>
-							<th colspan="2" class="border-left text-center">${lastMonth}</th>
+							<th colspan="2" class="border-left text-center">${currentMonth} (<c:out value="${cons1}"/>)</th>
+							<th colspan="2" class="border-left text-center">${nextMonth} (<c:out value="${cons2}"/>)</th>
+							<th colspan="2" class="border-left text-center">${lastMonth} (<c:out value="${cons3}"/>)</th>
 							<th> </th>
 						</tr>					
 						<tr>

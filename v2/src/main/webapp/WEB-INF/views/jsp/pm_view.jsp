@@ -13,7 +13,7 @@
 <jsp:include page="../fragments/nav.jsp" />
 <body> 
   <div class="col-lg-12">
-   <div class="container-fluid">
+   <div class="container-custom">
 		<table id = "projectManager" class="table table-bordered table-striped">
 			<thead>
 				<tr>
