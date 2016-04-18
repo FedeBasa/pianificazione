@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
@@ -125,6 +126,7 @@ public class V2Service {
 		return dao.findByUser(username);
 	}
 
+	@Transactional
 	public boolean addNextMonth(String username) {
 
 		List<Integer> list = dao.getMonths(username);
@@ -145,6 +147,8 @@ public class V2Service {
 
 		if (check) {
 			dao.addNextMonth(username, lastMonth);
+			
+			LOG.info("aggiunto nuovo mese");
 			return true;
 		}
 

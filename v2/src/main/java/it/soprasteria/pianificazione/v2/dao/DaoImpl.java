@@ -541,7 +541,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		insertSql.append(" (?, ?, ?, ?)");
 
 		int nextMonth = 0;
-		int currentMonth = 0;
 
 		nextMonth = DateUtil.nextMonth(lastMonth);
 		int editable = V2StatusKeys.OPEN;
@@ -550,7 +549,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER };
 		getJdbcTemplate().update(insertSql.toString(), params, types);
 
-		addProjectsResources(username, currentMonth, nextMonth);
+		addProjectsResources(username, lastMonth, nextMonth);
 	}
 
 	@Override

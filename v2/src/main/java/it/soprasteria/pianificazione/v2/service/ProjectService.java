@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.dao.Dao;
 
@@ -17,19 +16,6 @@ public class ProjectService {
 	@Autowired
 	private Dao dao;
 	private static final Logger LOG = Logger.getLogger(EmployeeService.class);
-
-	public ProjectBean findById(long projectId) {
-
-		ProjectBean bean = new ProjectBean();
-
-		bean.setIdProject(1);
-		bean.setDescription("Desc progetto");
-		bean.setCustomer("Customer");
-		bean.setType("Forfait");
-		bean.setCurrency("EUR");
-
-		return bean;
-	}
 
 	@Cacheable(value = "projectCache")
 	public List<ProjectBean> findAll() {
