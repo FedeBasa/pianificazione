@@ -697,6 +697,33 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return userlist.get(0);
 	}
 
+	@Override
+	public UserBean findByUsername(final String username) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT *");
+		sb.append(" FROM users");
+		sb.append(" WHERE username = ?");
+		List<UserBean> userlist = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				pstm.setString(1, username);
+			}
+		}, new RowMapper<UserBean>() {
+			@Override
+			public UserBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				UserBean user = UserBean.build(rs.getString("username"), rs.getString("nome"), rs.getString("cognome"), rs.getString("profilo"));
+				user.setFirstlogin(rs.getInt("first_login"));
+				return user;
+			}
+		});
+
+		if (userlist.isEmpty()) {
+			return null;
+		}
+		return userlist.get(0);
+	}
+
 	private void enrichRecordV2Bean(RecordV2Bean bean, ResultSet rs, int rowNum) throws SQLException {
 		bean.setMonth(rs.getInt("mese"));
 		bean.setIdRecord(rs.getLong("id_unione"));
@@ -882,7 +909,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 	
 	@Override
-	public int controlChangePassword(final String userid){
+	public int checkChangePassword(final String userid){
 		
 		StringBuilder sb = new StringBuilder();
 			

@@ -14,7 +14,7 @@
 				<a class="navbar-brand" href="#">Pianificazione Risorse</a>
 			</div>
 			<%
-			if (SessionHelper.getUser() != null) {
+			if (SessionHelper.getUser(session) != null) {
 			%>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
@@ -28,8 +28,14 @@
 						    <li><a class="" href="${urlApprova}">Gestione V2</a></li>
 						</ul>
 					</li>
-			 <%} %>
+			 		<%
+			 		} 
+			 		if (request.getUserPrincipal() == null) { 
+			 		%>
 					<li class=""><a href="${urlLogout}">Logout</a></li>
+					<%
+			 		}
+					%>
 				</ul>
 			</div>
 			<%

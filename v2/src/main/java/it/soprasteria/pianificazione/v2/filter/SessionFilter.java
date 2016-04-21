@@ -1,6 +1,7 @@
 package it.soprasteria.pianificazione.v2.filter;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,8 +17,6 @@ import org.apache.log4j.Logger;
 import it.soprasteria.pianificazione.v2.bean.UserBean;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 
-
-
 public class SessionFilter implements Filter {
 	
 	private static final Logger LOG = Logger.getLogger(SessionFilter.class);
@@ -28,28 +27,36 @@ public class SessionFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest)request;
 		String requestURI = httpServletRequest.getRequestURI();
 		
-		
-		
-		
-		if (requestURI.endsWith("/login") || requestURI.endsWith(".css") || requestURI.endsWith(".js")) {
+		if (requestURI.endsWith("/login") || requestURI.endsWith("/userprincipal") || requestURI.endsWith(".css") || requestURI.endsWith(".js")) {
 			
 			chain.doFilter(request, response);
 			return;
 		}
 		
 		UserBean user = SessionHelper.getUser(httpServletRequest.getSession());
-		
-		
-		
 		if (user == null) {
-			// l'utente non si è mai loggato
-			// lo rimango sulla schermata di login
 			
-			((HttpServletResponse)response).sendRedirect("/v2/login");
-			return;
+			Principal userPrincipal = httpServletRequest.getUserPrincipal();
+			if (userPrincipal != null) {
+
+				LOG.info("###### USER PRINCIPAL: " + userPrincipal.getName());
+				// sso ok
+				// verifico internamente se l'utenza ha un profilo
+				
+				((HttpServletResponse)response).sendRedirect("/v2/userprincipal");
+				return;				
+				
+			} else {
 			
-		} 
+				// l'utente non si è mai loggato
+				// lo rimando sulla schermata di login
+				
+				((HttpServletResponse)response).sendRedirect("/v2/login");
+				return;
+			} 
+		}
 		
+				
 		if(requestURI.endsWith("changepw")||requestURI.endsWith("logout")||requestURI.endsWith("saveNewPassword")){
 
 			chain.doFilter(request, response);

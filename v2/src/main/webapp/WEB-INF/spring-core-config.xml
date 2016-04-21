@@ -27,6 +27,7 @@
 	<bean id="Export" class="it.soprasteria.pianificazione.v2.service.ExportV2Service" />
 	<bean id="CalendarConfig" class="it.soprasteria.pianificazione.v2.service.CalendarConfigService" />
 	<bean id="WorkloadService" class="it.soprasteria.pianificazione.v2.service.WorkloadService" />
+	<bean id="LoginService" class="it.soprasteria.pianificazione.v2.service.LoginService" />
 	
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />

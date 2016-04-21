@@ -66,7 +66,9 @@ public interface Dao {
 
 	public void deleteAllProjects();
 	
-	public int controlChangePassword(String userid);
+	public int checkChangePassword(String userid);
 	
 	public void changePassword(String userId, String password, String prevPw);
+	
+	public UserBean findByUsername(final String username);
 }
