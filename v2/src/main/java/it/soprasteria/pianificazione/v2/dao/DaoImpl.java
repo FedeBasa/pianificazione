@@ -975,4 +975,33 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		
 	}
 
+	@Override
+	public void produceAll(final String user, final int month, final int businessUnit) {
+
+		final StringBuilder sb = new StringBuilder();
+		
+		// TODO aggiornare info utente e date
+		sb.append("UPDATE u_progetti_risorse");
+		sb.append(" SET prodotto_1= consolidato_1");
+		sb.append(" , prodotto_2= consolidato_2");
+		sb.append(" , prodotto_3= consolidato_3");
+		sb.append(" WHERE id_user = ?");
+		sb.append(" AND mese = ?");
+		sb.append(" AND business_unit = ?");
+		
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+				int i = 1;
+				PreparedStatement ps = conn.prepareStatement(sb.toString());
+				ps.setString(i++, user);
+				ps.setInt(i++, month);
+				ps.setInt(i, businessUnit);
+				
+				return ps;
+			}
+		});
+	}
+
 }

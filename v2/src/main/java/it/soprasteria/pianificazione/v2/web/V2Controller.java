@@ -260,6 +260,17 @@ public class V2Controller {
 
 		return buildRedirectV2Edit(month, businessUnit);
 	}
+
+	@RequestMapping(value = "/allineaproduzione", method = RequestMethod.GET)
+	public String produceAll(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit) {
+
+		String user = SessionHelper.getUser().getUsername();
+		
+		service.produceAll(user, month, businessUnit);
+
+		return buildRedirectV2Edit(month, businessUnit);
+	}
+
 	
 	private String checkGeneralConditions(int month, int businessUnit) {
 		

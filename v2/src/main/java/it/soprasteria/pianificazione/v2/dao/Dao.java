@@ -71,4 +71,6 @@ public interface Dao {
 	public void changePassword(String userId, String password, String prevPw);
 	
 	public UserBean findByUsername(final String username);
+	
+	public void produceAll(String user, int month, int businessUnit);
 }

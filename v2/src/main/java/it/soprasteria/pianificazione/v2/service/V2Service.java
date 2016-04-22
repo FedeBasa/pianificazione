@@ -232,4 +232,9 @@ public class V2Service {
 		return messageList;
 	}
 	
+	public void produceAll(String user, int month, int businessUnit) {
+		
+		dao.produceAll(user, month, businessUnit);
+	}
+	
 }

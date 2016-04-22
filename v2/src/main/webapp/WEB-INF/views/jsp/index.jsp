@@ -17,14 +17,8 @@
 		 $('#v2').DataTable({
 			"paging":         false
 		});
-		 $("#download").click(function(){
-			 window.location = "${pageContext.request.contextPath}/export/v2?month=${v2Bean.month}&bu=${v2Bean.businessUnit}";			 
-		 });
-		 $("#workload").click(function(){
-			 window.location = "${pageContext.request.contextPath}/workload?month=${v2Bean.month}&bu=${v2Bean.businessUnit}";			 
-		 });
-		 
-		<c:if test="${v2Bean.stato == 100}">
+
+		 <c:if test="${v2Bean.stato == 100}">
 		
 		$("#aggiungi").click(function(){
 			var path="${pageContext.request.contextPath}/record/insert";
@@ -169,19 +163,23 @@
 		<c:if test="${v2Bean.stato == 100}">
 		<div class="row">
 			<div class="col-sm-4">
+
 				<div class="btn-group">
-					<button id="download" type="button" class="btn btn-primary" >Export</button>
-					<button id="workload" type="button" class="btn btn-primary" >Workload</button>
-					<button id="aggiorna" type="button" class="btn btn-primary">Aggiorna</button>
-					<button id="delete" type="button" class="btn btn-primary">Elimina</button>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						Azioni <span class="caret"></span></button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="${pageContext.request.contextPath}/allineaproduzione?month=${month}&bu=${businessUnit}">Allinea Produzione</a></li>
+							<li><a href="${pageContext.request.contextPath}/valida?month=${month}&bu=${businessUnit}">Valida</a></li>
+							<li><a href="${pageContext.request.contextPath}/export/v2?month=${month}&bu=${businessUnit}">Excel</a></li>
+							<li><a href="${pageContext.request.contextPath}/workload?month=${month}&bu=${businessUnit}">Workload</a></li>
+						</ul>
+					</div>
 					<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>
+					<button id="aggiorna" type="button" class="btn btn-primary">Modifica</button>
+					<button id="delete" type="button" class="btn btn-primary">Elimina</button>
 				</div>
 				
-				<div class="btn-group">
-			 		<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/valida?month=${month}&bu=${businessUnit}" onsubmit="return validate(this);">
-			 			<button id="valida" type="submit" class="${v2Bean.stato == 100 ? 'btn btn-warning' : 'btn btn-warning disabled'}">Valida</button>
-			 		</form:form>
-					</div>
 			</div>
 			<div class="col-sm-8">
 				<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
