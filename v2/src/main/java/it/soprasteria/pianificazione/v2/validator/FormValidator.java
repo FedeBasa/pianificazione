@@ -17,7 +17,6 @@ public class FormValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "badgeNumber", "NotEmpty.risorsa");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "idProject", "NotEmpty.progetto");
 	}
 }

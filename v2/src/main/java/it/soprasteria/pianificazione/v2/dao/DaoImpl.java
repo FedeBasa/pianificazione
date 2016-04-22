@@ -38,7 +38,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				EmployeeBean emplo = new EmployeeBean();
 				emplo.setName(rs.getString("nome"));
 				emplo.setSurname(rs.getString("cognome"));
-				emplo.setBadgeNumber(Integer.toString(rs.getInt("matricola")));
+				emplo.setBadgeNumber(rs.getString("matricola"));
 				// TODO valorizzare utente_ins, data_ins				
 				return emplo;
 			}
@@ -245,7 +245,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setInt(i++, rec.getCons0());
 				ps.setInt(i++, rec.getCons1());
 				ps.setInt(i++, rec.getCons2());
-				ps.setInt(i++, Integer.parseInt(rec.getBadgeNumber()));
+				ps.setString(i++, rec.getBadgeNumber());
 				ps.setString(i++, rec.getUtenteIns());
 				ps.setString(i++, rec.getNome());
 				ps.setString(i++, rec.getCognome());
@@ -723,7 +723,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		bean.setMonth(rs.getInt("mese"));
 		bean.setIdRecord(rs.getLong("id_unione"));
 		bean.setIdProject(rs.getLong("id_progetto"));
-		bean.setBadgeNumber(Integer.toString(rs.getInt("matricola")));
+		bean.setBadgeNumber(rs.getString("matricola"));
 		bean.setCons0(rs.getInt("consolidato_1"));
 		bean.setProd0(rs.getInt("prodotto_1"));
 		bean.setCons1(rs.getInt("consolidato_2"));
@@ -849,7 +849,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
-	public int getConsDays(final int badgeNumber, final String colname, final int mese) {
+	public int getConsDays(final String badgeNumber, final String colname, final int mese) {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT SUM(" + colname + ") AS " + colname);
@@ -861,7 +861,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				int i = 1;
-				ps.setInt(i++, badgeNumber);
+				ps.setString(i++, badgeNumber);
 				ps.setInt(i, mese);
 			}
 		}, new RowMapper<Integer>() {

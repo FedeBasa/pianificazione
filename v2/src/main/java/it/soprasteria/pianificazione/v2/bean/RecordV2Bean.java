@@ -21,6 +21,8 @@ public class RecordV2Bean extends BaseBean {
 	private String nome;
 	private String cognome;
 	private String idUser;
+	
+	private String employeeDesc;
 
 	public String getIdUser() {
 		return idUser;
@@ -78,7 +80,16 @@ public class RecordV2Bean extends BaseBean {
 		this.badgeNumber = badgeNumber;
 	}
 
+	public void setEmployeeDesc(String employeeDesc) {
+		this.employeeDesc = employeeDesc;
+	}
+	
 	public String getEmployeeDesc() {
+		
+		if (employeeDesc != null) {
+			return employeeDesc;
+		}
+		
 		if (nome != null && cognome != null && badgeNumber != null) {
 			return   nome + " " + cognome + " (" +  badgeNumber + ")";
 		}

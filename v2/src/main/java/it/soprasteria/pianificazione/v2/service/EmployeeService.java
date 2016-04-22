@@ -23,7 +23,7 @@ public class EmployeeService {
 		return dao.getAllEmployees();
 	}
 
-	public EmployeeBean findById(String id) {
+	public EmployeeBean findByBadgeNumber(String id) {
 		return dao.getEmployee(id);
 	}
 	

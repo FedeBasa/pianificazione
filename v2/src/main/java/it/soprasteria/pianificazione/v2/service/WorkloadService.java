@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 import it.soprasteria.pianificazione.v2.dao.WorkloadDao;
@@ -14,8 +13,6 @@ public class WorkloadService {
 
 	@Autowired
 	private WorkloadDao dao;
-	@Autowired
-	private EmployeeService employeeService;
 	@Autowired
 	private CalendarConfigService calendarConfigService;
 	
@@ -28,10 +25,6 @@ public class WorkloadService {
 		int config3 = calendarConfigService.getConfig(DateUtil.addMonth(month, 2));
 		
 		for (WorkloadBean bean : list) {
-			
-			EmployeeBean employee = employeeService.findById(bean.getBadgeNumber());
-			bean.setName(employee.getName());
-			bean.setSurname(employee.getSurname());
 			
 			bean.setNit1(bean.getWork1() - bean.getRecognized1());
 			bean.setNit2(bean.getWork2() - bean.getRecognized2());

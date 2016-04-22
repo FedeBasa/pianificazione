@@ -2,6 +2,7 @@ package it.soprasteria.pianificazione.v2.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,12 @@ import it.soprasteria.pianificazione.v2.dao.DaoImpl;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
 
 public class V2Service {
+	private static final String CONSOLIDATO_3 = "consolidato_3";
+
+	private static final String CONSOLIDATO_2 = "consolidato_2";
+
+	private static final String CONSOLIDATO_1 = "consolidato_1";
+
 	private static final Logger LOG = Logger.getLogger(V2Service.class);
 
 	@Autowired
@@ -30,26 +37,31 @@ public class V2Service {
 
 	public List<RecordV2Bean> getV2(int month, int businessUnit, String user) {
 
-		List<RecordV2Bean> list = dao.getV2(month, businessUnit, user);
-
-		for (RecordV2Bean item : list) {
-			completeRecord(item);
-		}
-		return list;
+		return dao.getV2(month, businessUnit, user);
 	}
 
 	public RecordV2Bean getRecord(Long id) {
 
-		RecordV2Bean record = dao.getRecord(id);
-		completeRecord(record);
-		return record;
+		return dao.getRecord(id);
 	}
 
 	private void completeRecord(RecordV2Bean item) {
 		String bn = item.getBadgeNumber();
-		EmployeeBean eb = dao.getEmployee(bn);
-		item.setNome(eb.getName());
-		item.setCognome(eb.getSurname());
+		if (bn != null && bn.length() > 0) {
+			EmployeeBean eb = dao.getEmployee(bn);
+			if (eb != null) {
+				item.setNome(eb.getName());
+				item.setCognome(eb.getSurname());
+			}
+		} else {
+			
+			item.setBadgeNumber(UUID.randomUUID().toString());
+			String[] nameSurname = item.getEmployeeDesc().split(" ");
+			item.setNome(nameSurname[0]);
+			if (nameSurname.length > 1) {
+				item.setCognome(nameSurname[1]);
+			}
+		}
 		Long id = item.getIdProject();
 		ProjectBean prb = dao.getProject(id);
 		item.setProjectDesc(prb.getDescription());
@@ -63,11 +75,15 @@ public class V2Service {
 	}
 
 	public void insertRecord(RecordV2Bean record) {
+		
 		completeRecord(record);
-		int badgeNumber = Integer.parseInt(record.getBadgeNumber());
-		record.setCons0(getLeftDays(badgeNumber, record.getMonth(), "consolidato_1"));
-		record.setCons1(getLeftDays(badgeNumber, record.getMonth(), "consolidato_2"));
-		record.setCons2(getLeftDays(badgeNumber, record.getMonth(), "consolidato_3"));
+		
+		String badgeNumber = record.getBadgeNumber();
+		int month = record.getMonth();
+		record.setCons0(getLeftDays(badgeNumber, month, CONSOLIDATO_1));
+		record.setCons1(getLeftDays(badgeNumber, month, CONSOLIDATO_2));
+		record.setCons2(getLeftDays(badgeNumber, month, CONSOLIDATO_3));
+		
 		dao.insert(record);
 	}
 
@@ -86,7 +102,7 @@ public class V2Service {
 			RecordV2Bean recordV2Bean = dao.getRecord(id);
 			int checkValue = value - getColvalue(recordV2Bean, colname);
 			
-			int leftDays = getLeftDays(Integer.parseInt(recordV2Bean.getBadgeNumber()), month, colname);
+			int leftDays = getLeftDays(recordV2Bean.getBadgeNumber(), month, colname);
 			
 			LOG.debug("LEFTDAYS" + leftDays);
 			LOG.debug("CHECKVALUE" + checkValue);
@@ -102,13 +118,13 @@ public class V2Service {
 
 	private int getColvalue(RecordV2Bean recordV2Bean, String colname) {
 		
-		if("consolidato_1".equals(colname)) {
+		if(CONSOLIDATO_1.equals(colname)) {
 			return recordV2Bean.getCons0();
 		}
-		if("consolidato_2".equals(colname)) {
+		if(CONSOLIDATO_2.equals(colname)) {
 			return recordV2Bean.getCons1();
 		}
-		if("consolidato_3".equals(colname)) {
+		if(CONSOLIDATO_3.equals(colname)) {
 			return recordV2Bean.getCons2();
 		}
 		
@@ -187,12 +203,12 @@ public class V2Service {
 		dao.updateTable(id, realColname, value, username);
 	}
 
-	private int getLeftDays(int badgeNumber, int month, String colname) {
+	private int getLeftDays(String badgeNumber, int month, String colname) {
 		
 		int config = 0;
-		if ("consolidato_2".equals(colname)) {
+		if (CONSOLIDATO_2.equals(colname)) {
 			config = 1;
-		} else if ("consolidato_3".equals(colname)) {
+		} else if (CONSOLIDATO_3.equals(colname)) {
 			config = 2;
 		}
 

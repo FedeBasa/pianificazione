@@ -58,7 +58,7 @@ public interface Dao {
 	
 	public int getTotDays(int month);
 	
-	public int getConsDays(int badgeNumber,String colname, int mese);
+	public int getConsDays(String badgeNumber,String colname, int mese);
 	
 	public void setValidateState(String user, int month, int businessUnit);
 	
