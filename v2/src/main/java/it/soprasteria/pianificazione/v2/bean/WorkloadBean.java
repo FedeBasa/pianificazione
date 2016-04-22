@@ -43,7 +43,7 @@ public class WorkloadBean {
 	}
 	
 	public String getEmployeeDesc() {
-		return name + " " + surname;
+		return (name == null ? "" : name) + " " + (surname == null ? "" : surname);
 	}
 
 	public int getWork1() {

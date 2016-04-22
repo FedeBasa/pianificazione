@@ -193,7 +193,6 @@
 			
 					<spring:bind path="employeeDesc">
 							<div class="col-lg-4">
-							<label>Risorsa :</label>
 								<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
 								<form:errors path="employeeDesc" class="control-label" />
 							</div>
@@ -202,7 +201,6 @@
 					
 					<spring:bind path="projectDesc">
 							<div class="col-lg-4">
-							<label>Progetto :</label>
 								<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
 								<form:errors path="projectDesc" class="control-label" />
 						</div>

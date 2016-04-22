@@ -89,11 +89,10 @@ public class RecordV2Bean extends BaseBean {
 		if (employeeDesc != null) {
 			return employeeDesc;
 		}
-		
-		if (nome != null && cognome != null && badgeNumber != null) {
-			return   nome + " " + cognome + " (" +  badgeNumber + ")";
+		if (nome == null && cognome == null && badgeNumber == null) {
+			return "";
 		}
-		return "";
+		return (nome == null ? "" : nome) + " " + (cognome == null ? "" : cognome) + " (" +  (badgeNumber == null ? "" : badgeNumber) + ")";
 	}
 
 	public String getActivityType() {
