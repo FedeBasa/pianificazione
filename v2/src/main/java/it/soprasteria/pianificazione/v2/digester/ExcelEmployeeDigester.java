@@ -20,15 +20,11 @@ public class ExcelEmployeeDigester implements Serializable {
 
 	private static final Logger LOG = Logger.getLogger(ExcelEmployeeDigester.class);
 	
-	private List<String[]> content = new ArrayList<String[]>();
+	private List<String[]> content = new ArrayList<>();
 	
-	private List<EmployeeBean> list = new ArrayList<EmployeeBean>();
+	private List<EmployeeBean> list = new ArrayList<>();
 	
-	private int countRows;
-	private int countRejected;
-	
-	private List<String> infoMessages = new ArrayList<String>();
-	private List<String> errorMessages = new ArrayList<String>();
+	private List<String> infoMessages = new ArrayList<>();
 	
 	public void load(InputStream inputStream) throws DigestException {
 		
@@ -58,7 +54,6 @@ public class ExcelEmployeeDigester implements Serializable {
 
 				this.content.add(rowContent);
 				
-				this.countRows++;
 			}
 		} catch(IOException e) {
 			

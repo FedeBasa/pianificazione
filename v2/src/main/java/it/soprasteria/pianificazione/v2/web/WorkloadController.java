@@ -53,8 +53,6 @@ public class WorkloadController {
 	@RequestMapping(value = "/workload/detail/{badgeNumber}", method = RequestMethod.GET)
 	public ModelAndView home(@PathVariable(value="badgeNumber") String badgeNumber, @RequestParam(required = true, name = "month") int month) {
 
-		String username = SessionHelper.getUser().getUsername();
-		
 		List<WorkloadDetailBean> list = service.findWorkloadDetail(month, badgeNumber);
 		
 		ModelAndView model = new ModelAndView();

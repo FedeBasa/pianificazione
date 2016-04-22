@@ -19,8 +19,6 @@ public class PmViewController {
 	@RequestMapping(value = "/pmView", method = RequestMethod.GET)
 	public String view(@RequestParam (name = "month" , required= true)int month, Model model) {
 		
-		String username = SessionHelper.getUser().getUsername();
-		
 		model.addAttribute("list", pmservice.getStatus(month));
 		
 		return "pm_view";

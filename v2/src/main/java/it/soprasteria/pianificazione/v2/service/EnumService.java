@@ -24,7 +24,7 @@ public class EnumService  {
 		
 		List<EnumBean> enumList = enumdao.findByType(type);
 		
-		Set<String> set = new HashSet<String>();
+		Set<String> set = new HashSet<>();
 		
 		for (EnumBean enumbean : enumList) {
 

@@ -40,6 +40,8 @@ import it.soprasteria.pianificazione.v2.web.ajax.JsonResponse;
 @Controller
 public class V2Controller {
 
+	private static final String VIEW_INDEX = "index";
+
 	private static final Logger LOG = Logger.getLogger(V2Controller.class);
 
 	@Autowired
@@ -71,14 +73,12 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/addMonth", method = RequestMethod.POST)
-	public String addMonth(Model model, RedirectAttributes redirectAttributes) {
-
-		boolean done = false;
+	public String addMonth(RedirectAttributes redirectAttributes) {
 
 		String user = SessionHelper.getUser().getUsername();
 		LOG.info("user: " + user);
 
-		done = service.addNextMonth(user);
+		boolean done = service.addNextMonth(user);
 
 		redirectAttributes.addFlashAttribute("rejected", !done);
 		return "redirect:/home";
@@ -89,15 +89,14 @@ public class V2Controller {
 	public ModelAndView method1(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit) throws SQLException {
 
 		ModelAndView model = new ModelAndView();
-		model.setViewName("index");
+		model.setViewName(VIEW_INDEX);
 
 		String username = SessionHelper.getUser().getUsername();
-		List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
 
 		V2Bean v2Bean = service.findByMonth(month, businessUnit, username);
 		SessionHelper.storeV2(v2Bean);
 
-		list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
+		List<RecordV2Bean> list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
 		model.addObject("list", list);
 		RecordV2Bean recordV2Bean = new RecordV2Bean();
 		recordV2Bean.setMonth(month);
@@ -150,15 +149,14 @@ public class V2Controller {
 		if (result.hasErrors()) {
 
 			// ricarico la lista così nella jsp continuo a vedere la lista
-			List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
-			list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
+			List<RecordV2Bean> list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
 
 			model.addAttribute("list", list);
 
-			return "index";
+			return VIEW_INDEX;
 		} else {
 
-			record.setUserMod(SessionHelper.getUser().getUsername());
+			record.setUtenteMod(SessionHelper.getUser().getUsername());
 
 			service.updateRecord(record);
 
@@ -170,7 +168,7 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/record/insert", method = RequestMethod.POST)
-	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model) {
 
 		String errorPage = checkGeneralConditions(record.getMonth(), record.getBusinessUnit());
 		if (errorPage != null) {
@@ -179,14 +177,13 @@ public class V2Controller {
 
 		if (result.hasErrors()) {
 
-			List<RecordV2Bean> list = new ArrayList<RecordV2Bean>();
-			list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
+			List<RecordV2Bean> list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
 			model.addAttribute("list", list);
 
-			return "index";
+			return VIEW_INDEX;
 		} else {
 
-			record.setUserIns(SessionHelper.getUser().getUsername());
+			record.setUtenteIns(SessionHelper.getUser().getUsername());
 			service.insertRecord(record);
 
 			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
@@ -194,7 +191,7 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/record/delete", method = RequestMethod.POST)
-	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record) {
 
 		String errorPage = checkGeneralConditions(record.getMonth(), record.getBusinessUnit());
 		if (errorPage != null) {
@@ -219,7 +216,7 @@ public class V2Controller {
 
 			String realColname = ColnameConverter.convertColname(colname);
 
-			if (realColname.equals("valuta") || realColname.equals("attività")) {
+			if ("valuta".equals(realColname) || "attività".equals(realColname)) {
 				if (!enumservice.getSet(realColname).contains(data)) {
 
 					return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore non valido");
@@ -255,7 +252,7 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/valida", method = RequestMethod.POST)
-	public String valida(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, Model model, RedirectAttributes redirectAttributes) {
+	public String valida(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit) {
 
 		String user = SessionHelper.getUser().getUsername();
 		

@@ -8,19 +8,24 @@ import java.util.Locale;
 
 public class DateUtil {
 
-	private static final SimpleDateFormat SDF_MONTH = new SimpleDateFormat("yyyyMM");
-	private static final SimpleDateFormat SDF_EXPORT = new SimpleDateFormat("MM/yyyy");
+	private static final String MM_YYYY = "MM/yyyy";
+	private static final String YYYY_MM = "yyyyMM";
+
+	private DateUtil() {
+		
+	}
 	
 	public static int previousMonth(int month) {
 		
 		try {
-			Date parsedMonth = SDF_MONTH.parse(String.valueOf(month));
+			SimpleDateFormat sdfMonth = new SimpleDateFormat(YYYY_MM);
+			Date parsedMonth = sdfMonth.parse(String.valueOf(month));
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(parsedMonth);
 			cal.add(Calendar.MONTH, -1);
 			
-			return Integer.parseInt(SDF_MONTH.format(cal.getTime()));
+			return Integer.parseInt(sdfMonth.format(cal.getTime()));
 			
 		} catch(ParseException e) {
 			return 0;
@@ -30,13 +35,14 @@ public class DateUtil {
 	public static int addMonth(int month, int num) {
 		
 		try {
-			Date parsedMonth = SDF_MONTH.parse(String.valueOf(month));
+			SimpleDateFormat sdfMonth = new SimpleDateFormat(YYYY_MM);
+			Date parsedMonth = sdfMonth.parse(String.valueOf(month));
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(parsedMonth);
 			cal.add(Calendar.MONTH, num);
 			
-			return Integer.parseInt(SDF_MONTH.format(cal.getTime()));
+			return Integer.parseInt(sdfMonth.format(cal.getTime()));
 			
 		} catch(ParseException e) {
 			return 0;
@@ -50,13 +56,14 @@ public class DateUtil {
 	public static boolean checkMonth(int mese) {
 
 		try {
+			SimpleDateFormat sdfMonth = new SimpleDateFormat(YYYY_MM);
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());
 	
 			int currentMonth = cal.get(Calendar.MONTH);
 			int currentYear = cal.get(Calendar.YEAR);
 	
-			Date parsedMonth = SDF_MONTH.parse(String.valueOf(mese));
+			Date parsedMonth = sdfMonth.parse(String.valueOf(mese));
 			Calendar calMonth = Calendar.getInstance();
 			calMonth.setTime(parsedMonth);
 			int month = calMonth.get(Calendar.MONTH);
@@ -73,9 +80,12 @@ public class DateUtil {
 	
 	public static String convertExportFormat(int month) throws ParseException {
 		
-		Date parsedMonth = SDF_MONTH.parse(String.valueOf(month));
+		SimpleDateFormat sdfMonth = new SimpleDateFormat(YYYY_MM);
+		SimpleDateFormat sdfExport = new SimpleDateFormat(MM_YYYY);
+				
+		Date parsedMonth = sdfMonth.parse(String.valueOf(month));
 		
-		return SDF_EXPORT.format(parsedMonth);
+		return sdfExport.format(parsedMonth);
 	}
 
 	public static String getMonthName(int month) {
@@ -85,9 +95,10 @@ public class DateUtil {
 	public static String getMonthName(int month, int add) {
 		
 		try {
+			SimpleDateFormat sdfMonth = new SimpleDateFormat(YYYY_MM);
 			SimpleDateFormat sdf = new SimpleDateFormat("MMMM", Locale.ITALY);
 			
-			Date date = SDF_MONTH.parse(String.valueOf(DateUtil.addMonth(month, add)));
+			Date date = sdfMonth.parse(String.valueOf(DateUtil.addMonth(month, add)));
 			
 			return sdf.format(date);
 			

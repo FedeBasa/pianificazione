@@ -132,9 +132,9 @@ public class V2Service {
 		List<Integer> list = dao.getMonths(username);
 		List<Integer> listConfig = dao.getMonthsConfig();
 
-		Integer lastMonth = 0;
-		Integer lastMonthConfig = 0;
-		boolean check = false;
+		Integer lastMonth;
+		Integer lastMonthConfig;
+		boolean check;
 
 		if (list.isEmpty()) {
 			check = !listConfig.isEmpty();
@@ -206,7 +206,7 @@ public class V2Service {
 
 	public List<String> setValidateState(String user, int month, int businessUnit) {
 
-		List<String> messageList = new ArrayList<String>();
+		List<String> messageList = new ArrayList<>();
 		
 		// TODO
 		// implementare eventuali controlli di validità

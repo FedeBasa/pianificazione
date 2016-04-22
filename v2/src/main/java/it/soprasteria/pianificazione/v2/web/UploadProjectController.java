@@ -22,7 +22,7 @@ import it.soprasteria.pianificazione.v2.util.SessionHelper;
 @Controller
 public class UploadProjectController {
 	
-	private static final Logger LOG = Logger.getLogger(V2Controller.class);
+	private static final Logger LOG = Logger.getLogger(UploadProjectController.class);
 	
 	@Autowired
 	private ProjectService projectService;
@@ -37,7 +37,7 @@ public class UploadProjectController {
 	}
 	
 	@RequestMapping(value = "/excel/upload/project", method = RequestMethod.POST)
-	public String uploadProject(@ModelAttribute("uploadProjectBean") UploadProjectBean uploadProjectBean, BindingResult result, Model model, RedirectAttributes redirectAttributes) throws DigestException, IOException {
+	public String uploadProject(@ModelAttribute("uploadProjectBean") UploadProjectBean uploadProjectBean, Model model) throws DigestException, IOException {
 
 		
 		MultipartFile multipartFile = uploadProjectBean.getFile();
@@ -56,7 +56,7 @@ public class UploadProjectController {
 	}
 	
 	@RequestMapping(value = "/excel/save/project", method = RequestMethod.POST)
-	public String saveProject(Model model) {
+	public String saveProject() {
 	
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
 		
@@ -68,7 +68,7 @@ public class UploadProjectController {
 	}	
 
 	@RequestMapping(value = "/excel/replace/project", method = RequestMethod.POST)
-	public String replaceProject(Model model) {
+	public String replaceProject() {
 
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
 		

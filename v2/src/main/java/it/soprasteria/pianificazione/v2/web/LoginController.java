@@ -40,7 +40,7 @@ public class LoginController {
 	
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@ModelAttribute("userbean") @Validated UserBean userBean, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+	public String login(@ModelAttribute("userbean") @Validated UserBean userBean, BindingResult result, RedirectAttributes redirectAttributes) {
 		
 		if (result.hasErrors()) {
 
@@ -62,7 +62,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(Model model) {
+	public String logout() {
 		
 		SessionHelper.logout();
 		
@@ -70,9 +70,9 @@ public class LoginController {
 	}	
 	
 	@RequestMapping(value = "/changepw", method = RequestMethod.GET)
-	public String changepw(Model model){
+	public String changepw(){
 		
-		return("change_password");
+		return "change_pwd";
 		
 	}
 	

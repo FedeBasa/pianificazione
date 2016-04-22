@@ -63,12 +63,10 @@ public class SessionFilter implements Filter {
 			return;
 		}
 		
-		if (requestURI.startsWith("/v2/admin/")) {
+		if (requestURI.startsWith("/v2/admin/") && !"admin".equalsIgnoreCase(user.getProfilo())) {
 			
-			if (!"admin".equalsIgnoreCase(user.getProfilo())) {
-				((HttpServletResponse)response).sendRedirect("/v2/home");
-				return;
-			}
+			((HttpServletResponse)response).sendRedirect("/v2/home");
+			return;
 		}
 		
 		if(user.getFirstlogin()==0){
@@ -82,12 +80,12 @@ public class SessionFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		
+		LOG.info("destroy SessionFilter");
 	}
 
 	@Override
-	public void init(FilterConfig config) throws ServletException {
-		
+	public void init(FilterConfig arg0) throws ServletException {
+		LOG.info("init SessionFilter");		
 	}
-	
+
 }

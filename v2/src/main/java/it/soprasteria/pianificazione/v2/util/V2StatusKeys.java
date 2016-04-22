@@ -7,4 +7,8 @@ public class V2StatusKeys {
 	public final static int CLOSE = 10;
 	
 	public final static int VALIDATE = 50;
+	
+	private V2StatusKeys() {
+		
+	}
 }

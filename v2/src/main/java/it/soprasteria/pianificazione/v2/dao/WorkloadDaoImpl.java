@@ -22,16 +22,17 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 		sql.append("select matricola, sum(consolidato_1) work1, sum(prodotto_1) rec1, sum(consolidato_2) work2, sum(prodotto_2) rec2, sum(consolidato_3) work3, sum(prodotto_3) rec3");
 		sql.append(" from u_progetti_risorse");
 		sql.append(" where mese = ?");
-		sql.append(" and utente_ins = ?");
+		sql.append(" and matricola in (select matricola from u_progetti_risorse where mese = ?  and utente_ins = ?)");
 		sql.append(" group by matricola");
 
-		List<WorkloadBean> result = getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
+		return getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 
 				int i = 1;
 				pstm.setInt(i++, month);
-				pstm.setString(i++, username);
+				pstm.setInt(i++, month);
+				pstm.setString(i, username);
 			}
 		}, new RowMapper<WorkloadBean>() {
 			public WorkloadBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
@@ -48,8 +49,6 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 				return bean;
 			}
 		});
-
-		return result;
 	}
 	
 	@Override
@@ -62,13 +61,13 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 		sql.append(" where mese = ?");
 		sql.append(" and matricola = ?");
 
-		List<WorkloadDetailBean> result = getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
+		return getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 
 				int i = 1;
 				pstm.setInt(i++, month);
-				pstm.setString(i++, badgeNumber);
+				pstm.setString(i, badgeNumber);
 			}
 		}, new RowMapper<WorkloadDetailBean>() {
 			public WorkloadDetailBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
@@ -89,8 +88,6 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 				return bean;
 			}
 		});
-
-		return result;
 	}
 
 }

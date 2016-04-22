@@ -19,13 +19,11 @@ public class ExcelProjectDigester implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<String[]> content = new ArrayList<String[]>();
+	private List<String[]> content = new ArrayList<>();
 
-	private List<ProjectBean> projectList = new ArrayList<ProjectBean>();
+	private List<ProjectBean> projectList = new ArrayList<>();
 
-	private List<String> infoMessages = new ArrayList<String>();
-
-	private int countRows;
+	private List<String> infoMessages = new ArrayList<>();
 
 	public void load(InputStream inputStream) throws DigestException {
 
@@ -52,7 +50,7 @@ public class ExcelProjectDigester implements Serializable {
 
 				String idProject = row.getCell(42).getRawValue();
 
-				if (row.getCell(20).getStringCellValue().equals("Y")) {
+				if ("Y".equals(row.getCell(20).getStringCellValue())) {
 
 					String[] rowContent = new String[4];
 
@@ -63,7 +61,6 @@ public class ExcelProjectDigester implements Serializable {
 
 					this.content.add(rowContent);
 
-					this.countRows++;
 				}
 			}
 		} catch (IOException e) {

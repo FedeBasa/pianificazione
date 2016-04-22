@@ -40,9 +40,9 @@ public class ExportV2Service {
 			cell4.setCellValue(bean.getCognome());
 		
 			Cell cell5 = row.createCell(4);
-			if (bean.getActivityType().equalsIgnoreCase("f")) {
+			if ("f".equalsIgnoreCase(bean.getActivityType())) {
 				cell5.setCellValue("F");
-			} else if (bean.getActivityType().equalsIgnoreCase("r")) {
+			} else if ("r".equalsIgnoreCase(bean.getActivityType())) {
 				cell5.setCellValue("R");
 			}
 		

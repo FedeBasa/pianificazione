@@ -27,7 +27,7 @@ public class PmDaoImpl extends JdbcDaoSupport implements PmDao {
 		sb.append(" FROM users");
 		sb.append(" WHERE profilo = ?");
 
-		List<PmBean> pmList = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
+		return getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				ps.setString(1, "pm");
@@ -43,15 +43,12 @@ public class PmDaoImpl extends JdbcDaoSupport implements PmDao {
 				return pm;
 			}
 		});
-
-		return pmList;
-
 	}
 
 	@Override
 	public List<PmBean> verifyStatus(final Integer month, final PmDao dao) {
 
-		List<PmBean> result = new ArrayList<PmBean>();
+		List<PmBean> result = new ArrayList<>();
 
 		final List<PmBean> userList = dao.verifyV2();
 
@@ -68,7 +65,7 @@ public class PmDaoImpl extends JdbcDaoSupport implements PmDao {
 				public void setValues(PreparedStatement ps) throws SQLException {
 					int i = 1;
 					ps.setString(i++, user.getUsername());
-					ps.setInt(i++, month);
+					ps.setInt(i, month);
 				}
 			}, new RowMapper<Integer[]>() {
 				@Override
@@ -79,19 +76,13 @@ public class PmDaoImpl extends JdbcDaoSupport implements PmDao {
 			});
 			
 			StringBuilder stato = new StringBuilder();
-			if (statusList != null) {
+			if (statusList != null && !statusList.isEmpty()) {
 				
-				if (!statusList.isEmpty()) {
-					for (Integer[] status : statusList) {
-						if (status[1].intValue() == V2StatusKeys.OPEN) {
-							stato.append(status[0]).append(": Da Validare");
-						} else if (status[1].intValue() == V2StatusKeys.VALIDATE) {
-							stato.append(status[0]).append(": Validato");
-						} else if (status[1].intValue() == V2StatusKeys.CLOSE) {
-							stato.append(status[0]).append(": Chiuso");
-						}
-						stato.append(" ");
-					}
+				for (Integer[] status : statusList) {
+					
+					stato.append(getStato(status));
+
+					stato.append(" ");
 				}
 			}
 			if (stato.length() == 0) {
@@ -103,6 +94,18 @@ public class PmDaoImpl extends JdbcDaoSupport implements PmDao {
 		}
 
 		return result;
+	}
+	
+	private String getStato(Integer[] status) {
+		
+		if (status[1].intValue() == V2StatusKeys.OPEN) {
+			return status[0] + ": Da Validare";
+		} else if (status[1].intValue() == V2StatusKeys.VALIDATE) {
+			return status[0] + ": Validato";
+		} else if (status[1].intValue() == V2StatusKeys.CLOSE) {
+			return status[0] + ": Chiuso";
+		}
+		return "";
 	}
 
 }

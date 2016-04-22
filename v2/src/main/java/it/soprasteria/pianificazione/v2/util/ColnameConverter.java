@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ColnameConverter {
 
-	private static Map<String, String> mapColname = new HashMap<String, String>();
+	private static Map<String, String> mapColname = new HashMap<>();
 	
 	static {
 	
@@ -20,6 +20,10 @@ public class ColnameConverter {
 		//TODO
 		// eliminare accento, attenzione anche su DB
 		mapColname.put("activity", "attività");
+	}
+
+	private ColnameConverter() {
+		
 	}
 	
 	public static String convertColname(String colname) {

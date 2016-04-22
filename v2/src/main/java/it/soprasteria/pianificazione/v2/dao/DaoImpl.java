@@ -71,7 +71,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public void setValues(PreparedStatement pstm) throws SQLException {
 
 				int i = 1;
-				pstm.setInt(i++, businessUnit);
+				pstm.setInt(i, businessUnit);
 			}
 		}, new RowMapper<ProjectBean>() {
 			public ProjectBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
@@ -85,7 +85,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 	@Override
 	public List<RecordV2Bean> getV2(final int month, final int businessUnit, final String user) {
-		List<RecordV2Bean> result = new ArrayList<RecordV2Bean>();
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT *");
 		sb.append(" FROM u_progetti_risorse");
@@ -93,21 +93,21 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		sb.append(" AND business_unit = ?");
 		sb.append(" AND id_user = ?");
 
-		result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
+		List<RecordV2Bean> result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 
 				int i = 1;
 				pstm.setInt(i++, month);
 				pstm.setInt(i++, businessUnit);
-				pstm.setString(i++, user);
+				pstm.setString(i, user);
 			}
 		}, new RowMapper<RecordV2Bean>() {
 			@Override
 			public RecordV2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 				RecordV2Bean bean = new RecordV2Bean();
-				enrichRecordV2Bean(bean, rs, rowNum);
+				enrichRecordV2Bean(bean, rs);
 
 				return bean;
 			}
@@ -184,7 +184,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				RecordV2Bean bean = new RecordV2Bean();
 
-				enrichRecordV2Bean(bean, rs, rowNum);
+				enrichRecordV2Bean(bean, rs);
 
 				return bean;
 
@@ -220,9 +220,9 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setLong(i++, rec.getIdProject() == null ? 0 : rec.getIdProject());
 				ps.setString(i++, rec.getNome());
 				ps.setString(i++, rec.getCognome());
-				ps.setString(i++, rec.getUserMod());
+				ps.setString(i++, rec.getUtenteMod());
 				ps.setTimestamp(i++, new java.sql.Timestamp(new Date().getTime()));
-				ps.setLong(i++, rec.getIdRecord());
+				ps.setLong(i, rec.getIdRecord());
 
 				return ps;
 			}
@@ -246,7 +246,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setInt(i++, rec.getCons1());
 				ps.setInt(i++, rec.getCons2());
 				ps.setInt(i++, Integer.parseInt(rec.getBadgeNumber()));
-				ps.setString(i++, rec.getUserIns());
+				ps.setString(i++, rec.getUtenteIns());
 				ps.setString(i++, rec.getNome());
 				ps.setString(i++, rec.getCognome());
 				ps.setString(i++, rec.getProjectDesc());
@@ -254,10 +254,10 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setString(i++, "EUR");
 				ps.setString(i++, rec.getCustomer());
 				ps.setInt(i++, rec.getBusinessUnit());
-				ps.setString(i++, rec.getUserIns());
+				ps.setString(i++, rec.getUtenteIns());
 
 				Date now = new Date();
-				ps.setTimestamp(i++, new java.sql.Timestamp(now.getTime()));
+				ps.setTimestamp(i, new java.sql.Timestamp(now.getTime()));
 
 				return ps;
 			}
@@ -384,7 +384,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setInt(i++, value);
 				ps.setString(i++, username);
 				ps.setTimestamp(i++, new Timestamp(new Date().getTime()));
-				ps.setLong(i++, id);
+				ps.setLong(i, id);
 				return ps;
 			}
 		});
@@ -410,7 +410,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setString(i++, value);
 				ps.setString(i++, username);
 				ps.setTimestamp(i++, new Timestamp(new Date().getTime()));
-				ps.setLong(i++, id);
+				ps.setLong(i, id);
 				return ps;
 			}
 		});
@@ -418,7 +418,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 	@Override
 	public List<Integer> getMonths(final String username) {
-		List<Integer> result = new ArrayList<Integer>();
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("SELECT mese");
@@ -426,7 +426,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		sb.append(" WHERE id_user = ?");
 		sb.append(" ORDER BY mese");
 
-		result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
+		List<Integer> result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 				pstm.setString(1, username);
@@ -442,14 +442,13 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	public List<Integer> getMonthsConfig() {
-		List<Integer> result = new ArrayList<Integer>();
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("SELECT mese");
 		sb.append(" FROM v2_config");
 		sb.append(" ORDER BY mese");
 
-		result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>() {
+		List<Integer> result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>() {
 			@Override
 			public Integer mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				Integer mese = rs.getInt("mese");
@@ -472,7 +471,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public void setValues(PreparedStatement pstm) throws SQLException {
 				int i = 1;
 				pstm.setInt(i++, currentMonth);
-				pstm.setString(i++, username);
+				pstm.setString(i, username);
 			}
 		}, new RowMapper<RecordV2Bean>() {
 			@Override
@@ -480,7 +479,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				RecordV2Bean bean = new RecordV2Bean();
 
-				enrichRecordV2Bean(bean, rs, rowNum);
+				enrichRecordV2Bean(bean, rs);
 
 				return bean;
 			}
@@ -521,7 +520,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setInt(i++, bean.getBusinessUnit());
 				pstm.setString(i++, bean.getActivityType());
 				pstm.setString(i++, username);
-				pstm.setTimestamp(i++, new java.sql.Timestamp(now.getTime()));
+				pstm.setTimestamp(i, new java.sql.Timestamp(now.getTime()));
 			}
 
 			@Override
@@ -540,9 +539,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		insertSql.append(" (?, ?, ?, ?),");
 		insertSql.append(" (?, ?, ?, ?)");
 
-		int nextMonth = 0;
-
-		nextMonth = DateUtil.nextMonth(lastMonth);
+		int nextMonth = DateUtil.nextMonth(lastMonth);
 		int editable = V2StatusKeys.OPEN;
 
 		Object[] params = new Object[] { nextMonth, username, editable, 791, nextMonth, username, editable, 792 };
@@ -559,9 +556,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		insertSql.append(" INSERT INTO v2_config (mese, enable)");
 		insertSql.append(" VALUES (?, ?)");
 
-		int nextMonth = 0;
-
-		nextMonth = DateUtil.nextMonth(lastMonth);
+		int nextMonth = DateUtil.nextMonth(lastMonth);
 
 		Object[] params = new Object[] { nextMonth, V2StatusKeys.OPEN };
 		int[] types = new int[] { Types.INTEGER, Types.INTEGER };
@@ -585,7 +580,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
 				ps.setInt(i++, V2StatusKeys.OPEN);
 				ps.setString(i++, user);
-				ps.setInt(i++, month);
+				ps.setInt(i, month);
 				return ps;
 			}
 		});
@@ -601,14 +596,14 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				int i = 1;
 				pstm.setString(i++, username);
 				pstm.setInt(i++, month);
-				pstm.setInt(i++, businessUnit);
+				pstm.setInt(i, businessUnit);
 			}
 		}, new RowMapper<V2Bean>() {
 			public V2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 				V2Bean bean = new V2Bean();
 
-				enrichV2Bean(rs, bean, rowNum);
+				enrichV2Bean(rs, bean);
 
 				return bean;
 			}
@@ -631,7 +626,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 				V2Bean bean = new V2Bean();
 
-				enrichV2Bean(rs, bean, rowNum);
+				enrichV2Bean(rs, bean);
 
 				return bean;
 			}
@@ -724,7 +719,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return userlist.get(0);
 	}
 
-	private void enrichRecordV2Bean(RecordV2Bean bean, ResultSet rs, int rowNum) throws SQLException {
+	private void enrichRecordV2Bean(RecordV2Bean bean, ResultSet rs) throws SQLException {
 		bean.setMonth(rs.getInt("mese"));
 		bean.setIdRecord(rs.getLong("id_unione"));
 		bean.setIdProject(rs.getLong("id_progetto"));
@@ -742,17 +737,17 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		bean.setCurrency(rs.getString("valuta"));
 		bean.setProjectDesc(rs.getString("desc_progetto"));
 		bean.setBusinessUnit(rs.getInt("business_unit"));
-		bean.setId_user(rs.getString("id_user"));
+		bean.setIdUser(rs.getString("id_user"));
 		bean.setActivityType(rs.getString("attività"));
-		bean.setUserIns(rs.getString("utente_ins"));
+		bean.setUtenteIns(rs.getString("utente_ins"));
 		Timestamp timestampIns = rs.getTimestamp("data_ins");
 		bean.setDataIns(timestampIns == null ? null : new java.util.Date(timestampIns.getTime()));
-		bean.setUserMod(rs.getString("utente_mod"));
+		bean.setUtenteMod(rs.getString("utente_mod"));
 		Timestamp timestampMod = rs.getTimestamp("data_mod");
 		bean.setDataMod(timestampMod == null ? null : new java.util.Date(timestampMod.getTime()));
 	}
 
-	private void enrichV2Bean(ResultSet rs, V2Bean bean, int rowNum) throws SQLException {
+	private void enrichV2Bean(ResultSet rs, V2Bean bean) throws SQLException {
 
 		bean.setMonth(rs.getInt("mese"));
 		bean.setUser(rs.getString("id_user"));
@@ -802,7 +797,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
 				ps.setInt(i++, enable);
-				ps.setInt(i++, month);
+				ps.setInt(i, month);
 				return ps;
 			}
 		});
@@ -822,7 +817,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
 				ps.setInt(i++, enable);
-				ps.setInt(i++, month);
+				ps.setInt(i, month);
 				return ps;
 			}
 		});
@@ -840,7 +835,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
 				int i = 1;
-				ps.setInt(i++, month);
+				ps.setInt(i, month);
 			}
 		}, new RowMapper<Integer>() {
 			@Override
@@ -867,7 +862,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public void setValues(PreparedStatement ps) throws SQLException {
 				int i = 1;
 				ps.setInt(i++, badgeNumber);
-				ps.setInt(i++, mese);
+				ps.setInt(i, mese);
 			}
 		}, new RowMapper<Integer>() {
 			@Override
@@ -901,7 +896,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setInt(i++, V2StatusKeys.VALIDATE);
 				ps.setString(i++, user);
 				ps.setInt(i++, month);
-				ps.setInt(i++, businessUnit);
+				ps.setInt(i, businessUnit);
 				
 				return ps;
 			}

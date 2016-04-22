@@ -17,6 +17,10 @@ public class SessionHelper {
 	private static final String PROJECT_DIGESTER_KEY = "session.digester.project";
 	private static final String V2_SESSION_KEY = "session.v2";
 	
+	private SessionHelper() {
+		
+	}
+	
 	public static void storeUser(UserBean user) {
 		
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();

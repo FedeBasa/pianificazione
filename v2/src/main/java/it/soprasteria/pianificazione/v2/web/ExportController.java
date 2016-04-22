@@ -1,7 +1,5 @@
 package it.soprasteria.pianificazione.v2.web;
 
-
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -23,31 +21,32 @@ import it.soprasteria.pianificazione.v2.dao.DaoImpl;
 import it.soprasteria.pianificazione.v2.service.ExportV2Service;
 import it.soprasteria.pianificazione.v2.service.V2Service;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
+
 @Controller
 public class ExportController {
+
+	private static final Logger LOG = Logger.getLogger(ExportController.class);
 
 	@Autowired
 	private ExportV2Service service;
 	@Autowired
 	private V2Service v2Service;
-	
-	private static final Logger LOG = Logger.getLogger(DaoImpl.class);
-	
+
 	@RequestMapping(value = "/export/v2", method = RequestMethod.GET)
-		public void export(HttpServletResponse response, @RequestParam (name = "month" , required= true)int month,@RequestParam (name = "bu" , required= true) int bu) throws IOException, InvalidFormatException, ParseException{
-		
-			String user = SessionHelper.getUser().getUsername();
-			
-			List<RecordV2Bean> record = v2Service.getV2(month, bu, user);
-			
-			byte[] bytes = service.export(record);
-			
-			response.setContentType("application/vnd.ms-excel");
-			response.setHeader("Content-Disposition", String.format("inline; filename=\"" + user + "_" + month + "_" + bu + ".xlsx\""));
-			
-			ServletOutputStream outputStream = response.getOutputStream();
-			outputStream.write(bytes);
-			
-			outputStream.close();
-		}
+	public void export(HttpServletResponse response, @RequestParam(name = "month", required = true) int month, @RequestParam(name = "bu", required = true) int bu) throws IOException, InvalidFormatException, ParseException {
+
+		String user = SessionHelper.getUser().getUsername();
+
+		List<RecordV2Bean> record = v2Service.getV2(month, bu, user);
+
+		byte[] bytes = service.export(record);
+
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-Disposition", "inline; filename=\"" + user + "_" + month + "_" + bu + ".xlsx\"");
+
+		ServletOutputStream outputStream = response.getOutputStream();
+		outputStream.write(bytes);
+
+		outputStream.close();
+	}
 }
