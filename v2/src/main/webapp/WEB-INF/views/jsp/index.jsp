@@ -160,6 +160,13 @@
 	
 	<input type="hidden" id="responsecode">
 	<div class="container-custom">
+
+		<c:if test="${not empty errorMessage}">
+			<div class="alert alert-danger">
+				<span>${errorMessage}</span>
+			</div>
+		</c:if>	
+
 		<c:if test="${v2Bean.stato == 100}">
 		<div class="row">
 			<div class="col-sm-4">
@@ -170,9 +177,9 @@
 						Azioni <span class="caret"></span></button>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="${pageContext.request.contextPath}/allineaproduzione?month=${month}&bu=${businessUnit}">Allinea Produzione</a></li>
-							<li><a href="${pageContext.request.contextPath}/valida?month=${month}&bu=${businessUnit}">Valida</a></li>
-							<li><a href="${pageContext.request.contextPath}/export/v2?month=${month}&bu=${businessUnit}">Excel</a></li>
 							<li><a href="${pageContext.request.contextPath}/workload?month=${month}&bu=${businessUnit}">Workload</a></li>
+							<li><a href="${pageContext.request.contextPath}/export/v2?month=${month}&bu=${businessUnit}">Scarica Excel</a></li>
+							<li><a href="${pageContext.request.contextPath}/valida?month=${month}&bu=${businessUnit}">Valida</a></li>
 						</ul>
 					</div>
 					<button id="aggiungi" type="button" class="btn btn-primary">Aggiungi</button>

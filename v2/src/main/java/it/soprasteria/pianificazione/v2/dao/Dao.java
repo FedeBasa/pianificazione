@@ -68,7 +68,7 @@ public interface Dao {
 	
 	public int checkChangePassword(String userid);
 	
-	public void changePassword(String userId, String password, String prevPw);
+	public void changePassword(String userId, String password);
 	
 	public UserBean findByUsername(final String username);
 	

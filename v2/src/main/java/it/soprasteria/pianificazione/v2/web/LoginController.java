@@ -76,14 +76,20 @@ public class LoginController {
 		
 	}
 	
-	@RequestMapping(value = "/saveNewPassword", method = RequestMethod.POST)
-	public String saveNewPassword(@RequestParam(name = "npw") String npw ){
-		LOG.debug("CHIAMATO NEW PASSWORD");
+	@RequestMapping(value = "/changepw", method = RequestMethod.POST)
+	public String saveNewPassword(@RequestParam(name = "npw") String npw, Model model){
 		
-		service.changePw(SessionHelper.getUser().getUsername(), npw,SessionHelper.getUser().getPassword());
-		SessionHelper.logout();
+		if (npw == null || npw.length() == 0) {
+			model.addAttribute("errorMessage", "Valorizzare i campi");
+			return "change_pwd";
+		}
 		
-		return "redirect:/login";
+		UserBean user = SessionHelper.getUser();
+		
+		service.changePw(user.getUsername(), npw);
+		user.setFirstlogin(1);
+		
+		return "redirect:/home";
 	}
 	
 	

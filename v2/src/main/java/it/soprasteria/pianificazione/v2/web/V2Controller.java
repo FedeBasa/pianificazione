@@ -141,17 +141,24 @@ public class V2Controller {
 	@RequestMapping(value = "/record/update", method = RequestMethod.POST)
 	public String modifyRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-		String errorPage = checkGeneralConditions(record.getMonth(), record.getBusinessUnit());
+		int month = record.getMonth();
+		Integer businessUnit = record.getBusinessUnit();
+		
+		String errorPage = checkGeneralConditions(month, businessUnit);
 		if (errorPage != null) {
 			return errorPage;
 		}
 
 		if (result.hasErrors()) {
 
+			model.addAttribute("errorMessage", "Verificare i dati inseriti");
+			
 			// ricarico la lista così nella jsp continuo a vedere la lista
-			List<RecordV2Bean> list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
+			List<RecordV2Bean> list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
 
 			model.addAttribute("list", list);
+			
+			prepareModelAttributes(model, month, businessUnit);
 
 			return VIEW_INDEX;
 		} else {
@@ -163,22 +170,29 @@ public class V2Controller {
 			redirectAttributes.addFlashAttribute("css", "success");
 			redirectAttributes.addFlashAttribute("msg", "Record aggiornato!");
 
-			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
+			return buildRedirectV2Edit(month, businessUnit);
 		}
 	}
 
 	@RequestMapping(value = "/record/insert", method = RequestMethod.POST)
 	public String insertRecord(@ModelAttribute("v2Form") @Validated RecordV2Bean record, BindingResult result, Model model) {
 
-		String errorPage = checkGeneralConditions(record.getMonth(), record.getBusinessUnit());
+		int month = record.getMonth();
+		Integer businessUnit = record.getBusinessUnit();
+		
+		String errorPage = checkGeneralConditions(month, businessUnit);
 		if (errorPage != null) {
 			return errorPage;
 		}
 
 		if (result.hasErrors()) {
 
-			List<RecordV2Bean> list = service.getV2(record.getMonth(), record.getBusinessUnit(), SessionHelper.getUser().getUsername());
+			model.addAttribute("errorMessage", "Verificare i dati inseriti");
+			
+			List<RecordV2Bean> list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
 			model.addAttribute("list", list);
+			
+			prepareModelAttributes(model, month, businessUnit);
 
 			return VIEW_INDEX;
 		} else {
@@ -186,22 +200,37 @@ public class V2Controller {
 			record.setUtenteIns(SessionHelper.getUser().getUsername());
 			service.insertRecord(record);
 
-			return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
+			return buildRedirectV2Edit(month, businessUnit);
 		}
 	}
 
 	@RequestMapping(value = "/record/delete", method = RequestMethod.POST)
-	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record) {
+	public String deleteRecord(@ModelAttribute("v2Form") RecordV2Bean record, Model model) {
 
-		String errorPage = checkGeneralConditions(record.getMonth(), record.getBusinessUnit());
+		int month = record.getMonth();
+		Integer businessUnit = record.getBusinessUnit();
+		
+		String errorPage = checkGeneralConditions(month, businessUnit);
 		if (errorPage != null) {
 			return errorPage;
 		}
 		
 		Long id = record.getIdRecord();
+		
+		if (id == null) {
+			
+			model.addAttribute("errorMessage", "Selezionare un record da eliminare");
+			
+			List<RecordV2Bean> list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
+			model.addAttribute("list", list);
+
+			prepareModelAttributes(model, month, businessUnit);
+			
+			return VIEW_INDEX;
+		}
 		service.deleteRecord(id);
 
-		return buildRedirectV2Edit(record.getMonth(), record.getBusinessUnit());
+		return buildRedirectV2Edit(month, businessUnit);
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -293,5 +322,19 @@ public class V2Controller {
 	private String buildRedirectV2Edit(int month, int businessUnit) {
 		return "redirect:/edit/v2?month=" + month + "&bu=" + businessUnit;
 	}
-	
+
+	private void prepareModelAttributes(Model model, int month, Integer businessUnit) {
+		
+		model.addAttribute("v2Bean", SessionHelper.getV2(month, businessUnit));
+		model.addAttribute("month", month);
+		model.addAttribute("businessUnit", businessUnit);
+		model.addAttribute("cons1", calendarConfigService.getConfig(DateUtil.addMonth(month, 0)));
+		model.addAttribute("cons2", calendarConfigService.getConfig(DateUtil.addMonth(month, 1)));
+		model.addAttribute("cons3", calendarConfigService.getConfig(DateUtil.addMonth(month, 2)));
+		
+		model.addAttribute("currentMonth", DateUtil.getMonthName(month));
+		model.addAttribute("nextMonth", DateUtil.getMonthName(month, 1));
+		model.addAttribute("lastMonth", DateUtil.getMonthName(month, 2));
+	}
+
 }

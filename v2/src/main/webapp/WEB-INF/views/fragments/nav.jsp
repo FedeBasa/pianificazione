@@ -5,6 +5,7 @@
 <spring:url value="/excel/upload/employee" var="urlUploadEmployee" />
 <spring:url value="/excel/upload/project" var="urlUploadProjects" />
 <spring:url value="/admin/gestione_mese" var="urlApprova" />
+<spring:url value="/changepw" var="urlChangepwd" />
 <spring:url value="/logout" var="urlLogout" />
 
 <header>
@@ -32,6 +33,12 @@
 			 		} 
 			 		if (request.getUserPrincipal() == null) { 
 			 		%>
+			 		<li class="dropdown">
+			 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Il mio profilo <span class="caret"></span></a>
+			 			<ul class="dropdown-menu">
+			 				<li><a class="" href="${urlChangepwd}">Cambia Password</a></li>
+			 			</ul>
+			 		</li>
 					<li class=""><a href="${urlLogout}">Logout</a></li>
 					<%
 			 		}

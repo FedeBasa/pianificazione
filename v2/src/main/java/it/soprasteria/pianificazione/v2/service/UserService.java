@@ -14,8 +14,8 @@ public class UserService {
 		return dao.login(username, password);
 	}
 	
-	public void changePw(String username, String password, String oldPw){
-		dao.changePassword(username, password, oldPw);
+	public void changePw(String username, String password) {
+		dao.changePassword(username, password);
 	}
 
 }

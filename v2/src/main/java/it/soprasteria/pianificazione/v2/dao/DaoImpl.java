@@ -937,42 +937,25 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 	
 	@Override
-	public void changePassword(final String userId,final String password,final String prevPw){
+	public void changePassword(final String userId, final String password) {
 		final StringBuilder sb = new StringBuilder();
-		
-		sb.append("UPDATE users");
-		sb.append(" SET password = ? , first_login = 1");
-		sb.append(" WHERE username = ?");
-		
-		if(prevPw.equals(getJdbcTemplate().query("SELECT password FROM users WHERE username = ? ", new PreparedStatementSetter(){
-			@Override
-			public void setValues(PreparedStatement ps) throws SQLException {
-                     ps.setString(1, userId);
-                     LOG.debug(userId);
-			}
-		},new RowMapper<String>(){
-			@Override
-			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-				LOG.debug(prevPw);
-				String oldPw  = rs.getString("password");
-				LOG.debug("VECCHIA PASSWORD " + oldPw);
-				return oldPw;
-			}
-		}).get(0))){
-			
-			getJdbcTemplate().update(new PreparedStatementCreator(){
-				@Override
-				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 
-					PreparedStatement pstm = con.prepareStatement(sb.toString());
-					pstm.setString(1,password);
-					pstm.setString(2, userId);
-					
-					return pstm;
-				}
-			});
-		}
-		
+		sb.append("UPDATE users");
+		sb.append(" SET password = ?,");
+		sb.append(" first_login = 1");
+		sb.append(" WHERE username = ?");
+
+		getJdbcTemplate().update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+
+				PreparedStatement pstm = con.prepareStatement(sb.toString());
+				pstm.setString(1, password);
+				pstm.setString(2, userId);
+
+				return pstm;
+			}
+		});
 	}
 
 	@Override

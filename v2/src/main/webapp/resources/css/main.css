@@ -30,8 +30,9 @@ header{
 .button-container{
     padding:10px 0;
 }
-.search-container{
-    padding:20px 0;
+.search-container div{
+    padding-top:10px;
+    padding-bottom:10px;
 }
 .table-container{
     padding:10px 0;
@@ -48,10 +49,10 @@ header{
   float:left;
 }
 .btn-validate{
-  float:right;
+    float:right;
 }
 footer{
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     background-color:#CF022D;
