@@ -36,7 +36,6 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring-core-config.xml</param-value>
 	</context-param>
-<!-- 
 	<filter>
 		<filter-name>SecurityFilter</filter-name>
 		<filter-class>waffle.servlet.NegotiateSecurityFilter</filter-class>
@@ -71,17 +70,14 @@
 			<param-value>WaffleFilterDemo</param-value>
 		</init-param>
 	</filter>
--->	
 	<filter>
 		<filter-name>sessionFilter</filter-name>
 		<filter-class>it.soprasteria.pianificazione.v2.filter.SessionFilter</filter-class>
 	</filter>
-<!-- 	
 	<filter-mapping>
 		<filter-name>SecurityFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
- -->	
 	<filter-mapping>
 		<filter-name>sessionFilter</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -111,4 +107,10 @@
 		<error-code>500</error-code>
 		<location>/WEB-INF/views/jsp/error/500.jsp</location>
 	</error-page>
+	
+	<welcome-file-list>
+		<welcome-file>
+			/WEB-INF/views/welcome.jsp
+		</welcome-file>
+	</welcome-file-list>
 </web-app>

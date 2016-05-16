@@ -1,5 +1,9 @@
 package it.soprasteria.pianificazione.v2.web;
 
+import java.security.Principal;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,12 +29,17 @@ public class LoginController {
 	private UserService service;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String view(Model model) {
+	public String view(Model model, HttpServletRequest httpServletRequest) {
 		
 		if (SessionHelper.getUser() != null) {
 			
 			// utente già loggato lo riporto alla home
 			return "redirect:/home";
+		}
+		
+		Principal userPrincipal = httpServletRequest.getUserPrincipal();
+		if (userPrincipal != null) {
+			return "redirect:/userprincipal";
 		}
 		
 		model.addAttribute("userbean", new UserBean());
