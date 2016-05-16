@@ -8,6 +8,7 @@ public class RecordV2Bean extends BaseBean {
 	private String activityType;
 	private Long idProject;
 	private String projectDesc;
+	private String customDesc;
 	private Integer price;
 	private String currency;
 	private Integer cons0;
@@ -117,6 +118,14 @@ public class RecordV2Bean extends BaseBean {
 
 	public void setProjectDesc(String projectDesc) {
 		this.projectDesc = projectDesc;
+	}
+
+	public String getCustomDesc() {
+		return customDesc;
+	}
+
+	public void setCustomDesc(String customDesc) {
+		this.customDesc = customDesc;
 	}
 
 	public Integer getPrice() {

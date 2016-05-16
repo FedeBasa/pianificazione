@@ -245,8 +245,9 @@ public class V2Controller {
 
 			String realColname = ColnameConverter.convertColname(colname);
 
-			if ("valuta".equals(realColname) || "attività".equals(realColname)) {
-				if (!enumservice.getSet(realColname).contains(data)) {
+			if ("valuta".equals(realColname) || "attività".equals(realColname) || "desc_custom".equals(realColname)) {
+				
+				if (!"desc_custom".equals(realColname) && !enumservice.getSet(realColname).contains(data)) {
 
 					return JsonResponse.build(JsonResponse.CODE_INVALID_COLVALUE, "Valore non valido");
 

@@ -20,6 +20,7 @@ public class ColnameConverter {
 		//TODO
 		// eliminare accento, attenzione anche su DB
 		mapColname.put("activity", "attività");
+		mapColname.put("custom_desc", "desc_custom");
 	}
 
 	private ColnameConverter() {

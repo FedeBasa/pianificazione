@@ -233,8 +233,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	public void insert(final RecordV2Bean rec) {
 
 		final StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,consolidato_1,consolidato_2,consolidato_3,matricola,id_user,nome_risorsa,cognome_risorsa,desc_progetto,attività,valuta,cliente,business_unit,utente_ins,data_ins)");
-		sb.append("  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		sb.append("INSERT INTO u_progetti_risorse (mese,id_progetto,consolidato_1,consolidato_2,consolidato_3,matricola,id_user,nome_risorsa,cognome_risorsa,desc_progetto,desc_custom,attività,valuta,cliente,business_unit,utente_ins,data_ins)");
+		sb.append("  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
@@ -250,6 +250,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				ps.setString(i++, rec.getNome());
 				ps.setString(i++, rec.getCognome());
 				ps.setString(i++, rec.getProjectDesc());
+				ps.setString(i++, rec.getCustomDesc());
 				ps.setString(i++, rec.getActivityType());
 				ps.setString(i++, "EUR");
 				ps.setString(i++, rec.getCustomer());
@@ -488,8 +489,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		StringBuilder insertSql = new StringBuilder();
 		insertSql.append("INSERT INTO u_progetti_risorse");
 		insertSql.append(" (mese, id_progetto, matricola, consolidato_1, consolidato_2, consolidato_3, prodotto_1, prodotto_2, prodotto_3,");
-		insertSql.append(" id_user, tariffa, nome_risorsa, cognome_risorsa, valuta, cliente, desc_progetto, business_unit, attività, utente_ins, data_ins)");
-		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		insertSql.append(" id_user, tariffa, nome_risorsa, cognome_risorsa, valuta, cliente, desc_progetto, desc_custom, business_unit, attività, utente_ins, data_ins)");
+		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 		final Date now = new Date();
 
@@ -517,6 +518,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setString(i++, bean.getCurrency());
 				pstm.setString(i++, bean.getCustomer());
 				pstm.setString(i++, bean.getProjectDesc());
+				pstm.setString(i++, bean.getCustomDesc());
 				pstm.setInt(i++, bean.getBusinessUnit());
 				pstm.setString(i++, bean.getActivityType());
 				pstm.setString(i++, username);
@@ -736,6 +738,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		bean.setCognome(rs.getString("cognome_risorsa"));
 		bean.setCurrency(rs.getString("valuta"));
 		bean.setProjectDesc(rs.getString("desc_progetto"));
+		bean.setCustomDesc(rs.getString("desc_custom"));
 		bean.setBusinessUnit(rs.getInt("business_unit"));
 		bean.setIdUser(rs.getString("id_user"));
 		bean.setActivityType(rs.getString("attività"));
