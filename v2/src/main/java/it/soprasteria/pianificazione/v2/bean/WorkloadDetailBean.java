@@ -40,7 +40,7 @@ public class WorkloadDetailBean {
 	
 	public String getEmployeeDesc() {
 		
-		return (name == null ? "" : name) + " " + (surname == null ? "" : surname);
+		return (surname == null ? "" : surname) + " " + (name == null ? "" : name);
 	}
 
 	public String getDescProgetto() {

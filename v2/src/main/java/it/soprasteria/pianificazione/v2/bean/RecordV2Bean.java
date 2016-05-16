@@ -1,5 +1,7 @@
 package it.soprasteria.pianificazione.v2.bean;
 
+import org.apache.commons.lang.StringUtils;
+
 public class RecordV2Bean extends BaseBean {
 
 	private int month;
@@ -93,7 +95,7 @@ public class RecordV2Bean extends BaseBean {
 		if (nome == null && cognome == null && badgeNumber == null) {
 			return "";
 		}
-		return (nome == null ? "" : nome) + " " + (cognome == null ? "" : cognome) + " (" +  (badgeNumber == null ? "" : badgeNumber) + ")";
+		return (cognome == null ? "" : cognome) + " " + (nome == null ? "" : nome) + " (" +  StringUtils.abbreviate((badgeNumber == null ? "" : badgeNumber), 5) + ")";
 	}
 
 	public String getActivityType() {

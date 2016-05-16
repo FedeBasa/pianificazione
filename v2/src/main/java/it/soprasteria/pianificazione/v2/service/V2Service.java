@@ -47,7 +47,7 @@ public class V2Service {
 
 	private void completeRecord(RecordV2Bean item) {
 		String bn = item.getBadgeNumber();
-		if (bn != null && bn.length() > 0) {
+		if (bn != null && bn.length() > 0 && bn.length() < 6) {
 			EmployeeBean eb = dao.getEmployee(bn);
 			if (eb != null) {
 				item.setNome(eb.getName());

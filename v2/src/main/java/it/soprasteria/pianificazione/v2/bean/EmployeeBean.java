@@ -21,7 +21,7 @@ public class EmployeeBean extends BaseBean implements Serializable {
 
 	public String getNameSurname() {
 		if (name != null && surname != null && badgeNumber != null) {
-			return name + " " + surname + " (" + badgeNumber + ")";
+			return surname + " " + name + " (" + badgeNumber + ")";
 		}
 		return "";
 	}
