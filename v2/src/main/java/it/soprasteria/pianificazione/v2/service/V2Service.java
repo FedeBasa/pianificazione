@@ -56,10 +56,13 @@ public class V2Service {
 		} else {
 			
 			item.setBadgeNumber(UUID.randomUUID().toString());
-			String[] nameSurname = item.getEmployeeDesc().split(" ");
-			item.setNome(nameSurname[1]);
-			if (nameSurname.length > 1) {
-				item.setCognome(nameSurname[0]);
+			String employeeDesc = item.getEmployeeDesc();
+			int index = employeeDesc.lastIndexOf(" ");
+			if (index > -1) {
+				item.setNome(employeeDesc.substring(index+1));
+				item.setCognome(employeeDesc.substring(0, index));
+			} else {
+				item.setCognome(employeeDesc);
 			}
 		}
 		Long id = item.getIdProject();

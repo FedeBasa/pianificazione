@@ -77,7 +77,6 @@
 					$("#currency").val(value[1]).trigger("change");
 					$("#activityType").val(value[2]).trigger("change");
 					$("#idProject").val(value[3]).trigger("change");
-					$("#month").val(value[4]).trigger("change");
 				},
 				
 				maxNumberOfElements : 10,
@@ -243,7 +242,7 @@
 						</tr>
 						<tr>
 							<th>Risorsa</th>
-							<th>Attivita'</th>
+							<th>Attivita' (R/F)</th>
 							<th>Progetto</th>
 							<th>Descrizione</th>
 							<th>Tariffa</th>
