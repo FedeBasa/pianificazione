@@ -26,9 +26,11 @@
 			$("#v2Form").submit();
 		});
 		$("#delete").click(function(){
-			var path = "${pageContext.request.contextPath}/record/delete";
-			$("#v2Form").attr("action",path);
-			$("#v2Form").submit();
+			if (confirm('Stai per eliminare un record. Sei sicuro di voler continuare?')) {				
+				var path = "${pageContext.request.contextPath}/record/delete";
+				$("#v2Form").attr("action",path);
+				$("#v2Form").submit();
+			}
 		});
 		$("#aggiorna").click(function(){
 			var path = "${pageContext.request.contextPath}/record/update";
@@ -142,6 +144,15 @@
 	    });
 	    return vars;
 	}
+	
+	function allineaProduzione() {
+		
+		if (confirm('Stai per allineare il prodotto con il lavorato su tutte le risorse. Sei sicuro di voler continuare?')) {
+			
+			window.location = "${pageContext.request.contextPath}/allineaproduzione?month=${month}&bu=${businessUnit}";
+		}
+		
+	}
 	</c:if>
  </script>
  	<style>
@@ -176,7 +187,7 @@
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						Azioni <span class="caret"></span></button>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="${pageContext.request.contextPath}/allineaproduzione?month=${month}&bu=${businessUnit}">Allinea Produzione</a></li>
+							<li><a href="javascript:allineaProduzione();">Allinea Produzione</a></li>
 							<li><a href="${pageContext.request.contextPath}/workload?month=${month}&bu=${businessUnit}">Workload</a></li>
 							<li><a href="${pageContext.request.contextPath}/export/v2?month=${month}&bu=${businessUnit}">Scarica Excel</a></li>
 							<li><a href="${pageContext.request.contextPath}/valida?month=${month}&bu=${businessUnit}">Valida</a></li>

@@ -45,7 +45,7 @@ public class ExcelEmployeeDigester implements Serializable {
 				XSSFRow row = (XSSFRow)rowIterator.next();
 				String surname = row.getCell(0).getStringCellValue();
 				String name = row.getCell(1).getStringCellValue();
-				String badgeNumber = row.getCell(2).getRawValue();
+				String badgeNumber = row.getCell(2).getStringCellValue();
 
 				String[] rowContent = new String[3];
 				rowContent[0] = surname;

@@ -57,9 +57,9 @@ public class V2Service {
 			
 			item.setBadgeNumber(UUID.randomUUID().toString());
 			String[] nameSurname = item.getEmployeeDesc().split(" ");
-			item.setNome(nameSurname[0]);
+			item.setNome(nameSurname[1]);
 			if (nameSurname.length > 1) {
-				item.setCognome(nameSurname[1]);
+				item.setCognome(nameSurname[0]);
 			}
 		}
 		Long id = item.getIdProject();
