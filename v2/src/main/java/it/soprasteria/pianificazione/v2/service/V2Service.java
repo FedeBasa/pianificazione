@@ -93,7 +93,8 @@ public class V2Service {
 
 	public boolean v2Update(Long id, int month, String colname, Integer value, String username) {
 		
-		if (value < 0) {
+
+		if (value < 0 && !colname.startsWith("prodotto_")) {
 			return false;
 		}
 		
@@ -111,6 +112,7 @@ public class V2Service {
 				return false;
 			}
 		}		
+		
 		dao.updateTable(id, colname, value, username);
 		
 		return true;

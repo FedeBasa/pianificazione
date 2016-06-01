@@ -10,4 +10,6 @@ public interface WorkloadDao {
 	public List<WorkloadBean> findWorkload(int month, String username);
 	
 	public List<WorkloadDetailBean> findWorkloadDetails(int month, String badgeNumber);
+	
+	public void updateFerieTable(WorkloadBean workloadBean, int month, String colname, Integer value, String username);
 }

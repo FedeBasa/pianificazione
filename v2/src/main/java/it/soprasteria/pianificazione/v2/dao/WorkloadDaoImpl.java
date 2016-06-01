@@ -1,19 +1,27 @@
 package it.soprasteria.pianificazione.v2.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
+import it.soprasteria.pianificazione.v2.bean.FerieBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 
 public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 
+	private final int ZERO = 0;
+	
 	@Override
 	public List<WorkloadBean> findWorkload(final int month, final String username) {
 
@@ -47,6 +55,19 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 				bean.setRecognized2(rs.getInt("rec2"));
 				bean.setWork3(rs.getInt("work3"));
 				bean.setRecognized3(rs.getInt("rec3"));
+				bean.setFerie1(ZERO);
+				bean.setFerie2(ZERO);
+				bean.setFerie3(ZERO);
+		
+				List<FerieBean> ferieListBean = getFerie(month, rs.getString("matricola"));
+				
+				if(ferieListBean.size() > ZERO) {
+					FerieBean ferieBean = ferieListBean.get(ZERO);
+					
+					bean.setFerie1(ferieBean.getFerie_1());
+					bean.setFerie2(ferieBean.getFerie_2());
+					bean.setFerie3(ferieBean.getFerie_3());
+				}
 				
 				return bean;
 			}
@@ -92,4 +113,78 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 		});
 	}
 
+	@Override
+	public void updateFerieTable(final WorkloadBean workloadBean, final int month, final String colname, final Integer value, final String username) {
+		
+		List<FerieBean> listFerieBean = getFerie(month, workloadBean.getBadgeNumber());
+		
+		if(listFerieBean.size() != 0) {
+					
+			final StringBuilder sb = new StringBuilder();
+
+			sb.append("UPDATE risorse_ferie");
+			sb.append(" SET ").append(colname).append(" = ?");
+			sb.append(" , utente_mod = ?");
+			sb.append(" , data_mod = ?");
+
+			getJdbcTemplate().update(new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+					PreparedStatement ps = conn.prepareStatement(sb.toString());
+					int i = 1;
+					ps.setInt(i++, value);
+					ps.setString(i++, username);
+					ps.setTimestamp(i++, new Timestamp(new Date().getTime()));
+					return ps;
+				}
+			});
+			
+		}
+		else {
+			
+			StringBuilder insertSql = new StringBuilder();
+			insertSql.append(" INSERT INTO risorse_ferie (mese, matricola, nome, cognome, utente_ins, data_ins, ").append(colname).append(" )");
+			insertSql.append("VALUES");
+			insertSql.append(" (?, ?, ?, ?, ?, ?, ?)");
+			
+			Timestamp timestamp = new Timestamp(new Date().getTime());
+			
+			Object[] params = new Object[] { month, workloadBean.getBadgeNumber(), workloadBean.getName(), workloadBean.getSurname(), username, timestamp, value };
+			int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP, Types.INTEGER};
+			getJdbcTemplate().update(insertSql.toString(), params, types);
+
+		}
+				
+	}
+	
+	private List<FerieBean> getFerie(final int month, final String matricola) {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select ferie_1, ferie_2, ferie_3");
+		sql.append(" from risorse_ferie");
+		sql.append(" where mese = ?");
+		sql.append(" and matricola = ?");
+		
+		return getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				
+				int i = 1;
+				pstm.setInt(i++, month);
+				pstm.setString(i, matricola);
+			}
+		}, new RowMapper<FerieBean>() {
+			public FerieBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				
+				FerieBean bean = new FerieBean();
+				bean.setFerie_1(rs.getInt("ferie_1"));
+				bean.setFerie_2(rs.getInt("ferie_2"));
+				bean.setFerie_3(rs.getInt("ferie_3"));
+				
+				return bean;
+			}
+		});
+	}
+	
 }

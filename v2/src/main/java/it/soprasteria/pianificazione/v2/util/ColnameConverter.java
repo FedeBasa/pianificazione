@@ -21,6 +21,9 @@ public class ColnameConverter {
 		// eliminare accento, attenzione anche su DB
 		mapColname.put("activity", "attività");
 		mapColname.put("custom_desc", "desc_custom");
+		mapColname.put("ferie1", "ferie_1");
+		mapColname.put("ferie2", "ferie_2");
+		mapColname.put("ferie3", "ferie_3");
 	}
 
 	private ColnameConverter() {
