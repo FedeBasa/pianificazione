@@ -9,15 +9,18 @@ public class WorkloadBean {
 	private int recognized1;
 	private int nit1;
 	private int nonProject1;
+	private int ferie1;
 	private int work2;
 	private int recognized2;
 	private int nit2;
 	private int nonProject2;
+	private int ferie2;
 	private int work3;
 	private int recognized3;
 	private int nit3;
 	private int nonProject3;
-
+	private int ferie3;
+	
 	public String getBadgeNumber() {
 		return badgeNumber;
 	}
@@ -78,6 +81,14 @@ public class WorkloadBean {
 		this.nonProject1 = nonProject1;
 	}
 
+	public int getFerie1() {
+		return ferie1;
+	}
+
+	public void setFerie1(int ferie1) {
+		this.ferie1 = ferie1;
+	}
+
 	public int getWork2() {
 		return work2;
 	}
@@ -110,6 +121,14 @@ public class WorkloadBean {
 		this.nonProject2 = nonProject2;
 	}
 
+	public int getFerie2() {
+		return ferie2;
+	}
+
+	public void setFerie2(int ferie2) {
+		this.ferie2 = ferie2;
+	}
+	
 	public int getWork3() {
 		return work3;
 	}
@@ -142,4 +161,12 @@ public class WorkloadBean {
 		this.nonProject3 = nonProject3;
 	}
 
+	public int getFerie3() {
+		return ferie3;
+	}
+
+	public void setFerie3(int ferie3) {
+		this.ferie3 = ferie3;
+	}
+	
 }

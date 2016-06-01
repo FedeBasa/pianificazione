@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -847,7 +846,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				return tot;
 			}
 		});
-		LOG.debug("TOTALE " + totGiornate.get(0));
+
 		return totGiornate.get(0);
 	}
 
