@@ -11,8 +11,10 @@
 	<spring:url value="/resources/js/dataTables.bootstrap.min.js" var="js3" />
 	<spring:url value="/resources/js/table.js" var="js4" />
 	<spring:url value="/resources/EasyAutocomplete-1.3.3/jquery.easy-autocomplete.min.js" var="js5" />
+	<spring:url value="/resources/js/bootstrap.min.js" var="js6" />
 
 	<title>Pianificazione Risorse</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 
 	<link href="${css1}" rel="stylesheet" >
 	<link href="${css2}" rel="stylesheet" >
@@ -24,6 +26,7 @@
 	<script src="${js3}"></script>
 	<script src="${js4}"></script>
 	<script src="${js5}"></script>
+	
 	<script>
 		$(document).ready(function(){
 		    $("#bottone").click(function(){
@@ -31,7 +34,7 @@
 		    });
 		});
 	</script>
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="${js6}"></script>
 	<style>
 	
 		body {
