@@ -29,6 +29,9 @@ public class V2Service {
 	
 	@Autowired
 	private CalendarConfigService calendarConfigService;
+	
+	@Autowired
+	private EmployeeService employeeService;
 
 	public V2Bean findByMonth(int month, int businessUnit, String username) {
 
@@ -74,6 +77,8 @@ public class V2Service {
 
 	public void updateRecord(RecordV2Bean record) {
 		completeRecord(record);
+		record.setCost(0);
+		record.setPrice(0);
 		dao.update(record);
 	}
 
@@ -82,6 +87,11 @@ public class V2Service {
 		completeRecord(record);
 		
 		String badgeNumber = record.getBadgeNumber();
+		EmployeeBean employeeBean = employeeService.findByBadgeNumber(badgeNumber);
+		if (employeeBean == null) {
+			record.setCost(999);
+		}
+		
 		int month = record.getMonth();
 		record.setCons0(getLeftDays(badgeNumber, month, CONSOLIDATO_1));
 		record.setCons1(getLeftDays(badgeNumber, month, CONSOLIDATO_2));
@@ -100,13 +110,27 @@ public class V2Service {
 		if (value < 0 && !colname.startsWith("prodotto_")) {
 			return false;
 		}
+		RecordV2Bean recordV2Bean = dao.getRecord(id);
+		String badgeNumber = recordV2Bean.getBadgeNumber();
+		if ("costo".equals(colname)) {
+			
+			EmployeeBean employeeBean = employeeService.findByBadgeNumber(badgeNumber);
+			if (employeeBean != null) {
+				return false;
+			}
+			
+		} else if ("tariffa".equals(colname)) {
+			
+			EmployeeBean employeeBean = employeeService.findByBadgeNumber(badgeNumber);
+			if (employeeBean == null) {
+				return false;
+			}
+			
+		} else if (!"tariffa".equals(colname) && !"costo".equals(colname) && !colname.startsWith("prodotto_")) {
 		
-		if (!"tariffa".equals(colname)&& !colname.startsWith("prodotto_")) {
-		
-			RecordV2Bean recordV2Bean = dao.getRecord(id);
 			int checkValue = value - getColvalue(recordV2Bean, colname);
 			
-			int leftDays = getLeftDays(recordV2Bean.getBadgeNumber(), month, colname);
+			int leftDays = getLeftDays(badgeNumber, month, colname);
 			
 			LOG.debug("LEFTDAYS" + leftDays);
 			LOG.debug("CHECKVALUE" + checkValue);

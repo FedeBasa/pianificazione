@@ -11,6 +11,7 @@ public class RecordV2Bean extends BaseBean {
 	private Long idProject;
 	private String projectDesc;
 	private String customDesc;
+	private int cost;
 	private Integer price;
 	private String currency;
 	private Integer cons0;
@@ -128,6 +129,14 @@ public class RecordV2Bean extends BaseBean {
 
 	public void setCustomDesc(String customDesc) {
 		this.customDesc = customDesc;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 
 	public Integer getPrice() {

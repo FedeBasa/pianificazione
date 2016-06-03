@@ -10,6 +10,7 @@ public class ColnameConverter {
 	static {
 	
 		mapColname.put("price", "tariffa");
+		mapColname.put("cost", "costo");
 		mapColname.put("cons0", "consolidato_1");
 		mapColname.put("cons1", "consolidato_2");
 		mapColname.put("cons2", "consolidato_3");

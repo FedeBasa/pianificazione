@@ -238,6 +238,7 @@
 							<th> </th>
 							<th> </th>
 							<th> </th>
+							<th> </th>
 							<th colspan="2" class="border-left text-center">${currentMonth} (<c:out value="${cons1}"/>)</th>
 							<th colspan="2" class="border-left text-center">${nextMonth} (<c:out value="${cons2}"/>)</th>
 							<th colspan="2" class="border-left text-center">${lastMonth} (<c:out value="${cons3}"/>)</th>
@@ -247,6 +248,7 @@
 							<th>Attivita' (R/F)</th>
 							<th>Progetto</th>
 							<th>Descrizione</th>
+							<th>Costo</th>
 							<th>Tariffa</th>
 							<th>Valuta</th>
 							<th class="border-left">Cons M</th>
@@ -264,6 +266,7 @@
 							<td colname="activity"><c:out value="${item.activityType}" /></td>
 							<td><c:out value="${item.projectDesc}" /></td>
 							<td colname="custom_desc"><c:out value="${item.customDesc}" /></td>
+							<td colname="cost"><c:out value="${item.cost}" /></td>
 							<td colname="price"><c:out value="${item.price}" /></td>
 							<td colname="currency"><c:out value="${item.currency}" /></td>
 							<td colname="cons0" class="border-left"><c:out value="${item.cons0}" /></td>
