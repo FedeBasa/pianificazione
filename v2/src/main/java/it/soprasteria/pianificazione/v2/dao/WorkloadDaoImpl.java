@@ -20,8 +20,6 @@ import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 
 public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 
-	private final int ZERO = 0;
-	
 	@Override
 	public List<WorkloadBean> findWorkload(final int month, final String username) {
 
@@ -55,18 +53,16 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 				bean.setRecognized2(rs.getInt("rec2"));
 				bean.setWork3(rs.getInt("work3"));
 				bean.setRecognized3(rs.getInt("rec3"));
-				bean.setFerie1(ZERO);
-				bean.setFerie2(ZERO);
-				bean.setFerie3(ZERO);
+				bean.setFerie1(0);
+				bean.setFerie2(0);
+				bean.setFerie3(0);
 		
-				List<FerieBean> ferieListBean = getFerie(month, rs.getString("matricola"));
+				FerieBean ferieBean = getFerie(month, rs.getString("matricola"));
 				
-				if(ferieListBean.size() > ZERO) {
-					FerieBean ferieBean = ferieListBean.get(ZERO);
-					
-					bean.setFerie1(ferieBean.getFerie_1());
-					bean.setFerie2(ferieBean.getFerie_2());
-					bean.setFerie3(ferieBean.getFerie_3());
+				if(ferieBean != null) {
+					bean.setFerie1(ferieBean.getFerie1());
+					bean.setFerie2(ferieBean.getFerie2());
+					bean.setFerie3(ferieBean.getFerie3());
 				}
 				
 				return bean;
@@ -116,9 +112,9 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 	@Override
 	public void updateFerieTable(final WorkloadBean workloadBean, final int month, final String colname, final Integer value, final String username) {
 		
-		List<FerieBean> listFerieBean = getFerie(month, workloadBean.getBadgeNumber());
+		final FerieBean ferieBean = getFerie(month, workloadBean.getBadgeNumber());
 		
-		if(listFerieBean.size() != 0) {
+		if(ferieBean != null) {
 					
 			final StringBuilder sb = new StringBuilder();
 
@@ -126,6 +122,7 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 			sb.append(" SET ").append(colname).append(" = ?");
 			sb.append(" , utente_mod = ?");
 			sb.append(" , data_mod = ?");
+			sb.append(" where id_ferie = ?");
 
 			getJdbcTemplate().update(new PreparedStatementCreator() {
 				@Override
@@ -135,6 +132,7 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 					ps.setInt(i++, value);
 					ps.setString(i++, username);
 					ps.setTimestamp(i++, new Timestamp(new Date().getTime()));
+					ps.setInt(i, ferieBean.getIdFerie());
 					return ps;
 				}
 			});
@@ -157,16 +155,16 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 				
 	}
 	
-	private List<FerieBean> getFerie(final int month, final String matricola) {
+	private FerieBean getFerie(final int month, final String matricola) {
 		
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select ferie_1, ferie_2, ferie_3");
+		sql.append("select *");
 		sql.append(" from risorse_ferie");
 		sql.append(" where mese = ?");
 		sql.append(" and matricola = ?");
 		
-		return getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
+		List<FerieBean> list = getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 				
@@ -178,13 +176,27 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 			public FerieBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				
 				FerieBean bean = new FerieBean();
-				bean.setFerie_1(rs.getInt("ferie_1"));
-				bean.setFerie_2(rs.getInt("ferie_2"));
-				bean.setFerie_3(rs.getInt("ferie_3"));
+				bean.setIdFerie(rs.getInt("id_ferie"));
+				bean.setMese(rs.getInt("mese"));
+				bean.setBadgeNumber(rs.getString("matricola"));
+				bean.setNome(rs.getString("nome"));
+				bean.setCognome(rs.getString("cognome"));
+				bean.setFerie1(rs.getInt("ferie_1"));
+				bean.setFerie2(rs.getInt("ferie_2"));
+				bean.setFerie3(rs.getInt("ferie_3"));
+				bean.setUtenteIns(rs.getString("utente_ins"));
+				bean.setDataIns(rs.getTimestamp("data_ins"));
+				bean.setUtenteMod(rs.getString("utente_mod"));
+				bean.setDataMod(rs.getTimestamp("data_mod"));
 				
 				return bean;
 			}
 		});
+		
+		if (list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
 	}
 	
 }

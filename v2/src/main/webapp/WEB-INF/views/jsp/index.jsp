@@ -54,7 +54,6 @@
 				},
 			}
 		}
-		$("#employeeDesc").easyAutocomplete(options);
 		var options2 = {
 			url : function(phrase) {
 				return "${pageContext.request.contextPath}/autocomplete/progetto?bu=${v2Bean.businessUnit}";
@@ -72,7 +71,6 @@
 					           $("#projectDesc").getSelectedItemData().type,
 					           $("#projectDesc").getSelectedItemData().idProject,
 					            first];
-					console.log(value[4]);
 					$("#customer").val(value[0]).trigger("change");
 					$("#currency").val(value[1]).trigger("change");
 					$("#activityType").val(value[2]).trigger("change");
@@ -85,6 +83,10 @@
 				},
 			}
 		}
+		$('#employeeDesc').focus(function() {
+			$('#badgeNumber').val('');
+		});
+		$("#employeeDesc").easyAutocomplete(options);
 		$("#projectDesc").easyAutocomplete(options2);
 		
 		$('#v2').editableTableWidget();

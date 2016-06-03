@@ -80,7 +80,7 @@
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="btn-group">
-					<button id="edit" type="button" class="btn btn-primary" >Edit</button>
+					<button id="edit" type="button" class="btn btn-primary" >Torna indietro</button>
 				</div>
 			</div>
 		</div>
