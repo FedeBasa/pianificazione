@@ -44,8 +44,8 @@ function validate(form) {
 							Stampe <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=791'">Stampa 791</a></li>
-								<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=792'">Stampa 792</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=791">Stampa 791</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=792">Stampa 792</a></li>
 								<li><a href="#">Stampa Ferie</a></li>
 								<li><a href="#">Stampa Risorse Esterne</a></li>
 							</ul>
