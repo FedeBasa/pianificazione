@@ -28,15 +28,15 @@ public class UploadProjectController {
 	private ProjectService projectService;
 	
 
-	@RequestMapping(value = "/excel/upload/project", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/excel/upload/project", method = RequestMethod.GET)
 	public String projectView(Model model) {
 		
 		model.addAttribute("uploadProjectBean", new UploadProjectBean());
 		
-		return "upload_progetti";
+		return "admin_upload_progetti";
 	}
 	
-	@RequestMapping(value = "/excel/upload/project", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/excel/upload/project", method = RequestMethod.POST)
 	public String uploadProject(@ModelAttribute("uploadProjectBean") UploadProjectBean uploadProjectBean, Model model) throws DigestException, IOException {
 
 		
@@ -52,10 +52,10 @@ public class UploadProjectController {
 		
 		SessionHelper.storeProjectDigester(digester);
 			
-		return "upload_progetti";
+		return "admin_upload_progetti";
 	}
 	
-	@RequestMapping(value = "/excel/save/project", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/excel/save/project", method = RequestMethod.POST)
 	public String saveProject() {
 	
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
@@ -64,10 +64,10 @@ public class UploadProjectController {
 		
 		SessionHelper.clearProjectDigester();
 		   
-		return "redirect:/excel/upload/project";
+		return "redirect:/admin/excel/upload/project";
 	}	
 
-	@RequestMapping(value = "/excel/replace/project", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/excel/replace/project", method = RequestMethod.POST)
 	public String replaceProject() {
 
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
@@ -79,7 +79,7 @@ public class UploadProjectController {
 		// TODO
 		// aggiungere messaggio di conferma operazione
 
-		return "redirect:/excel/upload/project";
+		return "redirect:/admin/excel/upload/project";
 	}	
 	
 }

@@ -34,27 +34,17 @@ public interface Dao {
 	
 	public void addNextMonth(String user, Integer lastMonth);
 	
-	public void addNextConfigMonth(Integer lastMonth);
-	
-	public void updateMonthsStatus(final int month, int enable);
-	
-	public void updateV2ConfigStatus(final int month, int enable);
-
-	public List<V2Bean> getV2Config();
-	
-	public void updateEditable(String user, int month);
-
 	public void persist(List<EmployeeBean> list);
 	
 	public void deleteAllEmployees();
 	
 	public void updateTable(Long id, String colname, Integer modify, String username);
-
+	
+	public void updateTable(Long id, String colname, String value, String username);
+	
 	public V2Bean findByMonth(int month, int businessUnit, String username);
 
 	public List<V2Bean> findByUser(String username);
-	
-	public UserBean login(String username,String password);
 	
 	public int getTotDays(int month);
 	
@@ -68,9 +58,8 @@ public interface Dao {
 	
 	public int checkChangePassword(String userid);
 	
-	public void changePassword(String userId, String password);
-	
 	public UserBean findByUsername(final String username);
 	
 	public void produceAll(String user, int month, int businessUnit);
+
 }

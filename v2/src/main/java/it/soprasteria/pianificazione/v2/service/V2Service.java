@@ -12,10 +12,12 @@ import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
-import it.soprasteria.pianificazione.v2.dao.DaoImpl;
+import it.soprasteria.pianificazione.v2.dao.AdminDao;
+import it.soprasteria.pianificazione.v2.dao.Dao;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
 
 public class V2Service {
+	
 	private static final String CONSOLIDATO_3 = "consolidato_3";
 
 	private static final String CONSOLIDATO_2 = "consolidato_2";
@@ -25,7 +27,10 @@ public class V2Service {
 	private static final Logger LOG = Logger.getLogger(V2Service.class);
 
 	@Autowired
-	private DaoImpl dao;
+	private Dao dao;
+	
+	@Autowired
+	private AdminDao adminDao;
 	
 	@Autowired
 	private CalendarConfigService calendarConfigService;
@@ -175,7 +180,7 @@ public class V2Service {
 	public boolean addNextMonth(String username) {
 
 		List<Integer> list = dao.getMonths(username);
-		List<Integer> listConfig = dao.getMonthsConfig();
+		List<Integer> listConfig = adminDao.getMonthsConfig();
 
 		Integer lastMonth;
 		Integer lastMonthConfig;
@@ -198,34 +203,6 @@ public class V2Service {
 		}
 
 		return false;
-	}
-
-	public void addNextConfigMonth() {
-
-		List<Integer> listConfig = dao.getMonthsConfig();
-		Integer lastMonthConfig = listConfig.get(listConfig.size() - 1);
-
-		dao.addNextConfigMonth(lastMonthConfig);
-
-	}
-
-	public void updateEditable(String user, int month) {
-		dao.updateEditable(user, month);
-	}
-
-	public void updateMonthsStatus(int month, int enable) {
-		dao.updateMonthsStatus(month, enable);
-	}
-
-	public void updateV2ConfigStatus(int month, int enable) {
-		dao.updateV2ConfigStatus(month, enable);
-	}
-
-	public List<V2Bean> getV2Config() {
-
-		List<V2Bean> v2List = dao.getV2Config();
-
-		return v2List;
 	}
 
 	public void v2Update(long id, String realColname, String value, String username) {

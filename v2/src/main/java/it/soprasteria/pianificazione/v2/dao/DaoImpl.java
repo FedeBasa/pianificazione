@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -26,6 +27,7 @@ import it.soprasteria.pianificazione.v2.util.DateUtil;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 import it.soprasteria.pianificazione.v2.util.V2StatusKeys;
 
+@Qualifier
 public class DaoImpl extends JdbcDaoSupport implements Dao {
 
 	private static final Logger LOG = Logger.getLogger(DaoImpl.class);
@@ -90,16 +92,20 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		sb.append(" FROM u_progetti_risorse");
 		sb.append(" WHERE mese = ?");
 		sb.append(" AND business_unit = ?");
-		sb.append(" AND id_user = ?");
+		if (user != null) {
+			sb.append(" AND id_user = ?");
+		}
 
-		List<RecordV2Bean> result = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
+		return getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 
 				int i = 1;
 				pstm.setInt(i++, month);
 				pstm.setInt(i++, businessUnit);
-				pstm.setString(i, user);
+				if (user != null) {
+					pstm.setString(i, user);
+				}
 			}
 		}, new RowMapper<RecordV2Bean>() {
 			@Override
@@ -112,7 +118,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			}
 
 		});
-		return result;
 	}
 
 	@Override
@@ -395,6 +400,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		});
 	}
 
+	@Override
 	public void updateTable(final Long id, final String colname, final String value, final String username) {
 
 		final StringBuilder sb = new StringBuilder();
@@ -437,23 +443,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setString(1, username);
 			}
 		}, new RowMapper<Integer>() {
-			@Override
-			public Integer mapRow(ResultSet rs, int rowNumb) throws SQLException {
-				Integer mese = rs.getInt("mese");
-				return mese;
-			}
-		});
-		return result;
-	}
-
-	public List<Integer> getMonthsConfig() {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("SELECT mese");
-		sb.append(" FROM v2_config");
-		sb.append(" ORDER BY mese");
-
-		List<Integer> result = getJdbcTemplate().query(sb.toString(), new RowMapper<Integer>() {
 			@Override
 			public Integer mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				Integer mese = rs.getInt("mese");
@@ -557,43 +546,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
-	public void addNextConfigMonth(final Integer lastMonth) {
-
-		StringBuilder insertSql = new StringBuilder();
-		insertSql.append(" INSERT INTO v2_config (mese, enable)");
-		insertSql.append(" VALUES (?, ?)");
-
-		int nextMonth = DateUtil.nextMonth(lastMonth);
-
-		Object[] params = new Object[] { nextMonth, V2StatusKeys.OPEN };
-		int[] types = new int[] { Types.INTEGER, Types.INTEGER };
-		getJdbcTemplate().update(insertSql.toString(), params, types);
-
-	}
-
-	@Override
-	public void updateEditable(final String user, final int month) {
-
-		final StringBuilder sb = new StringBuilder();
-		sb.append("UPDATE v2");
-		sb.append(" SET editable= ?");
-		sb.append(" WHERE id_user = ?");
-		sb.append(" AND mese = ?");
-		getJdbcTemplate().update(new PreparedStatementCreator() {
-
-			@Override
-			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
-				int i = 1;
-				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, V2StatusKeys.OPEN);
-				ps.setString(i++, user);
-				ps.setInt(i, month);
-				return ps;
-			}
-		});
-	}
-
-	@Override
 	public V2Bean findByMonth(final int month, final int businessUnit, final String username) {
 
 		List<V2Bean> mesi = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ? AND mese = ? and business_unit = ?", new PreparedStatementSetter() {
@@ -623,7 +575,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	@Override
 	public List<V2Bean> findByUser(final String username) {
 
-		List<V2Bean> list = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ? ORDER BY MESE", new PreparedStatementSetter() {
+		List<V2Bean> list = getJdbcTemplate().query("SELECT * FROM v2 WHERE id_user = ? ORDER BY mese DESC, business_unit", new PreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement pstm) throws SQLException {
 				pstm.setString(1, username);
@@ -668,35 +620,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		}
 
 		return list.get(0);
-	}
-
-	@Override
-	public UserBean login(final String username, final String password) {
-
-		StringBuilder sb = new StringBuilder();
-		sb.append("SELECT *");
-		sb.append(" FROM users");
-		sb.append(" WHERE username = ? AND password = ?");
-		List<UserBean> userlist = getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
-			@Override
-			public void setValues(PreparedStatement pstm) throws SQLException {
-				pstm.setString(1, username);
-				pstm.setString(2, password);
-			}
-		}, new RowMapper<UserBean>() {
-			@Override
-			public UserBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
-				UserBean user = UserBean.build(rs.getString("username"), rs.getString("nome"), rs.getString("cognome"), rs.getString("profilo"));
-				user.setPassword(rs.getString("password"));
-				user.setFirstlogin(rs.getInt("first_login"));
-				return user;
-			}
-		});
-
-		if (userlist.isEmpty()) {
-			return null;
-		}
-		return userlist.get(0);
 	}
 
 	@Override
@@ -772,64 +695,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		proj.setType(rs.getString("attività"));
 		proj.setBusinessUnit(rs.getInt("business_unit"));
 		// TODO valorizzare utente_ins, data_ins
-	}
-
-	@Override
-	public List<V2Bean> getV2Config() {
-		List<V2Bean> v2List = getJdbcTemplate().query("SELECT * FROM v2_config order by mese", new RowMapper<V2Bean>() {
-			public V2Bean mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-				V2Bean bean = new V2Bean();
-
-				bean.setMonth(rs.getInt("mese"));
-				bean.setUser("");
-				bean.setStato(rs.getInt("enable"));
-
-				return bean;
-
-			}
-		});
-
-		return v2List;
-	}
-
-	@Override
-	public void updateMonthsStatus(final int month, final int enable) {
-
-		final StringBuilder sb = new StringBuilder();
-		sb.append("UPDATE v2");
-		sb.append(" SET editable= ?");
-		sb.append(" WHERE mese = ?");
-		getJdbcTemplate().update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
-				int i = 1;
-				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, enable);
-				ps.setInt(i, month);
-				return ps;
-			}
-		});
-	}
-
-	@Override
-	public void updateV2ConfigStatus(final int month, final int enable) {
-
-		final StringBuilder sb = new StringBuilder();
-		sb.append("UPDATE v2_config");
-		sb.append(" SET enable= ?");
-		sb.append(" WHERE mese = ?");
-
-		getJdbcTemplate().update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
-				int i = 1;
-				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, enable);
-				ps.setInt(i, month);
-				return ps;
-			}
-		});
 	}
 
 	@Override
@@ -945,28 +810,6 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return firstLog.get(0);
 	}
 	
-	@Override
-	public void changePassword(final String userId, final String password) {
-		final StringBuilder sb = new StringBuilder();
-
-		sb.append("UPDATE users");
-		sb.append(" SET password = ?,");
-		sb.append(" first_login = 1");
-		sb.append(" WHERE username = ?");
-
-		getJdbcTemplate().update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-
-				PreparedStatement pstm = con.prepareStatement(sb.toString());
-				pstm.setString(1, password);
-				pstm.setString(2, userId);
-
-				return pstm;
-			}
-		});
-	}
-
 	@Override
 	public void produceAll(final String user, final int month, final int businessUnit) {
 

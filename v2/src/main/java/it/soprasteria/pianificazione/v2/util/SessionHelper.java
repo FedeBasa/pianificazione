@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import it.soprasteria.pianificazione.v2.bean.ImpersonateBean;
 import it.soprasteria.pianificazione.v2.bean.UserBean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.digester.ExcelEmployeeDigester;
@@ -13,6 +14,7 @@ import it.soprasteria.pianificazione.v2.digester.ExcelProjectDigester;
 public class SessionHelper {
 
 	private static final String USER_SESSION_KEY = "session.user";
+	private static final String USER_IMPERSONATED_SESSION_KEY = "session.user.impersonated";
 	private static final String EMPLOYEE_DIGESTER_KEY = "session.digester.employee";
 	private static final String PROJECT_DIGESTER_KEY = "session.digester.project";
 	private static final String V2_SESSION_KEY = "session.v2";
@@ -70,7 +72,7 @@ public class SessionHelper {
 	    return (ExcelEmployeeDigester)session.getAttribute(EMPLOYEE_DIGESTER_KEY);
 	}
 	
-public static ExcelProjectDigester getProjectDigester() {
+	public static ExcelProjectDigester getProjectDigester() {
 		
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 	    HttpSession session = attr.getRequest().getSession();
@@ -110,4 +112,32 @@ public static ExcelProjectDigester getProjectDigester() {
 	    return (V2Bean)session.getAttribute(V2_SESSION_KEY + "_" + month + "_" + businessUnit);
 
 	}
+
+	public static void storeImpersonateUser(ImpersonateBean impersonateUser) {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+	    HttpSession session = attr.getRequest().getSession();
+	    session.setAttribute(USER_IMPERSONATED_SESSION_KEY, impersonateUser);
+	}
+	
+	public static ImpersonateBean getImpersonateUser() {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+	    HttpSession session = attr.getRequest().getSession();
+	    return (ImpersonateBean)session.getAttribute(USER_IMPERSONATED_SESSION_KEY);
+	}
+	
+	public static void clearImpersonateUser() {
+		
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+	    HttpSession session = attr.getRequest().getSession();
+
+		session.removeAttribute(USER_IMPERSONATED_SESSION_KEY);
+	}
+	
+	public static ImpersonateBean getImpersonateUser(HttpSession session) {
+		
+		return (ImpersonateBean)session.getAttribute(USER_IMPERSONATED_SESSION_KEY);	
+	}
+
 }

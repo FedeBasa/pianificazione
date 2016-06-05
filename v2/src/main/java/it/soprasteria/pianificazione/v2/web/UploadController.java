@@ -25,15 +25,15 @@ public class UploadController {
 	@Autowired
 	private EmployeeService service;
 	
-	@RequestMapping(value = "/excel/upload/employee", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/excel/upload/employee", method = RequestMethod.GET)
 	public String view(Model model) {
 		
 		model.addAttribute("uploadBean", new UploadEmployeeBean());
 		
-		return "upload_risorse";
+		return "admin_upload_risorse";
 	}
 	
-	@RequestMapping(value = "/excel/upload/employee", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/excel/upload/employee", method = RequestMethod.POST)
 	public String uploadEmployee(@ModelAttribute("uploadBean") UploadEmployeeBean uploadBean, Model model) throws DigestException, IOException {
 
 		
@@ -49,10 +49,10 @@ public class UploadController {
 		
 		SessionHelper.storeEmployeeDigester(digester);
 			
-		return "upload_risorse";
+		return "admin_upload_risorse";
 	}
 	
-	@RequestMapping(value = "/excel/save/employee", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/excel/save/employee", method = RequestMethod.POST)
 	public String saveEmployee() {
 	
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
@@ -61,10 +61,10 @@ public class UploadController {
 
 		SessionHelper.clearEmployeeDigester();
 		
-		return "redirect:/excel/upload/employee";
+		return "redirect:/admin/excel/upload/employee";
 	}	
 
-	@RequestMapping(value = "/excel/replace/employee", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/excel/replace/employee", method = RequestMethod.POST)
 	public String replaceEmployee() {
 	
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
@@ -73,7 +73,7 @@ public class UploadController {
 		
 		SessionHelper.clearEmployeeDigester();
 
-		return "redirect:/excel/upload/employee";
+		return "redirect:/admin/excel/upload/employee";
 	}	
 
 }

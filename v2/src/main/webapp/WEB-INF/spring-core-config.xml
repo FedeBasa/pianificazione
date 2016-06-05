@@ -23,7 +23,7 @@
 	<bean id="Project" class="it.soprasteria.pianificazione.v2.service.ProjectService" />
 	<bean id="User" class="it.soprasteria.pianificazione.v2.service.UserService" />
 	<bean id="Enum" class="it.soprasteria.pianificazione.v2.service.EnumService" />
-	<bean id="Pm" class="it.soprasteria.pianificazione.v2.service.PmService" />
+	<bean id="Admin" class="it.soprasteria.pianificazione.v2.service.AdminService" />
 	<bean id="Export" class="it.soprasteria.pianificazione.v2.service.ExportV2Service" />
 	<bean id="CalendarConfig" class="it.soprasteria.pianificazione.v2.service.CalendarConfigService" />
 	<bean id="WorkloadService" class="it.soprasteria.pianificazione.v2.service.WorkloadService" />
@@ -46,11 +46,15 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean id="PmDaoImpl" class="it.soprasteria.pianificazione.v2.dao.PmDaoImpl">
+	<bean id="AdminDaoImpl" class="it.soprasteria.pianificazione.v2.dao.AdminDaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<bean id="WorkloadDaoImpl" class="it.soprasteria.pianificazione.v2.dao.WorkloadDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="UserDaoImpl" class="it.soprasteria.pianificazione.v2.dao.UserDaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 

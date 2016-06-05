@@ -11,27 +11,26 @@
 	$(document).ready(function() {
 		
 		$("#upload").click(function(){
-			var path="${pageContext.request.contextPath}/excel/upload/employee";
-			$("#form1").attr("action",path);
-			$("#form1").submit();
+			var path="${pageContext.request.contextPath}/excel/upload/project";
+			$("#form2").attr("action",path);
+			$("#form2").submit();
 		});
 		$("#save").click(function(){
-			var path="${pageContext.request.contextPath}/excel/save/employee";
-			$("#form1").attr("action",path);
-			$("#form1").submit();
+			var path="${pageContext.request.contextPath}/excel/save/project";
+			$("#form2").attr("action",path);
+			$("#form2").submit();
 		});
 		$("#replace").click(function(){
-			var path="${pageContext.request.contextPath}/excel/replace/employee";
-			$("#form1").attr("action",path);
-			$("#form1").submit();
+			var path="${pageContext.request.contextPath}/excel/replace/project";
+			$("#form2").attr("action",path);
+			$("#form2").submit();
 		});
 	});
 </script>
 </head>
 <jsp:include page="../fragments/nav.jsp" />
 <body> 
- 
-    <div class="container">
+    <div class="container-custom">
     
 		<div class="btn-group">
 		
@@ -41,7 +40,7 @@
 			
 		</div>
     
-        <form:form id="form1" method="POST" modelAttribute="uploadBean" enctype="multipart/form-data" class="form-horizontal">
+        <form:form id="form2" method="POST" modelAttribute="uploadProjectBean" enctype="multipart/form-data" class="form-horizontal">
          
             <div class="row">
                 <div class="form-group col-md-12">
@@ -68,17 +67,19 @@
         	<table class="table table-bordered table-striped">
         		<thead>
         			<tr>
-        				<th>Matricola</th>
-        				<th>Nome</th>
-        				<th>Cognome</th>
+        				<th>IdProgetto</th>
+        				<th>Descrizione</th>
+        				<th>Cliente</th>
+        				<th>Business Unit</th>
         			</tr>
         		</thead>
         		<tbody>
         			<c:forEach items="${digester.list}" var="row">
         			<tr>
-						<td><c:out value="${row.badgeNumber}"/></td>
-						<td><c:out value="${row.name}"/></td>
-						<td><c:out value="${row.surname}"/></td>
+						<td><c:out value="${row.idProject}"/></td>
+						<td><c:out value="${row.description}"/></td>
+						<td><c:out value="${row.customer}"/></td>
+						<td><c:out value="${row.businessUnit}"/></td>
         			</tr>
         			</c:forEach>
         		</tbody>

@@ -10,19 +10,21 @@ public class UserBean {
 	private String active;
 	private int bu;
 	private int firstlogin;
-	
+	private String realUsername;
+
 	public static UserBean build(String username, String name, String surname, String profilo) {
 
 		UserBean result = new UserBean();
 
 		result.username = username;
+		result.realUsername = username;
 		result.name = name;
 		result.surname = surname;
 		result.profilo = profilo;
 
 		return result;
 	}
-	
+
 	public int getFirstlogin() {
 		return firstlogin;
 	}
@@ -30,7 +32,7 @@ public class UserBean {
 	public void setFirstlogin(int firstlogin) {
 		this.firstlogin = firstlogin;
 	}
-	
+
 	public int getBu() {
 		return bu;
 	}
@@ -39,7 +41,6 @@ public class UserBean {
 		this.bu = bu;
 	}
 
-	
 	public String getActive() {
 		return active;
 	}
@@ -86,6 +87,14 @@ public class UserBean {
 
 	public void setProfilo(String profilo) {
 		this.profilo = profilo;
+	}
+
+	public String getRealUsername() {
+		return realUsername;
+	}
+
+	public void setRealUsername(String realUsername) {
+		this.realUsername = realUsername;
 	}
 
 }

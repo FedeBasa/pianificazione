@@ -2,9 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url value="/home" var="urlHome" />
-<spring:url value="/excel/upload/employee" var="urlUploadEmployee" />
-<spring:url value="/excel/upload/project" var="urlUploadProjects" />
+<spring:url value="/admin/excel/upload/employee" var="urlUploadEmployee" />
+<spring:url value="/admin/excel/upload/project" var="urlUploadProjects" />
 <spring:url value="/admin/gestione_mese" var="urlApprova" />
+<spring:url value="/admin/impersonate/stop" var="urlStopImpersonificazione" />
 <spring:url value="/changepw" var="urlChangepwd" />
 <spring:url value="/logout" var="urlLogout" />
 
@@ -44,6 +45,28 @@
 			 		}
 					%>
 				</ul>
+				<%
+				if (SessionHelper.getImpersonateUser(session) != null) {
+				%>				
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Impersonificazione (<%= SessionHelper.getImpersonateUser(session).getUser().getSurname()%>)<span class="caret"></span></a>
+			 			<ul class="dropdown-menu">
+			 				<li><a class="" href="${urlStopImpersonificazione}">Termina</a></li>
+			 			</ul>						
+					</li>
+				</ul>
+				<%
+				} else {
+				%>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active">
+						<a href="#">Utente Collegato (<%= SessionHelper.getUser(session).getSurname()%>)</a>
+					</li>
+				</ul>
+				<%
+				}
+				%>				
 			</div>
 			<%
 			}
