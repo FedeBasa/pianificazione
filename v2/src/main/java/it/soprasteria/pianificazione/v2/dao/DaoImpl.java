@@ -483,7 +483,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		insertSql.append("INSERT INTO u_progetti_risorse");
 		insertSql.append(" (mese, id_progetto, matricola, consolidato_1, consolidato_2, consolidato_3, prodotto_1, prodotto_2, prodotto_3,");
 		insertSql.append(" id_user, costo, tariffa, nome_risorsa, cognome_risorsa, valuta, cliente, desc_progetto, desc_custom, business_unit, attività, utente_ins, data_ins)");
-		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		insertSql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 		final Date now = new Date();
 
