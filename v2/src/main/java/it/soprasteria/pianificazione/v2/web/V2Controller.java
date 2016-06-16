@@ -283,12 +283,16 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/valida", method = RequestMethod.GET)
-	public String valida(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit) {
+	public String valida(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit, RedirectAttributes redirectAttribute) {
 
 		String user = SessionHelper.getUser().getUsername();
 		
-		service.changeStatus(user, month, businessUnit, V2StatusKeys.VALIDATED);
+		List<String> messageList = service.changeStatus(user, month, businessUnit, V2StatusKeys.VALIDATED);
+		
+		messageList.add("Verificare il workload");
 
+		redirectAttribute.addFlashAttribute("messageList", messageList);
+		
 		return buildRedirectV2Edit(month, businessUnit);
 	}
 

@@ -180,7 +180,16 @@
 			<div class="alert alert-danger">
 				<span>${errorMessage}</span>
 			</div>
-		</c:if>	
+		</c:if>
+		
+		<c:if test="${not empty messageList}">
+			<div class="alert alert-danger">
+				<c:forEach items="${messageList}" var="message">
+					<div>${message}</div>
+				</c:forEach>
+			</div>
+		</c:if>
+		
 
 		<c:if test="${v2Bean.stato != 10}">
 		<div id="button-wrapper" class="row">

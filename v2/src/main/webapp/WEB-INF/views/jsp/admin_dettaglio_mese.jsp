@@ -30,11 +30,18 @@
 					</td>
 					<td>
 						<c:choose>
-							<c:when test="${checklist.contains(item.username)}">
-								<span style="color:darkgreen">Compilato</span>
+							<c:when test="${validatelist.contains(item.username)}">
+								<span style="background-color:yellow;color:darkgreen">CONSOLIDATO</span>
 							</c:when>
 							<c:otherwise>
-								<span style="color:red">Non Compilato</span>
+								<c:choose>
+									<c:when test="${checklist.contains(item.username)}">
+										<span style="color:darkgreen">Compilato</span>
+									</c:when>
+									<c:otherwise>
+										<span style="color:red">Non Compilato</span>
+									</c:otherwise>
+								</c:choose>
 							</c:otherwise>
 						</c:choose>
 					</td>

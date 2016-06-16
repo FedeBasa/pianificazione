@@ -50,11 +50,10 @@ function validate(form) {
 								List<String> buList = SessionHelper.getUser(session).getBuList();
 								for(String bu : buList) {
 								%>
-									<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=<%=bu%>>">Stampa <%=bu %>></a></li>
+									<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=<%=bu%>>">Stampa <%=bu %></a></li>
 								<%
 								}
 								%>
-								<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=792">Stampa 792</a></li>
 								<li><a href="#">Stampa Ferie</a></li>
 								<li><a href="#">Stampa Risorse Esterne</a></li>
 							</ul>

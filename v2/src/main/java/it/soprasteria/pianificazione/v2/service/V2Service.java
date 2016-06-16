@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.dao.AdminDao;
 import it.soprasteria.pianificazione.v2.dao.Dao;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
+import it.soprasteria.pianificazione.v2.util.V2StatusKeys;
 
 public class V2Service {
 	
@@ -228,17 +230,65 @@ public class V2Service {
 		return result;
 	}
 
-	public List<String> changeStatus(String user, int month, int businessUnit, int status) {
+	public List<String> changeStatus(String username, int month, int businessUnit, int status) {
 
 		List<String> messageList = new ArrayList<>();
 		
-		// TODO
-		// implementare verifica stato corrente
-		// implementare eventuali controlli di validità
+		V2Bean v2 = dao.findByMonth(month, businessUnit, username);
+		if (status == V2StatusKeys.CLOSED) {
+			
+			messageList.add("Operazione non permessa");
+			
+		} else if (status == V2StatusKeys.OPEN) {
+			
+			if (v2.getStato() == V2StatusKeys.CLOSED) {
+				
+				messageList.add("Operazione non permessa");
+			}
+		} else if (status == V2StatusKeys.VALIDATED) {
+			
+			validateV2(username, month, businessUnit, messageList);
+		}
 		
-		dao.changeStatus(user, month, businessUnit, status);
+		if (messageList.isEmpty()) {
+		
+			dao.changeStatus(username, month, businessUnit, status);
+		}
 		
 		return messageList;
+	}
+	
+	private void validateV2(String username, int month, int businessUnit, List<String> messageList) {
+		
+		List<RecordV2Bean> recordList = dao.getV2(month, businessUnit, username);
+		
+		for (RecordV2Bean record : recordList) {
+			
+			String employeeDesc = record.getEmployeeDesc();
+			
+			if (record.getActivityType() == null || record.getActivityType().length() == 0) {
+				messageList.add("Specificare attivita' per risorsa - " + employeeDesc);
+			}
+			if (record.getCurrency() == null || record.getCurrency().length() == 0) {
+				messageList.add("Specificare valuta per risorsa - " + employeeDesc);
+			}
+
+			EmployeeBean employee = dao.getEmployee(StringUtils.leftPad(record.getBadgeNumber(), 6, '0'));
+			if (employee == null) {
+				if (record.getCost() == 0 || record.getCost() == 999) {
+					messageList.add("Specificare costo per risorsa - " + employeeDesc);
+				}
+			} else {
+				if (record.getPrice() == null || record.getPrice() == 0) {
+					messageList.add("Specificare tariffa per risorsa - " + employeeDesc);
+				}
+			}
+			if ("TRAINING".equals(record.getProjectDesc()) || "PRESALES".equals(record.getProjectDesc())) {
+				if (record.getCustomDesc() == null || record.getCustomDesc().length() == 0) {
+					messageList.add("Specificare descrizione progetto per risorsa - " + employeeDesc);
+				}
+			}
+		}		
 	}
 	
 	public void produceAll(String user, int month, int businessUnit) {

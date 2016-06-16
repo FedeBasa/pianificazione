@@ -667,6 +667,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	
 	private void enrichUserBean(UserBean user, ResultSet rs) throws SQLException {
 		user.setUsername(rs.getString("username"));
+		user.setRealUsername(rs.getString("username"));
 		user.setName(rs.getString("nome"));
 		user.setSurname(rs.getString("cognome"));
 		user.setProfilo(rs.getString("profilo"));

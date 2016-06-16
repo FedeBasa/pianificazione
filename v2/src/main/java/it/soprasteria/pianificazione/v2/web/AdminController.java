@@ -85,18 +85,23 @@ public class AdminController {
 		
 		List<UserBean> list = userService.findByProfilo("pm");
 		Set<String> checkList = new HashSet<String>();
+		Set<String> validateList = new HashSet<String>();
 		for(UserBean bean : list) {
 			List<V2Bean> v2List = v2Service.findByUser(bean.getUsername());
 			for(V2Bean v2 : v2List) {
 				if (v2.getMonth() == month) {
 					checkList.add(bean.getUsername());
-					break;
+
+					if (v2.getStato() == V2StatusKeys.VALIDATED) {
+						validateList.add(bean.getUsername());
+					}
 				}
 			}
 		}
 		
 		model.addAttribute("list", list);
 		model.addAttribute("checklist", checkList);
+		model.addAttribute("validatelist", validateList);
 		
 		return "admin_dettaglio_mese";
 	}
