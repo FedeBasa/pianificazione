@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.bean.UserBean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.dao.AdminDao;
 import it.soprasteria.pianificazione.v2.dao.Dao;
@@ -124,13 +125,6 @@ public class V2Service {
 				return false;
 			}
 			
-		} else if ("tariffa".equals(colname)) {
-			
-			EmployeeBean employeeBean = employeeService.findByBadgeNumber(badgeNumber);
-			if (employeeBean == null) {
-				return false;
-			}
-			
 		} else if (!"tariffa".equals(colname) && !"costo".equals(colname) && !colname.startsWith("prodotto_")) {
 		
 			int checkValue = value - getColvalue(recordV2Bean, colname);
@@ -177,9 +171,9 @@ public class V2Service {
 	}
 
 	@Transactional
-	public boolean addNextMonth(String username) {
+	public boolean addNextMonth(UserBean userBean) {
 
-		List<Integer> list = dao.getMonths(username);
+		List<Integer> list = dao.getMonths(userBean.getUsername());
 		List<Integer> listConfig = adminDao.getMonthsConfig();
 
 		Integer lastMonth;
@@ -196,7 +190,15 @@ public class V2Service {
 		}
 
 		if (check) {
-			dao.addNextMonth(username, lastMonth);
+			
+			int nextMonth = DateUtil.nextMonth(lastMonth);
+
+			List<String> buList = userBean.getBuList();
+			for(String bu : buList) {
+				dao.createV2(userBean.getUsername(), lastMonth, Integer.parseInt(bu));
+			}
+			
+			dao.addProjectsResources(userBean.getUsername(), lastMonth, nextMonth);
 			
 			LOG.info("aggiunto nuovo mese");
 			return true;
@@ -226,14 +228,15 @@ public class V2Service {
 		return result;
 	}
 
-	public List<String> setValidateState(String user, int month, int businessUnit) {
+	public List<String> changeStatus(String user, int month, int businessUnit, int status) {
 
 		List<String> messageList = new ArrayList<>();
 		
 		// TODO
+		// implementare verifica stato corrente
 		// implementare eventuali controlli di validità
 		
-		dao.setValidateState(user, month, businessUnit);
+		dao.changeStatus(user, month, businessUnit, status);
 		
 		return messageList;
 	}

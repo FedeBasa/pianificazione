@@ -58,8 +58,8 @@ public class AdminController {
 	@RequestMapping(value = "/admin/chiudi", method = RequestMethod.POST)
 	public String chiudi(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
 
-		service.updateV2ConfigStatus(month, V2StatusKeys.CLOSE);
-		service.updateMonthsStatus(month, V2StatusKeys.CLOSE);
+		service.updateV2ConfigStatus(month, V2StatusKeys.CLOSED);
+		service.updateMonthsStatus(month, V2StatusKeys.CLOSED);
 		return "redirect:/admin/gestione_mese";
 	}
 

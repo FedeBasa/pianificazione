@@ -32,7 +32,7 @@ public interface Dao {
 
 	public List<Integer> getMonths(String user);
 	
-	public void addNextMonth(String user, Integer lastMonth);
+	public void addProjectsResources(String username, int currentMonth, int nextMonth);
 	
 	public void persist(List<EmployeeBean> list);
 	
@@ -50,7 +50,7 @@ public interface Dao {
 	
 	public int getConsDays(String badgeNumber,String colname, int mese);
 	
-	public void setValidateState(String user, int month, int businessUnit);
+	public void changeStatus(String user, int month, int businessUnit, int status);
 	
 	public void persistProject(List<ProjectBean> list);
 
@@ -61,5 +61,9 @@ public interface Dao {
 	public UserBean findByUsername(final String username);
 	
 	public void produceAll(String user, int month, int businessUnit);
+
+	public List<String> findBuByDivisione(String divisione);
+
+	public void createV2(String username, Integer lastMonth, int businessUnit);
 
 }

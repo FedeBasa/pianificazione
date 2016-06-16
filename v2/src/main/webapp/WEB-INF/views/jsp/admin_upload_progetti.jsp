@@ -11,17 +11,17 @@
 	$(document).ready(function() {
 		
 		$("#upload").click(function(){
-			var path="${pageContext.request.contextPath}/excel/upload/project";
+			var path="${pageContext.request.contextPath}/admin/excel/upload/project";
 			$("#form2").attr("action",path);
 			$("#form2").submit();
 		});
 		$("#save").click(function(){
-			var path="${pageContext.request.contextPath}/excel/save/project";
+			var path="${pageContext.request.contextPath}/admin/excel/save/project";
 			$("#form2").attr("action",path);
 			$("#form2").submit();
 		});
 		$("#replace").click(function(){
-			var path="${pageContext.request.contextPath}/excel/replace/project";
+			var path="${pageContext.request.contextPath}/admin/excel/replace/project";
 			$("#form2").attr("action",path);
 			$("#form2").submit();
 		});

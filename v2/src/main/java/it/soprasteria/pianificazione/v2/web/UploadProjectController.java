@@ -60,6 +60,7 @@ public class UploadProjectController {
 	
 		ExcelProjectDigester digester = SessionHelper.getProjectDigester();
 		
+		projectService.clearCache();
 		projectService.save(digester.getList());
 		
 		SessionHelper.clearProjectDigester();

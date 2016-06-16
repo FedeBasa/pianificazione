@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
+import it.soprasteria.pianificazione.v2.bean.UserBean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
 import it.soprasteria.pianificazione.v2.service.CalendarConfigService;
 import it.soprasteria.pianificazione.v2.service.EmployeeService;
@@ -74,10 +75,11 @@ public class V2Controller {
 	@RequestMapping(value = "/addMonth", method = RequestMethod.POST)
 	public String addMonth(RedirectAttributes redirectAttributes) {
 
-		String user = SessionHelper.getUser().getUsername();
-		LOG.info("user: " + user);
+		UserBean userBean = SessionHelper.getUser();
+		String username = userBean.getUsername();
+		LOG.info("user: " + username);
 
-		boolean done = service.addNextMonth(user);
+		boolean done = service.addNextMonth(userBean);
 
 		redirectAttributes.addFlashAttribute("rejected", !done);
 		return "redirect:/home";
@@ -280,12 +282,22 @@ public class V2Controller {
 		return JsonResponse.build(JsonResponse.CODE_INVALID_COLNAME, "Colonna [" + colname + "] non valida");
 	}
 
-	@RequestMapping(value = "/valida", method = RequestMethod.POST)
+	@RequestMapping(value = "/valida", method = RequestMethod.GET)
 	public String valida(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit) {
 
 		String user = SessionHelper.getUser().getUsername();
 		
-		service.setValidateState(user, month, businessUnit);
+		service.changeStatus(user, month, businessUnit, V2StatusKeys.VALIDATED);
+
+		return buildRedirectV2Edit(month, businessUnit);
+	}
+
+	@RequestMapping(value = "/riapri", method = RequestMethod.GET)
+	public String riapri(@RequestParam(required = true, name = "month") int month, @RequestParam(required = true, name = "bu") int businessUnit) {
+
+		String user = SessionHelper.getUser().getUsername();
+		
+		service.changeStatus(user, month, businessUnit, V2StatusKeys.OPEN);
 
 		return buildRedirectV2Edit(month, businessUnit);
 	}

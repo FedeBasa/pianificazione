@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,10 @@ public class ProjectService {
 
 	}
 	
+	@CacheEvict(value = "projectCache")
+	public void clearCache() {
+		// clear ehcache, no implementation is required (see the annotation)
+	}
 
 	public ProjectBean details(long id) throws SQLException {
 		return dao.getProject(id);

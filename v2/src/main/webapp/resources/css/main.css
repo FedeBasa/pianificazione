@@ -1,4 +1,6 @@
-header{
+#v2 thead tr:first-child th, #v2 tfoot tr:last-child th,.fixedHeader-floating thead tr:first-child th,.fixedHeader-floating tfoot tr:last-child th{
+    border: 0 !important;
+    border-bottom: 1px solid #ccc !important;
 }
 .navbar-custom{
     background-color:#CF022D;
@@ -6,10 +8,8 @@ header{
 .navbar-custom a{
     color:#fff;
 }
-.navbar-custom .open>a, .navbar-custom .open>a:focus, .navbar-custom .open>a:hover{
-    background-color:#9F002D;
-}
-.navbar-custom a:hover,.navbar-custom .nav a:hover,.navbar-custom .open a:focus{
+.navbar-custom .open>a, .navbar-custom .open>a:focus, .navbar-custom .open>a:hover,
+.navbar-custom li a:hover,.navbar-custom li a:hover,.navbar-custom li a:focus,.navbar-custom a:hover,.navbar-custom a:hover,.navbar-custom a:focus{
     background-color:#9F002D;
 }
 .dropdown-custom{
@@ -23,38 +23,199 @@ header{
     color:#fff;
     padding: 10px 15px;
 }
-.dropdown-custom>li>a:focus, .dropdown-custom>li>a:hover{
-    background-color:#CF022D;
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover{
+    background-color:#9F002D;
     color:#fff;
 }
-.button-container{
-    padding:10px 0;
+.fix-button{
+    position: fixed;
+    top:0;
+    z-index:10;
+    background:#fff;
+    width:100%;
+    border-bottom:1px solid #ccc;
+    margin-left: -20px;
 }
-.search-container div{
-    padding-top:10px;
-    padding-bottom:10px;
+.button-container,.table-container{
+    padding:10px 0;
 }
 .table-container{
-    padding:10px 0;
+    overflow:hidden;
+}
+.table-custom{
+    overflow-x:auto;
 }
 .container-custom{
-  padding:20px;
-  overflow:hidden;
+    padding:20px;
+    overflow:hidden;
+    min-height: calc(100vh - 140px);
 }
-.form-login{
-    margin-top:50%;
-    padding:25px;
+.btn-group.custom{
+    margin-bottom:20px;
 }
-.btn-action{
-  float:left;
+.navbar-toggle .icon-bar{
+    background-color:#fff;
 }
-.btn-validate{
+.gestioneV2 td .form-horizontal,.gestioneV2 td .btn-group{
+    width:33%;
     float:right;
 }
+.gestioneV2 td button,.gestioneV2 td .btn-group button{
+    width:80%;
+    display:block;
+    margin-left:auto !important;
+    margin:0 auto;
+    float:none;
+}
 footer{
-    position: fixed;
-    bottom: 0;
+    height: 70px;
     width: 100%;
+    padding:0 15px 0 15px;
+}
+hr{
+    margin:20px 0 20px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+tbody{
+    font-size:11px;
+}
+thead{
+    font-size:11px;
+}
+.form-horizontal button.btn-primary{
+    float:right;
+}
+.collapse-custom{
+    display:none;
+}
+.hide-fade{
+    transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+   opacity:0;
+   width:0;
+}
+.show-fade{
+    transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+   opacity:1;
+   max-width:100px;
+}
+.file-input a{
+    width:30%;
+    border-radius:0 4px 4px 0;
+    float:left;
+    margin-left:-1px;
+    background-color:#eee;
+}   
+.file-input input{
+    width:70%;
+    border-radius:4px 0 0 4px;
+    float:left;
+}
+.back-top{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:40px;
+    height:40px;
+    border:2px solid #CF022D;
+    border-radius:50%;
     background-color:#CF022D;
+    opacity:0.6;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+}
+.back-top:hover{
+    opacity:1;
+}
+.back-top:after{
+    content:"ðŸ”�";
+    padding: 4px;
+    font-size: 28px;
     color:#fff;
+}
+.table.fixedHeader-floating{
+    margin:0 !important;
+    display:none;
+}
+
+//mobile
+
+.dropdown-menu.open a{
+    color:#fff;
+}
+
+@media screen and (max-width: 767px) {
+    .search-container > div{
+        padding-bottom:10px;
+    }
+    .easy-autocomplete{
+        width:100% !important;
+    }
+    .btn-group.custom,.btn-group .btn-group > button{
+        width:100%;
+    }
+    .btn-5 button,.btn-5 .btn-group{
+        width:20%;
+    }
+    .btn-4 button,.btn-4 .btn-group{
+        width:25%;
+    }
+    .btn-3 button,.btn-3 .btn-group{
+        width:33.33%;
+    }
+    .btn-2 button,.btn-2 .btn-group{
+        width:50%;
+    }
+    .btn-1 button,.btn-1 .btn-group{
+        width:100%;
+    }
+    .btn-group.custom{
+        margin-bottom:10px;
+    }
+    .button-container {
+        padding: 10px 0 0;
+    }
+    .collapse-custom{
+        display:block;
+        padding:10px 0 0px;
+        font-weight:bold;
+        margin: 10px 0;
+    }
+    .collapse-custom-hide{
+        transition: opacity .5s ease-in-out;
+        -moz-transition: opacity .5s ease-in-out;
+        -webkit-transition: opacity .5s ease-in-out;
+        opacity:0;
+        height:0;
+        overflow:hidden;
+    }
+    .collapse-custom-show{
+        transition: opacity .5s ease-in-out;
+        -moz-transition: opacity .5s ease-in-out;
+        -webkit-transition: opacity .5s ease-in-out;
+        opacity:1;
+        height:160px;
+        overflow:visible;
+    }
+    .btn-group-vertical>.btn, .btn-group>.btn{
+        padding: 8px 5px;
+        margin-left:0 !important;
+    }
+    .back-top{
+        width:45px;
+        height:45px;
+        opacity:1;
+    }
+    .back-top:after{
+        padding: 6px;
+        font-size: 30px;
+    }
+    .gestioneV2 td button,.gestioneV2 td .btn-group button{
+        width:90%;
+    }
 }

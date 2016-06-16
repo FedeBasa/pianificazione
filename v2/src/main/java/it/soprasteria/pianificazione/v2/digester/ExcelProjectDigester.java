@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.exception.DigestException;
@@ -27,9 +28,9 @@ public class ExcelProjectDigester implements Serializable {
 
 	public void load(InputStream inputStream) throws DigestException {
 
-		try (XSSFWorkbook workbook = new XSSFWorkbook(inputStream)) {
+		try (HSSFWorkbook workbook = new HSSFWorkbook(inputStream)) {
 
-			XSSFSheet sheet = workbook.getSheetAt(0);
+			HSSFSheet sheet = workbook.getSheetAt(0);
 
 			Iterator<Row> rowIterator = sheet.iterator();
 
@@ -41,26 +42,30 @@ public class ExcelProjectDigester implements Serializable {
 
 			while (rowIterator.hasNext()) {
 				String project;
-				XSSFRow row = (XSSFRow) rowIterator.next();
+				HSSFRow row = (HSSFRow) rowIterator.next();
 				String bu = row.getCell(1).getStringCellValue().substring(0, 3);
 
 				String customer = row.getCell(2).getStringCellValue();
 
 				project = row.getCell(3).getStringCellValue();
 
-				String idProject = row.getCell(42).getRawValue();
+				HSSFCell idProjectCell = row.getCell(42);
+				if (idProjectCell != null) {
 
-				if ("Y".equals(row.getCell(20).getStringCellValue())) {
-
-					String[] rowContent = new String[4];
-
-					rowContent[0] = bu;
-					rowContent[1] = customer;
-					rowContent[2] = project;
-					rowContent[3] = idProject;
-
-					this.content.add(rowContent);
-
+					String idProject = String.valueOf((int)idProjectCell.getNumericCellValue());
+	
+					if ("Y".equals(row.getCell(20).getStringCellValue())) {
+	
+						String[] rowContent = new String[4];
+	
+						rowContent[0] = bu;
+						rowContent[1] = customer;
+						rowContent[2] = project;
+						rowContent[3] = idProject;
+	
+						this.content.add(rowContent);
+	
+					}
 				}
 			}
 		} catch (IOException e) {

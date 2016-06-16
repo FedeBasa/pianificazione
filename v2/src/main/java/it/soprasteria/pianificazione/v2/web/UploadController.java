@@ -57,6 +57,7 @@ public class UploadController {
 	
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
 		
+		service.clearCache();
 		service.save(digester.getList());
 
 		SessionHelper.clearEmployeeDigester();
@@ -64,12 +65,10 @@ public class UploadController {
 		return "redirect:/admin/excel/upload/employee";
 	}	
 
-	@RequestMapping(value = "/admin/excel/replace/employee", method = RequestMethod.POST)
-	public String replaceEmployee() {
+	@RequestMapping(value = "/admin/excel/clear/employee", method = RequestMethod.POST)
+	public String clearEmployee() {
 	
-		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
-		
-		service.replace(digester.getList());
+		service.deleteAll();
 		
 		SessionHelper.clearEmployeeDigester();
 

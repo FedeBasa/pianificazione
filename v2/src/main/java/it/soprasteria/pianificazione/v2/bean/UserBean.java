@@ -1,5 +1,8 @@
 package it.soprasteria.pianificazione.v2.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserBean {
 
 	private String username;
@@ -8,9 +11,11 @@ public class UserBean {
 	private String surname;
 	private String profilo;
 	private String active;
-	private int bu;
 	private int firstlogin;
 	private String realUsername;
+	private String divisione;
+	
+	private List<String> buList = new ArrayList<>();
 
 	public static UserBean build(String username, String name, String surname, String profilo) {
 
@@ -31,14 +36,6 @@ public class UserBean {
 
 	public void setFirstlogin(int firstlogin) {
 		this.firstlogin = firstlogin;
-	}
-
-	public int getBu() {
-		return bu;
-	}
-
-	public void setBu(int bu) {
-		this.bu = bu;
 	}
 
 	public String getActive() {
@@ -97,4 +94,20 @@ public class UserBean {
 		this.realUsername = realUsername;
 	}
 
+	public String getDivisione() {
+		return divisione;
+	}
+
+	public void setDivisione(String divisione) {
+		this.divisione = divisione;
+	}
+
+	public List<String> getBuList() {
+		return buList;
+	}
+
+	public void setBuList(List<String> buList) {
+		this.buList = buList;
+	}
+	
 }

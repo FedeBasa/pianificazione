@@ -452,7 +452,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		return result;
 	}
 
-	private void addProjectsResources(final String username, final int currentMonth, final int nextMonth) {
+	public void addProjectsResources(final String username, final int currentMonth, final int nextMonth) {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT * FROM u_progetti_risorse");
@@ -527,24 +527,20 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
-	public void addNextMonth(final String username, final Integer lastMonth) {
-
+	public void createV2(final String username, final Integer lastMonth, final int businessUnit) {
+		
 		StringBuilder insertSql = new StringBuilder();
 		insertSql.append(" INSERT INTO v2 (mese, id_user, editable, business_unit)");
-		insertSql.append("VALUES");
-		insertSql.append(" (?, ?, ?, ?),");
-		insertSql.append(" (?, ?, ?, ?)");
-
+		insertSql.append("VALUES (?, ?, ?, ?)");
+		
 		int nextMonth = DateUtil.nextMonth(lastMonth);
 		int editable = V2StatusKeys.OPEN;
-
-		Object[] params = new Object[] { nextMonth, username, editable, 791, nextMonth, username, editable, 792 };
-		int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER };
+		
+		Object[] params = new Object[] { nextMonth, username, editable, businessUnit };
+		int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.INTEGER, Types.INTEGER };
 		getJdbcTemplate().update(insertSql.toString(), params, types);
-
-		addProjectsResources(username, lastMonth, nextMonth);
 	}
-
+	
 	@Override
 	public V2Bean findByMonth(final int month, final int businessUnit, final String username) {
 
@@ -637,8 +633,8 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		}, new RowMapper<UserBean>() {
 			@Override
 			public UserBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
-				UserBean user = UserBean.build(rs.getString("username"), rs.getString("nome"), rs.getString("cognome"), rs.getString("profilo"));
-				user.setFirstlogin(rs.getInt("first_login"));
+				UserBean user = new UserBean();
+				enrichUserBean(user, rs);
 				return user;
 			}
 		});
@@ -647,6 +643,35 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			return null;
 		}
 		return userlist.get(0);
+	}
+	
+	public List<String> findBuByDivisione(final String divisione) {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT *");
+		sb.append(" FROM divisioni");
+		sb.append(" WHERE cod_divisione = ?");
+		return getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				pstm.setString(1, divisione);
+			}
+		}, new RowMapper<String>() {
+			@Override
+			public String mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				return rs.getString("bu");
+			}
+		});
+		
+	}
+	
+	private void enrichUserBean(UserBean user, ResultSet rs) throws SQLException {
+		user.setUsername(rs.getString("username"));
+		user.setName(rs.getString("nome"));
+		user.setSurname(rs.getString("cognome"));
+		user.setProfilo(rs.getString("profilo"));
+		user.setFirstlogin(rs.getInt("first_login"));
+		user.setDivisione(rs.getString("divisione"));
 	}
 
 	private void enrichRecordV2Bean(RecordV2Bean bean, ResultSet rs) throws SQLException {
@@ -750,7 +775,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
-	public void setValidateState(final String user, final int month, final int businessUnit) {
+	public void changeStatus(final String user, final int month, final int businessUnit, final int status) {
 
 		final StringBuilder sb = new StringBuilder();
 		
@@ -767,7 +792,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
 				int i = 1;
 				PreparedStatement ps = conn.prepareStatement(sb.toString());
-				ps.setInt(i++, V2StatusKeys.VALIDATE);
+				ps.setInt(i++, status);
 				ps.setString(i++, user);
 				ps.setInt(i++, month);
 				ps.setInt(i, businessUnit);

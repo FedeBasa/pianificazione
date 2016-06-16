@@ -1,5 +1,7 @@
 package it.soprasteria.pianificazione.v2.service;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +22,12 @@ public class LoginService {
 
 	public UserBean getUserFromUserPrincipal(String userPrincipal) {
 
-		return dao.findByUsername(userPrincipal);
+		UserBean userBean = dao.findByUsername(userPrincipal);
+		List<String> buList = dao.findBuByDivisione(userBean.getDivisione());
+
+		userBean.getBuList().addAll(buList);
+		
+		return userBean;
 	}
 	
 }

@@ -96,7 +96,7 @@ public class RecordV2Bean extends BaseBean {
 		if (nome == null && cognome == null && badgeNumber == null) {
 			return "";
 		}
-		return (cognome == null ? "" : cognome) + " " + (nome == null ? "" : nome) + " (" +  StringUtils.abbreviate((badgeNumber == null ? "" : badgeNumber), 5) + ")";
+		return (cognome == null ? "" : cognome) + " " + (nome == null ? "" : nome) + " (" +  StringUtils.abbreviate((badgeNumber == null ? "" : badgeNumber), 6) + ")";
 	}
 
 	public String getActivityType() {

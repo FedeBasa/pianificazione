@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
 import it.soprasteria.pianificazione.v2.exception.DigestException;
@@ -28,9 +28,9 @@ public class ExcelEmployeeDigester implements Serializable {
 	
 	public void load(InputStream inputStream) throws DigestException {
 		
-		try (XSSFWorkbook workbook = new XSSFWorkbook (inputStream)) {
+		try (HSSFWorkbook workbook = new HSSFWorkbook (inputStream)) {
 	
-			XSSFSheet sheet = workbook.getSheetAt(0);
+			HSSFSheet sheet = workbook.getSheetAt(0);
 	
 			Iterator<Row> rowIterator = sheet.iterator();
 			
@@ -39,21 +39,24 @@ public class ExcelEmployeeDigester implements Serializable {
 			rowIterator.next();
 			rowIterator.next();
 			rowIterator.next();
+			rowIterator.next();
 	
 			while(rowIterator.hasNext()) {
 				
-				XSSFRow row = (XSSFRow)rowIterator.next();
+				HSSFRow row = (HSSFRow)rowIterator.next();
 				String surname = row.getCell(0).getStringCellValue();
 				String name = row.getCell(1).getStringCellValue();
 				String badgeNumber = row.getCell(2).getStringCellValue();
-
-				String[] rowContent = new String[3];
-				rowContent[0] = surname;
-				rowContent[1] = name;
-				rowContent[2] = badgeNumber;
-
-				this.content.add(rowContent);
 				
+				if (badgeNumber != null && badgeNumber.length() > 0) {
+
+					String[] rowContent = new String[3];
+					rowContent[0] = surname;
+					rowContent[1] = name;
+					rowContent[2] = badgeNumber;
+	
+					this.content.add(rowContent);
+				}				
 			}
 		} catch(IOException e) {
 			

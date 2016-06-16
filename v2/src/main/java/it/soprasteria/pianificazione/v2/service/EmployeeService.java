@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,11 @@ public class EmployeeService {
 
 		return dao.getAllEmployees();
 	}
+	
+	@CacheEvict(value = "employeeCache")
+	public void clearCache() {
+		// clear ehcache, no implementation is required (see the annotation)
+	}
 
 	public EmployeeBean findByBadgeNumber(String id) {
 		return dao.getEmployee(id);
@@ -33,10 +39,8 @@ public class EmployeeService {
 	}
 
 	@Transactional
-	public void replace(List<EmployeeBean> list) {
+	public void deleteAll() {
 		
 		dao.deleteAllEmployees();
-		
-		dao.persist(list);
 	}
 }

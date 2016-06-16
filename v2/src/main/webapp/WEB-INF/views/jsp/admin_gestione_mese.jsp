@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="it.soprasteria.pianificazione.v2.util.SessionHelper"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -44,7 +46,14 @@ function validate(form) {
 							Stampe <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=791">Stampa 791</a></li>
+								<%
+								List<String> buList = SessionHelper.getUser(session).getBuList();
+								for(String bu : buList) {
+								%>
+									<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=<%=bu%>>">Stampa <%=bu %>></a></li>
+								<%
+								}
+								%>
 								<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=792">Stampa 792</a></li>
 								<li><a href="#">Stampa Ferie</a></li>
 								<li><a href="#">Stampa Risorse Esterne</a></li>

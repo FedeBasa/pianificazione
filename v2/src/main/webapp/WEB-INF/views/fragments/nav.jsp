@@ -9,19 +9,26 @@
 <spring:url value="/changepw" var="urlChangepwd" />
 <spring:url value="/logout" var="urlLogout" />
 
+<spring:url value="/resources/images/soprasterialogo.png" var="logo" />
+
 <header>
 	<nav class="navbar-custom">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Pianificazione Risorse</a>
-			</div>
+				<a class="navbar-brand" href="/home"><img class="img-responsive" width="150px" src="${logo}"/></a>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		          <span class="icon-bar"></span>
+		          <span class="icon-bar"></span>
+		          <span class="icon-bar"></span>
+		        </button>
+			</div>			
 			<%
 			if (SessionHelper.getUser(session) != null) {
 			%>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="${urlHome}">Home</a></li>
-		           	<li class="dropdown">
+		           	<li class="dropdown dropdown-custom">
 		           	<%if(SessionHelper.getUser(session).getProfilo().equals("admin")){ %>
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Amministrazione <span class="caret"></span></a>
 						<ul class="dropdown-menu open">
@@ -31,19 +38,8 @@
 						</ul>
 					</li>
 			 		<%
-			 		} 
-			 		if (request.getUserPrincipal() == null) { 
-			 		%>
-			 		<li class="dropdown">
-			 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Il mio profilo <span class="caret"></span></a>
-			 			<ul class="dropdown-menu">
-			 				<li><a class="" href="${urlChangepwd}">Cambia Password</a></li>
-			 			</ul>
-			 		</li>
-					<li class=""><a href="${urlLogout}">Logout</a></li>
-					<%
 			 		}
-					%>
+		           	%>
 				</ul>
 				<%
 				if (SessionHelper.getImpersonateUser(session) != null) {
@@ -73,4 +69,5 @@
 			%>	
 		</div>
 	</nav>
+	
 </header>

@@ -11,19 +11,21 @@
 	$(document).ready(function() {
 		
 		$("#upload").click(function(){
-			var path="${pageContext.request.contextPath}/excel/upload/employee";
+			var path="${pageContext.request.contextPath}/admin/excel/upload/employee";
 			$("#form1").attr("action",path);
 			$("#form1").submit();
 		});
 		$("#save").click(function(){
-			var path="${pageContext.request.contextPath}/excel/save/employee";
+			var path="${pageContext.request.contextPath}/admin/excel/save/employee";
 			$("#form1").attr("action",path);
 			$("#form1").submit();
 		});
-		$("#replace").click(function(){
-			var path="${pageContext.request.contextPath}/excel/replace/employee";
-			$("#form1").attr("action",path);
-			$("#form1").submit();
+		$("#clear").click(function(){
+			if (confirm('Stai per cancellare tutti i dati della tabella delle risorse. Sei sicuro di voler continuare?')) {
+				var path="${pageContext.request.contextPath}/admin/excel/clear/employee";
+				$("#form1").attr("action",path);
+				$("#form1").submit();
+			}
 		});
 	});
 </script>
@@ -37,7 +39,7 @@
 		
 			<button id="upload" type="button" class="btn btn-primary">Carica File</button>
 			<button id="save" type="button" class="btn btn-primary">Salva</button>
-			<button id="replace" type="button" class="btn btn-primary">Sostituisci tutto</button>
+			<button id="clear" type="button" class="btn btn-primary">Ripulisci tutto</button>
 			
 		</div>
     
