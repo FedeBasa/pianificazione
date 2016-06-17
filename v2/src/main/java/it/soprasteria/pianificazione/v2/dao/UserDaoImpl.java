@@ -107,6 +107,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		sb.append("SELECT *");
 		sb.append(" FROM users");
 		sb.append(" WHERE profilo = ?");
+		sb.append(" order by divisione");
 
 		return getJdbcTemplate().query(sb.toString(), new PreparedStatementSetter() {
 			@Override
@@ -132,6 +133,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao {
 		bean.setName(rs.getString("nome"));
 		bean.setSurname(rs.getString("cognome"));
 		bean.setProfilo(rs.getString("profilo"));
+		bean.setDivisione(rs.getString("divisione"));
 	}
 
 }

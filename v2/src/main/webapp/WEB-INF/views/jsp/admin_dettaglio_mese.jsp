@@ -19,6 +19,7 @@
 				<tr>
 				 <th>ProjectManager</th>
 				 <th>Stato V2</th>
+				 <th>Divisione</th>
 				</tr>
 			 </thead>
 			 <c:forEach items="${list}" var = "item">
@@ -44,6 +45,9 @@
 								</c:choose>
 							</c:otherwise>
 						</c:choose>
+					</td>
+					<td>
+						<c:out value="${item.divisione}"/>
 					</td>
 				</tr>
 			 </c:forEach>

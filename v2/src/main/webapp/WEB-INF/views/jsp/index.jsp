@@ -224,6 +224,7 @@
 						</c:choose>
 					</div>
 					<div class="col-xs-12 col-sm-6">
+						<c:if test="${v2Bean.stato == 100}">
 						<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
 						    <form:hidden path="month"/>
 						    <form:hidden path="businessUnit"/>
@@ -247,6 +248,7 @@
 							</spring:bind>
 					
 						</form:form>
+						</c:if>
 					</div>
 				</div>
 				<div class="back-top hide"></div>

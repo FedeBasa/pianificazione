@@ -41,23 +41,22 @@ function validate(form) {
 						<form:form method="POST" class="form-horizontal" style="float:left; padding-right:20px" action="${pageContext.request.contextPath}/admin/apri?month=${v2.month}" onsubmit="return validate(this);">
 							<button id="apri" type="submit" class="${v2.stato == 10 ? 'btn btn-warning' : 'btn btn-warning disabled'}">Apri</button>
 						</form:form>
+						<%
+						List<String> buList = SessionHelper.getUser(session).getBuList();
+						for(String bu : buList) {
+						%>
 						<div class="btn-group">
 							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-							Stampe <span class="caret"></span>
+							Stampe <%=bu %><span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
-								<%
-								List<String> buList = SessionHelper.getUser(session).getBuList();
-								for(String bu : buList) {
-								%>
-									<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=<%=bu%>>">Stampa <%=bu %></a></li>
-								<%
-								}
-								%>
-								<li><a href="#">Stampa Ferie</a></li>
-								<li><a href="#">Stampa Risorse Esterne</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/export/v2?month=${v2.month}&bu=<%=bu%>">Stampa V2</a></li>
+								<li><a href="${pageContext.request.contextPath}/admin/export/v2_terzeparti?month=${v2.month}&bu=<%=bu%>">Stampa V2 Risorse Esterne</a></li>
 							</ul>
 						</div>
+						<%
+						}
+						%>
 					</td>
 				</tr>
 			 </c:forEach>

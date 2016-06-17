@@ -41,7 +41,7 @@
 						Aperto
 					</c:if>
 					<c:if test="${bean.stato == 50}">
-						Validato
+						Consolidato
 					</c:if>
 					<c:if test="${bean.stato == 10}">
 						Chiuso

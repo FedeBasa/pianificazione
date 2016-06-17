@@ -148,4 +148,20 @@ public class AdminController {
 		outputStream.close();
 	}
 
+	@RequestMapping(value = "/admin/export/v2_terzeparti", method = RequestMethod.GET)
+	public void exportTerzeparti(HttpServletResponse response, @RequestParam(name = "month", required = true) int month, @RequestParam(name = "bu", required = true) int bu) throws IOException, InvalidFormatException, ParseException {
+
+		List<RecordV2Bean> record = v2Service.getV2(month, bu, null);
+
+		byte[] bytes = exportV2Service.exportTerzeParti(record);
+
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-Disposition", "inline; filename=\"" + month + "_" + bu + "_terzeparti.xlsx\"");
+
+		ServletOutputStream outputStream = response.getOutputStream();
+		outputStream.write(bytes);
+
+		outputStream.close();
+	}
+
 }
