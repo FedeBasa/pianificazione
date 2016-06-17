@@ -272,15 +272,14 @@ public class V2Service {
 			if (record.getCurrency() == null || record.getCurrency().length() == 0) {
 				messageList.add("Specificare valuta per risorsa - " + employeeDesc);
 			}
+			if (record.getPrice() == null || record.getPrice() == 0) {
+				messageList.add("Specificare tariffa per risorsa - " + employeeDesc);
+			}
 
 			EmployeeBean employee = dao.getEmployee(record.getBadgeNumber());
 			if (employee == null) {
 				if (record.getCost() == 0 || record.getCost() == 999) {
 					messageList.add("Specificare costo per risorsa - " + employeeDesc);
-				}
-			} else {
-				if (record.getPrice() == null || record.getPrice() == 0) {
-					messageList.add("Specificare tariffa per risorsa - " + employeeDesc);
 				}
 			}
 			if ("TRAINING".equals(record.getProjectDesc()) || "PRESALES".equals(record.getProjectDesc())) {

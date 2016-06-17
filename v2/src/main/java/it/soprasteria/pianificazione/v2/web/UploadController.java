@@ -30,6 +30,8 @@ public class UploadController {
 		
 		model.addAttribute("uploadBean", new UploadEmployeeBean());
 		
+		model.addAttribute("employeeNumber", service.findAll().size());
+		
 		return "admin_upload_risorse";
 	}
 	
@@ -48,6 +50,8 @@ public class UploadController {
 		model.addAttribute("digester", digester);
 		
 		SessionHelper.storeEmployeeDigester(digester);
+		
+		model.addAttribute("employeeNumber", service.findAll().size());
 			
 		return "admin_upload_risorse";
 	}
@@ -69,6 +73,7 @@ public class UploadController {
 	public String clearEmployee() {
 	
 		service.deleteAll();
+		service.clearCache();
 		
 		SessionHelper.clearEmployeeDigester();
 

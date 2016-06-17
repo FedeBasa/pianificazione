@@ -33,6 +33,8 @@ public class UploadProjectController {
 		
 		model.addAttribute("uploadProjectBean", new UploadProjectBean());
 		
+		model.addAttribute("projectNumber", projectService.findAll().size());
+		
 		return "admin_upload_progetti";
 	}
 	
@@ -51,6 +53,8 @@ public class UploadProjectController {
 		model.addAttribute("digester", digester);
 		
 		SessionHelper.storeProjectDigester(digester);
+		
+		model.addAttribute("projectNumber", projectService.findAll().size());
 			
 		return "admin_upload_progetti";
 	}

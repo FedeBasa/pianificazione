@@ -70,6 +70,8 @@
 		        
 		        <div class="alert alert-info">
 		        
+		        	<span><c:out value="${employeeNumber}"/> risorse registrate a sistema</span><br>
+		        	
 		        	<c:forEach items="${digester.infoMessages}" var="message">
 		        		<span><c:out value="${message}"/></span>
 		        	</c:forEach>
