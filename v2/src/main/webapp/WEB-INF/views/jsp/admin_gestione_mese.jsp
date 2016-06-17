@@ -35,12 +35,14 @@ function validate(form) {
 			     <tr>
 					<td><a href = "/v2/admin/detail?month=${v2.month}"><c:out value="${v2.formattedMonth}" /></a></td>
 					<td>
+						<%--
 						<form:form method="POST" class="form-horizontal" action="${pageContext.request.contextPath}/admin/chiudi?month=${v2.month}" style="float:left; padding-right:20px" onsubmit="return validate(this);">
 							<button id="chiudi" type="submit" class="${v2.stato == 100 ? 'btn btn-warning' : 'btn btn-warning disabled'}">Chiudi</button>
 						</form:form>
 						<form:form method="POST" class="form-horizontal" style="float:left; padding-right:20px" action="${pageContext.request.contextPath}/admin/apri?month=${v2.month}" onsubmit="return validate(this);">
 							<button id="apri" type="submit" class="${v2.stato == 10 ? 'btn btn-warning' : 'btn btn-warning disabled'}">Apri</button>
 						</form:form>
+						 --%>
 						<%
 						List<String> buList = SessionHelper.getUser(session).getBuList();
 						for(String bu : buList) {

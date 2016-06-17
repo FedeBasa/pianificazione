@@ -36,7 +36,7 @@
 
 		var options = {
 			url : function(phrase) {
-				return "${pageContext.request.contextPath}/autocomplete/risorse";
+				return "${pageContext.request.contextPath}/autocomplete/risorse?q=" + phrase;
 			},
 			getValue : "nameSurname",
 			list : {
@@ -52,7 +52,7 @@
 		}
 		var options2 = {
 			url : function(phrase) {
-				return "${pageContext.request.contextPath}/autocomplete/progetto?bu=${v2Bean.businessUnit}";
+				return "${pageContext.request.contextPath}/autocomplete/progetto?bu=${v2Bean.businessUnit}&q=" + phrase;
 			},
 			getValue : function(result) {
 				return result.description;

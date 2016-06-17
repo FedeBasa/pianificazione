@@ -1,9 +1,14 @@
 package it.soprasteria.pianificazione.v2.web;
 
+import static ch.lambdaj.Lambda.having;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.select;
+
 import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hamcrest.text.StringContains;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -118,18 +123,17 @@ public class V2Controller {
 	}
 
 	@RequestMapping(value = "/autocomplete/risorse", method = RequestMethod.GET)
-	public @ResponseBody List<EmployeeBean> autocomplete() throws SQLException {
+	public @ResponseBody List<EmployeeBean> autocomplete(@RequestParam(required = true, name = "q") String query) throws SQLException {
 
-		List<EmployeeBean> result = employeeService.findAll();
-
-		return result;
+		List<EmployeeBean> list = employeeService.findAll();
+		return select(list, having(on(EmployeeBean.class).getNameSurname().toUpperCase(), StringContains.containsString(query.toUpperCase())));
 	}
 
 	@RequestMapping(value = "/autocomplete/progetto", method = RequestMethod.GET)
-	public @ResponseBody List<ProjectBean> autocompleta(@RequestParam(required = true, name = "bu") int businessUnit) {
+	public @ResponseBody List<ProjectBean> autocompleta(@RequestParam(required = true, name = "bu") int businessUnit, @RequestParam(required = true, name = "q") String query) {
 
-		List<ProjectBean> result = projectService.findByBusinessUnit(businessUnit);
-		return result;
+		List<ProjectBean> list = projectService.findByBusinessUnit(businessUnit);
+		return select(list, having(on(ProjectBean.class).getDescription().toUpperCase(), StringContains.containsString(query.toUpperCase())));
 
 	}
 
