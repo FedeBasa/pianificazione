@@ -273,7 +273,7 @@ public class V2Service {
 				messageList.add("Specificare valuta per risorsa - " + employeeDesc);
 			}
 
-			EmployeeBean employee = dao.getEmployee(StringUtils.leftPad(record.getBadgeNumber(), 6, '0'));
+			EmployeeBean employee = dao.getEmployee(record.getBadgeNumber());
 			if (employee == null) {
 				if (record.getCost() == 0 || record.getCost() == 999) {
 					messageList.add("Specificare costo per risorsa - " + employeeDesc);

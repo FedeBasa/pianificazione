@@ -117,7 +117,7 @@
 					<c:forEach items="${list}" var="item">
 						<tr>
 						    <td>
-							    <a href="javascript:window.open('${pageContext.request.contextPath}/workload/detail/${item.badgeNumber}?month=${month}', '', 'width=1000,height=400')">
+							    <a href="#" onclick="javascript:window.open('${pageContext.request.contextPath}/workload/detail/${item.badgeNumber}?month=${month}', '', 'width=1000,height=400');">
 							    	<c:out value="${item.employeeDesc}" />
 							    </a>
 						    </td>
