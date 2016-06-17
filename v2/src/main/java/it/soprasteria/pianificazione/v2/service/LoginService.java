@@ -1,5 +1,6 @@
 package it.soprasteria.pianificazione.v2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -23,7 +24,14 @@ public class LoginService {
 	public UserBean getUserFromUserPrincipal(String userPrincipal) {
 
 		UserBean userBean = dao.findByUsername(userPrincipal);
-		List<String> buList = dao.findBuByDivisione(userBean.getDivisione());
+		List<String> buList = new ArrayList<>();
+		
+		String divisione = userBean.getDivisione();
+		String[] tokens = divisione.split(",");
+		
+		for(String token : tokens) {
+			buList.addAll(dao.findBuByDivisione(token));
+		}
 
 		userBean.getBuList().addAll(buList);
 		

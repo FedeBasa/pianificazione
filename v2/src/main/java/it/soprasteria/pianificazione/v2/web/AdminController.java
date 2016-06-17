@@ -48,18 +48,18 @@ public class AdminController {
 	private ExportV2Service exportV2Service;
 
 	@RequestMapping(value = "/admin/apri", method = RequestMethod.POST)
-	public String apri(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
+	public String apri(@RequestParam(name = "month", required = true) int month, @RequestParam(name = "bu", required = true) int bu, Model model, RedirectAttributes redirectAttributes) {
 
-		service.updateV2ConfigStatus(month, V2StatusKeys.OPEN);
-		service.updateMonthsStatus(month, V2StatusKeys.OPEN);
+		service.updateV2ConfigStatus(month, bu, V2StatusKeys.OPEN);
+		service.updateMonthsStatus(month, bu, V2StatusKeys.OPEN);
 		return "redirect:/admin/gestione_mese";
 	}
 	
 	@RequestMapping(value = "/admin/chiudi", method = RequestMethod.POST)
-	public String chiudi(@RequestParam int month, Model model, RedirectAttributes redirectAttributes) {
+	public String chiudi(@RequestParam(name = "month", required = true) int month, @RequestParam(name = "bu", required = true) int bu, Model model, RedirectAttributes redirectAttributes) {
 
-		service.updateV2ConfigStatus(month, V2StatusKeys.CLOSED);
-		service.updateMonthsStatus(month, V2StatusKeys.CLOSED);
+		service.updateV2ConfigStatus(month, bu, V2StatusKeys.CLOSED);
+		service.updateMonthsStatus(month, bu, V2StatusKeys.CLOSED);
 		return "redirect:/admin/gestione_mese";
 	}
 

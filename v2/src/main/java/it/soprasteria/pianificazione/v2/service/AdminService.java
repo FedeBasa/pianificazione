@@ -24,12 +24,12 @@ public class AdminService {
 		dao.updateEditable(user, month);
 	}
 
-	public void updateMonthsStatus(int month, int enable) {
-		dao.updateMonthsStatus(month, enable);
+	public void updateMonthsStatus(int month, int bu, int enable) {
+		dao.updateMonthsStatus(month, bu, enable);
 	}
 
-	public void updateV2ConfigStatus(int month, int enable) {
-		dao.updateV2ConfigStatus(month, enable);
+	public void updateV2ConfigStatus(int month, int bu, int enable) {
+		dao.updateV2ConfigStatus(month, bu, enable);
 	}
 
 	public List<V2Bean> getV2Config() {
