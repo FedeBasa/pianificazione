@@ -27,6 +27,14 @@
 				$("#form1").submit();
 			}
 		});
+		
+		$("#tab_risorse").DataTable({
+			"paging":         false,
+			fixedHeader: {
+	        header: false,
+	        footer: true
+	    	}
+		});
 	});
 </script>
 </head>
@@ -34,6 +42,7 @@
 <body>
  
     <div class="container-custom">
+    <h4>Caricamento risorse</h4>
     	<div class="row">
     		<div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
 				<div class="btn-group custom btn-3">
@@ -67,7 +76,7 @@
 		        </div>
 		        
 		        <c:if test="${not empty digester}">
-		        	<table class="table table-bordered table-striped">
+		        	<table id="tab_risorse" class="table table-bordered table-striped">
 		        		<thead>
 		        			<tr>
 		        				<th>Matricola</th>
@@ -89,5 +98,6 @@
 			</div>
 		</div>
     </div>
+    <jsp:include page="../fragments/footer.jsp" />
 </body>
 </html>

@@ -175,6 +175,7 @@
 	
 	<input type="hidden" id="responsecode">
 	<div class="container-custom v2">
+	<h4>Gestione risorse</h4>
 
 		<c:if test="${not empty errorMessage}">
 			<div class="alert alert-danger">
@@ -196,8 +197,8 @@
 			<div class="col-xs-12">
 				<div class="collapse-custom hide">🔧 Actions</div>
 				<div class="row button-container">
-					<div class="col-xs-12 col-sm-3">
-						<div class="btn-group custom btn-action btn-4">
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+						<div class="btn-group custom btn-action btn-3">
 							<c:if test="${v2Bean.stato == 100}">
 							<div class="btn-group">
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -212,18 +213,7 @@
 							</c:if>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-3">
-						<button id="worklad" type="button" class="btn btn-default" onclick="workload('${month}', '${businessUnit}')">Workload</button>
-						<c:choose>
-							<c:when test="${v2Bean.stato == 100}">						
-								<button id="valida" type="button" class="btn btn-warning" onclick="valida('${month}', '${businessUnit}')">Consolida</button>
-							</c:when>
-							<c:otherwise>
-								<button id="riapri" type="button" class="btn btn-primary" onclick="riapri('${month}', '${businessUnit}')">Apri</button>
-							</c:otherwise>
-						</c:choose>
-					</div>
-					<div class="col-xs-12 col-sm-6">
+					<div class="col-xs-12 col-sm-9 col-md-5 col-lg-6">
 						<c:if test="${v2Bean.stato == 100}">
 						<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
 						    <form:hidden path="month"/>
@@ -231,27 +221,41 @@
 						    <form:hidden path="idRecord"/>
 						    <form:hidden path="idProject"/>
 							<form:hidden path="badgeNumber"/>
+							<div class="row search-container">
+								<spring:bind path="employeeDesc">
+										<div class="col-xs-12 col-sm-6">
+											<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
+											<form:errors path="employeeDesc" class="control-label" />
+										</div>
+								</spring:bind>
 					
-							<spring:bind path="employeeDesc">
-									<div class="col-xs-12 col-sm-6">
-										<form:input path="employeeDesc" type="text" class="form-control" placeholder="Risorsa" />
-										<form:errors path="employeeDesc" class="control-label" />
+								
+								<spring:bind path="projectDesc">
+										<div class="col-xs-12 col-sm-6">
+											<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
+											<form:errors path="projectDesc" class="control-label" />
 									</div>
-							</spring:bind>
-				
-							
-							<spring:bind path="projectDesc">
-									<div class="col-xs-12 col-sm-6">
-										<form:input path="projectDesc" type="text" class="form-control" placeholder="Progetto" />
-										<form:errors path="projectDesc" class="control-label" />
-								</div>
-							</spring:bind>
+								</spring:bind>
+							</div>
 					
 						</form:form>
 						</c:if>
 					</div>
+					<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+						<div class="btn-group custom btn-2 pull-right">
+							<button id="worklad" type="button" class="btn btn-default" onclick="workload('${month}', '${businessUnit}')">Workload</button>
+							<c:choose>
+								<c:when test="${v2Bean.stato == 100}">						
+									<button id="valida" type="button" class="btn btn-warning" onclick="valida('${month}', '${businessUnit}')">Consolida</button>
+								</c:when>
+								<c:otherwise>
+									<button id="riapri" type="button" class="btn btn-primary" onclick="riapri('${month}', '${businessUnit}')">Apri</button>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
 				</div>
-				<div class="back-top hide"></div>
+				<div class="back-top hide"><span class="glyphicon glyphicon-menu-up"></span></div>
 			</div>
 		</div>
 		</c:if>

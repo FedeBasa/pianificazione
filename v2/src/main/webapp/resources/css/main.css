@@ -132,15 +132,18 @@ thead{
 .back-top:hover{
     opacity:1;
 }
-.back-top:after{
-    content:"ðŸ”�";
-    padding: 4px;
-    font-size: 28px;
-    color:#fff;
+.back-top span{
+	padding: 9px;
+    font-size: 18px;
+    color: #fff;
 }
 .table.fixedHeader-floating{
     margin:0 !important;
     display:none;
+}
+
+.border-left{
+	border-left: 1px solid black !important;
 }
 
 //mobile
@@ -210,10 +213,6 @@ thead{
         width:45px;
         height:45px;
         opacity:1;
-    }
-    .back-top:after{
-        padding: 6px;
-        font-size: 30px;
     }
     .gestioneV2 td button,.gestioneV2 td .btn-group button{
         width:90%;

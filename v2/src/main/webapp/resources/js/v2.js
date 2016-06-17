@@ -7,7 +7,7 @@ $(document).ready(function() {
     var button = $(".collapse-custom + .button-container");
 	$(window).scroll(function() {    
 	var scroll = $(window).scrollTop();
-		if (scroll >= 100) {
+		if (scroll >= 20) {
 			header.addClass("fix-button");
 			button.addClass("collapse-custom-hide");
 			$(".fixedHeader-floating").addClass("show");
@@ -15,7 +15,7 @@ $(document).ready(function() {
 
 		} else {
 			header.removeClass("fix-button");
-			button.removeClass("collapse-custom-hide,collapse-custom-show");
+			button.removeClass("collapse-custom-hide").removeClass("collapse-custom-show");
 			$(".collapse-custom , .back-top").addClass("hide");
 			$(".fixedHeader-floating").removeClass("show");
 		}

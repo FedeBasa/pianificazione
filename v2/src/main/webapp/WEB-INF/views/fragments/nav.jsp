@@ -15,7 +15,7 @@
 	<nav class="navbar-custom">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="/home"><img class="img-responsive" width="150px" src="${logo}"/></a>
+				<a class="navbar-brand" href="/v2/home"><img class="img-responsive" width="150px" src="${logo}"/></a>
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 		          <span class="icon-bar"></span>
 		          <span class="icon-bar"></span>
@@ -27,16 +27,10 @@
 			%>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="${urlHome}">Home</a></li>
-		           	<li class="dropdown dropdown-custom">
 		           	<%if(SessionHelper.getUser(session).getProfilo().equals("admin")){ %>
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Amministrazione <span class="caret"></span></a>
-						<ul class="dropdown-menu open">
 						    <li><a class="" href="${urlUploadEmployee}">Caricamento Risorse</a></li>
 						    <li><a class="" href="${urlUploadProjects}">Caricamento Progetti</a></li>
 						    <li><a class="" href="${urlApprova}">Gestione V2</a></li>
-						</ul>
-					</li>
 			 		<%
 			 		}
 		           	%>
