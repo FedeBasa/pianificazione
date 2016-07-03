@@ -175,7 +175,7 @@
 	
 	<input type="hidden" id="responsecode">
 	<div class="container-custom v2">
-	<h4>Gestione risorse</h4>
+	<h4>Gestione risorse - ${businessUnit}</h4>
 
 		<c:if test="${not empty errorMessage}">
 			<div class="alert alert-danger">
@@ -246,7 +246,7 @@
 							<button id="worklad" type="button" class="btn btn-default" onclick="workload('${month}', '${businessUnit}')">Workload</button>
 							<c:choose>
 								<c:when test="${v2Bean.stato == 100}">						
-									<button id="valida" type="button" class="btn btn-warning" onclick="valida('${month}', '${businessUnit}')">Consolida</button>
+									<button id="valida" type="button" class="btn btn-warning" onclick="valida('${month}', '${businessUnit}')">Integra</button>
 								</c:when>
 								<c:otherwise>
 									<button id="riapri" type="button" class="btn btn-primary" onclick="riapri('${month}', '${businessUnit}')">Apri</button>

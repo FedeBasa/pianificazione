@@ -37,7 +37,7 @@
 				</ul>
 				<%
 				if (SessionHelper.getImpersonateUser(session) != null) {
-				%>				
+				%>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Impersonificazione (<%= SessionHelper.getImpersonateUser(session).getUser().getSurname()%>)<span class="caret"></span></a>
@@ -57,6 +57,14 @@
 				<%
 				}
 				%>				
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Aiuto<span class="caret"></span></a>
+			 			<ul class="dropdown-menu">
+			 				<li><a class="" href="/v2/resources/ppt/guida_veloce.pptx">Guida Veloce</a></li>
+			 			</ul>						
+					</li>
+				</ul>
 			</div>
 			<%
 			}

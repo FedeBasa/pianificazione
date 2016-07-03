@@ -46,7 +46,7 @@
 							<td>
 								<c:choose>
 									<c:when test="${validatelist.contains(item.username)}">
-										<span style="background-color:yellow;color:darkgreen">CONSOLIDATO</span>
+										<span style="background-color:yellow;color:darkgreen">INTEGRATO</span>
 									</c:when>
 									<c:otherwise>
 										<c:choose>
