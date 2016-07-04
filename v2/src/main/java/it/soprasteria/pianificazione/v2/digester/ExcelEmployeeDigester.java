@@ -20,6 +20,8 @@ public class ExcelEmployeeDigester implements Serializable {
 
 	private static final Logger LOG = Logger.getLogger(ExcelEmployeeDigester.class);
 	
+	private String businessUnit;
+	
 	private List<String[]> content = new ArrayList<>();
 	
 	private List<EmployeeBean> list = new ArrayList<>();
@@ -34,8 +36,20 @@ public class ExcelEmployeeDigester implements Serializable {
 	
 			Iterator<Row> rowIterator = sheet.iterator();
 			
+			HSSFRow firstRow = (HSSFRow)rowIterator.next();
+			// leggo BU
+			String agenzia = firstRow.getCell(0).getStringCellValue();
+			if (agenzia.contains("791")) {
+				businessUnit = "791";
+			} else if (agenzia.contains("792")) {
+				businessUnit = "792";
+			} else if (agenzia.contains("793")) {
+				businessUnit = "793";
+			} else if (agenzia.contains("794")) {
+				businessUnit = "794";
+			}
+			
 			// salto l'intestazione
-			rowIterator.next();
 			rowIterator.next();
 			rowIterator.next();
 			rowIterator.next();
@@ -85,5 +99,9 @@ public class ExcelEmployeeDigester implements Serializable {
 	
 	public List<String> getInfoMessages() {
 		return infoMessages;
+	}
+	
+	public String getBusinessUnit() {
+		return businessUnit;
 	}
 }

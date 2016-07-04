@@ -303,6 +303,17 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
+	public void deleteEmployeesByBusinessUnit(String businessUnit) {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("DELETE FROM risorse where business_unit = ?");
+
+		getJdbcTemplate().update(sb.toString(), businessUnit);
+	}
+
+	
+	@Override
 	public void deleteAllProjects() {
 
 		StringBuilder sb = new StringBuilder();
@@ -313,12 +324,12 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 	}
 
 	@Override
-	public void persist(final List<EmployeeBean> list) {
+	public void persist(final String businessUnit, final List<EmployeeBean> list) {
 
 		final StringBuilder sb = new StringBuilder();
 
-		sb.append("INSERT INTO risorse(matricola, nome, cognome,utente_ins, data_ins)");
-		sb.append(" VALUES(?,?,?,?,?)");
+		sb.append("INSERT INTO risorse(matricola, nome, cognome,utente_ins, data_ins, business_unit)");
+		sb.append(" VALUES(?,?,?,?,?,?)");
 
 		final Date now = new Date();
 
@@ -333,6 +344,7 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 				pstm.setString(3, item.getSurname());
 				pstm.setString(4, item.getUtenteIns());
 				pstm.setTimestamp(5, new java.sql.Timestamp(now.getTime()));
+				pstm.setString(6, businessUnit);
 			}
 
 			@Override

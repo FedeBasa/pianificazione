@@ -62,7 +62,7 @@ public class UploadController {
 		ExcelEmployeeDigester digester = SessionHelper.getEmployeeDigester();
 		
 		service.clearCache();
-		service.save(digester.getList());
+		service.save(digester.getBusinessUnit(), digester.getList());
 
 		SessionHelper.clearEmployeeDigester();
 		

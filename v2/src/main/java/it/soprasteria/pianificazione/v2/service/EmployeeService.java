@@ -34,8 +34,9 @@ public class EmployeeService {
 	}
 	
 	@Transactional
-	public void save(List<EmployeeBean> list) {
-		dao.persist(list);
+	public void save(String businessUnit, List<EmployeeBean> list) {
+		dao.deleteEmployeesByBusinessUnit(businessUnit);
+		dao.persist(businessUnit, list);
 	}
 
 	@Transactional

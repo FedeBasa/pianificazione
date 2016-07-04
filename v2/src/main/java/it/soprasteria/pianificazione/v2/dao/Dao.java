@@ -34,9 +34,11 @@ public interface Dao {
 	
 	public void addProjectsResources(String username, int currentMonth, int nextMonth);
 	
-	public void persist(List<EmployeeBean> list);
+	public void persist(String businessUnit, List<EmployeeBean> list);
 	
 	public void deleteAllEmployees();
+	
+	public void deleteEmployeesByBusinessUnit(String businessUnit);
 	
 	public void updateTable(Long id, String colname, Integer modify, String username);
 	
