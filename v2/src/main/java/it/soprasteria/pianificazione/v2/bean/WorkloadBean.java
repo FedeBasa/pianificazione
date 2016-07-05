@@ -20,6 +20,7 @@ public class WorkloadBean {
 	private int nit3;
 	private int nonProject3;
 	private int ferie3;
+	private String businessUnit;
 	
 	public String getBadgeNumber() {
 		return badgeNumber;
@@ -168,5 +169,13 @@ public class WorkloadBean {
 	public void setFerie3(int ferie3) {
 		this.ferie3 = ferie3;
 	}
-	
+
+	public String getBusinessUnit() {
+		return businessUnit;
+	}
+
+	public void setBusinessUnit(String businessUnit) {
+		this.businessUnit = businessUnit;
+	}
+
 }

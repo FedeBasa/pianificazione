@@ -176,7 +176,7 @@ public class V2Service {
 	public boolean addNextMonth(UserBean userBean) {
 
 		List<Integer> list = dao.getMonths(userBean.getUsername());
-		List<Integer> listConfig = adminDao.getMonthsConfig();
+		List<Integer> listConfig = adminDao.getMonthsConfig(Integer.parseInt(userBean.getBuList().get(0)));
 
 		Integer lastMonth;
 		Integer lastMonthConfig;

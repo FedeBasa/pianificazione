@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
+import it.soprasteria.pianificazione.v2.bean.FerieBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.dao.Dao;
 import it.soprasteria.pianificazione.v2.util.DateUtil;
@@ -144,4 +145,44 @@ public class ExportV2Service {
 		return output.toByteArray();
 	}
 
+	public byte[] exportFerie(List<FerieBean> record) throws InvalidFormatException, IOException, ParseException {
+
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		
+		XSSFWorkbook workbook = new XSSFWorkbook(classLoader.getResourceAsStream("excel/template_ferie.xlsx"));
+
+		XSSFSheet sheet = workbook.getSheet("Foglio1");
+
+		int i = 1;
+		
+		for(FerieBean bean : record) {
+
+			Row row = sheet.createRow(i);
+			
+			Cell cell = row.createCell(0);
+			cell.setCellValue(DateUtil.convertExportFormat(bean.getMese()));
+			Cell cell2 = row.createCell(1);
+			cell2.setCellValue(org.apache.commons.lang.StringUtils.leftPad(bean.getBusinessUnit().toString(), 4, "0"));
+			Cell cell3 = row.createCell(2);
+			cell3.setCellValue(org.apache.commons.lang.StringUtils.leftPad(bean.getBadgeNumber().toString(), 6, "0"));
+			Cell cell4 = row.createCell(3);
+			cell4.setCellValue(bean.getCognome());
+		
+			Cell cell5 = row.createCell(4);
+			cell5.setCellValue(bean.getFerie1());
+			Cell cell6 = row.createCell(5);
+			cell6.setCellValue(bean.getFerie2());
+			Cell cell7 = row.createCell(6);
+			cell7.setCellValue(bean.getFerie3());
+			
+			i++;
+		}
+
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		workbook.write(output);
+		
+		return output.toByteArray();
+	}
+
+	
 }

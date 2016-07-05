@@ -14,7 +14,7 @@
 <script>
 	$(document).ready(function() {
 
-		 <c:if test="${v2Bean.stato == 100}">
+		 <c:if test="${v2Bean.stato == 100 && v2Config.stato == 100}">
 		
 		$("#aggiungi").click(function(){
 			var path="${pageContext.request.contextPath}/record/insert";
@@ -112,7 +112,7 @@
 		</c:if>
 	});
 	
-	<c:if test="${v2Bean.stato == 100}">
+	<c:if test="${v2Bean.stato == 100 && v2Config.stato == 100}">
 	function detail(id) {
 		$.get("${pageContext.request.contextPath}/record/detail/" + id,
 				function(data) {
@@ -199,7 +199,7 @@
 				<div class="row button-container">
 					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
 						<div class="btn-group custom btn-action btn-3">
-							<c:if test="${v2Bean.stato == 100}">
+							<c:if test="${v2Bean.stato == 100 && v2Config.stato == 100}">
 							<div class="btn-group">
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								Azioni <span class="caret"></span></button>
@@ -214,7 +214,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-9 col-md-5 col-lg-6">
-						<c:if test="${v2Bean.stato == 100}">
+						<c:if test="${v2Bean.stato == 100 && v2Config.stato == 100}">
 						<form:form method="POST" class="form-horizontal" modelAttribute="v2Form" action="${pageContext.request.contextPath}/send/data">
 						    <form:hidden path="month"/>
 						    <form:hidden path="businessUnit"/>
@@ -244,14 +244,16 @@
 					<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 						<div class="btn-group custom btn-2 pull-right">
 							<button id="worklad" type="button" class="btn btn-default" onclick="workload('${month}', '${businessUnit}')">Workload</button>
-							<c:choose>
-								<c:when test="${v2Bean.stato == 100}">						
-									<button id="valida" type="button" class="btn btn-warning" onclick="valida('${month}', '${businessUnit}')">Integra</button>
-								</c:when>
-								<c:otherwise>
-									<button id="riapri" type="button" class="btn btn-primary" onclick="riapri('${month}', '${businessUnit}')">Apri</button>
-								</c:otherwise>
-							</c:choose>
+							<c:if test="${v2Config.stato == 100}">
+								<c:choose>
+									<c:when test="${v2Bean.stato == 100}">						
+										<button id="valida" type="button" class="btn btn-warning" onclick="valida('${month}', '${businessUnit}')">Integra</button>
+									</c:when>
+									<c:otherwise>
+										<button id="riapri" type="button" class="btn btn-primary" onclick="riapri('${month}', '${businessUnit}')">Apri</button>
+									</c:otherwise>
+								</c:choose>
+							</c:if>
 						</div>
 					</div>
 				</div>

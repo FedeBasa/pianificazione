@@ -131,9 +131,10 @@ public class DaoImpl extends JdbcDaoSupport implements Dao {
 		}, new RowMapper<EmployeeBean>() {
 			public EmployeeBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
 				EmployeeBean b = new EmployeeBean();
-				b.setBadgeNumber(rs.getString(1));
-				b.setName(rs.getString(2));
-				b.setSurname(rs.getString(3));
+				b.setBadgeNumber(rs.getString("matricola"));
+				b.setName(rs.getString("nome"));
+				b.setSurname(rs.getString("cognome"));
+				b.setBusinessUnit(rs.getString("business_unit"));
 				return b;
 			}
 		});

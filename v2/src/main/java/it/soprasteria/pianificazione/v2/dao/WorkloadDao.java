@@ -2,6 +2,7 @@ package it.soprasteria.pianificazione.v2.dao;
 
 import java.util.List;
 
+import it.soprasteria.pianificazione.v2.bean.FerieBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 
@@ -12,4 +13,6 @@ public interface WorkloadDao {
 	public List<WorkloadDetailBean> findWorkloadDetails(int month, String badgeNumber);
 	
 	public void updateFerieTable(WorkloadBean workloadBean, int month, String colname, Integer value, String username);
+	
+	public List<FerieBean> getFerieByBusinessUnit(final int month, final String businessUnit);
 }

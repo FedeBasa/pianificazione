@@ -16,6 +16,7 @@ public class FerieBean {
 	private Date dataIns;
 	private String utenteMod;
 	private Date dataMod;
+	private String businessUnit;
 
 	public int getIdFerie() {
 		return idFerie;
@@ -113,4 +114,13 @@ public class FerieBean {
 		this.dataMod = dataMod;
 	}
 
+	public String getBusinessUnit() {
+		return businessUnit;
+	}
+
+	public void setBusinessUnit(String businessUnit) {
+		this.businessUnit = businessUnit;
+	}
+
+	
 }

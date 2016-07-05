@@ -1,5 +1,8 @@
 package it.soprasteria.pianificazione.v2.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +15,14 @@ public class AdminService {
 	@Autowired
 	private AdminDao dao;
 
-	public void addNextConfigMonth() {
+	public void addNextConfigMonth(List<String> buList) {
 
-		List<Integer> listConfig = dao.getMonthsConfig();
-		Integer lastMonthConfig = listConfig.get(listConfig.size() - 1);
-
-		dao.addNextConfigMonth(lastMonthConfig);
+		for(String businessUnit : buList) {
+			List<Integer> listConfig = dao.getMonthsConfig(Integer.parseInt(businessUnit));
+			Integer lastMonthConfig = listConfig.get(listConfig.size() - 1);
+	
+			dao.addNextConfigMonth(lastMonthConfig, Integer.parseInt(businessUnit));
+		}
 	}
 	
 	public void updateEditable(String user, int month) {
@@ -32,9 +37,31 @@ public class AdminService {
 		dao.updateV2ConfigStatus(month, bu, enable);
 	}
 
-	public List<V2Bean> getV2Config() {
+	public List<V2Bean> getV2Config(List<String> buList) {
 
-		return dao.getV2Config();
+		List<V2Bean> result = new ArrayList<>();
+		for(String businessUnit : buList) {
+			result.addAll(dao.getV2Config(Integer.parseInt(businessUnit)));
+		}
+		
+	    Collections.sort(result, new Comparator<V2Bean>() {
+	    	@Override
+	    	public int compare(V2Bean o1, V2Bean o2) {
+	    		
+	    		int result = (o1.getMonth() == o2.getMonth()) ? 0 : (o1.getMonth() < o2.getMonth() ? 1 : -1);
+	    		if (result == 0) {
+	    			result = (o1.getBusinessUnit() == o2.getBusinessUnit()) ? 0 : (o1.getBusinessUnit() > o2.getBusinessUnit() ? 1 : -1);
+	    		}
+	    		return result;
+	    	}
+	    });
+	    
+	    return result;
+	}
+	
+	public V2Bean getV2Config(int month, int businessUnit) {
+		
+		return dao.getV2Config(month, businessUnit);
 	}
 	
 }

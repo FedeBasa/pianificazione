@@ -30,6 +30,7 @@ import it.soprasteria.pianificazione.v2.bean.ProjectBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.bean.UserBean;
 import it.soprasteria.pianificazione.v2.bean.V2Bean;
+import it.soprasteria.pianificazione.v2.service.AdminService;
 import it.soprasteria.pianificazione.v2.service.CalendarConfigService;
 import it.soprasteria.pianificazione.v2.service.EmployeeService;
 import it.soprasteria.pianificazione.v2.service.EnumService;
@@ -61,6 +62,8 @@ public class V2Controller {
 	private FormValidator formValidator;
 	@Autowired
 	private EnumService enumservice;
+	@Autowired
+	private AdminService adminService;
 
 	@InitBinder(value = "v2Form")
 	protected void initBinder(WebDataBinder binder) {
@@ -104,6 +107,10 @@ public class V2Controller {
 
 		List<RecordV2Bean> list = service.getV2(month, businessUnit, SessionHelper.getUser().getUsername());
 		model.addObject("list", list);
+		
+		V2Bean v2Config = adminService.getV2Config(month, businessUnit);
+		model.addObject("v2Config", v2Config);
+		
 		RecordV2Bean recordV2Bean = new RecordV2Bean();
 		recordV2Bean.setMonth(month);
 		recordV2Bean.setBusinessUnit(businessUnit);

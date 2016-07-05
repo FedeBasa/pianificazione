@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.soprasteria.pianificazione.v2.bean.FerieBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.service.ExportV2Service;
 import it.soprasteria.pianificazione.v2.service.V2Service;
+import it.soprasteria.pianificazione.v2.service.WorkloadService;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 
 @Controller
@@ -29,6 +31,8 @@ public class ExportController {
 	private ExportV2Service service;
 	@Autowired
 	private V2Service v2Service;
+	@Autowired
+	private WorkloadService workloadService;
 
 	@RequestMapping(value = "/export/v2", method = RequestMethod.GET)
 	public void export(HttpServletResponse response, @RequestParam(name = "month", required = true) int month, @RequestParam(name = "bu", required = true) int bu) throws IOException, InvalidFormatException, ParseException {

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.soprasteria.pianificazione.v2.bean.FerieBean;
 import it.soprasteria.pianificazione.v2.bean.ImpersonateBean;
 import it.soprasteria.pianificazione.v2.bean.RecordV2Bean;
 import it.soprasteria.pianificazione.v2.bean.UserBean;
@@ -27,6 +28,7 @@ import it.soprasteria.pianificazione.v2.service.AdminService;
 import it.soprasteria.pianificazione.v2.service.ExportV2Service;
 import it.soprasteria.pianificazione.v2.service.UserService;
 import it.soprasteria.pianificazione.v2.service.V2Service;
+import it.soprasteria.pianificazione.v2.service.WorkloadService;
 import it.soprasteria.pianificazione.v2.util.SessionHelper;
 import it.soprasteria.pianificazione.v2.util.V2StatusKeys;
 
@@ -46,12 +48,14 @@ public class AdminController {
 
 	@Autowired
 	private ExportV2Service exportV2Service;
+	
+	@Autowired
+	private WorkloadService workloadService;
 
 	@RequestMapping(value = "/admin/apri", method = RequestMethod.POST)
 	public String apri(@RequestParam(name = "month", required = true) int month, @RequestParam(name = "bu", required = true) int bu, Model model, RedirectAttributes redirectAttributes) {
 
 		service.updateV2ConfigStatus(month, bu, V2StatusKeys.OPEN);
-		service.updateMonthsStatus(month, bu, V2StatusKeys.OPEN);
 		return "redirect:/admin/gestione_mese";
 	}
 	
@@ -59,14 +63,14 @@ public class AdminController {
 	public String chiudi(@RequestParam(name = "month", required = true) int month, @RequestParam(name = "bu", required = true) int bu, Model model, RedirectAttributes redirectAttributes) {
 
 		service.updateV2ConfigStatus(month, bu, V2StatusKeys.CLOSED);
-		service.updateMonthsStatus(month, bu, V2StatusKeys.CLOSED);
 		return "redirect:/admin/gestione_mese";
 	}
 
 	@RequestMapping(value = "/admin/gestione_mese", method = RequestMethod.GET)
 	public String approvaPage(Model model, RedirectAttributes redirectAttributes) {
 
-		List<V2Bean> v2List = service.getV2Config();
+		List<String> buList = SessionHelper.getUser().getBuList();
+		List<V2Bean> v2List = service.getV2Config(buList);
 		model.addAttribute("v2List",v2List);
 		
 		return "admin_gestione_mese";
@@ -75,7 +79,8 @@ public class AdminController {
 	@RequestMapping(value = "/admin/addConfigMonth", method = RequestMethod.POST)
 	public String addMonth(Model model, RedirectAttributes redirectAttributes) {
 
-		service.addNextConfigMonth();
+		List<String> buList = SessionHelper.getUser().getBuList();
+		service.addNextConfigMonth(buList);
 
 		return "redirect:/admin/gestione_mese";
 	}
@@ -157,6 +162,22 @@ public class AdminController {
 
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Content-Disposition", "inline; filename=\"" + month + "_" + bu + "_terzeparti.xlsx\"");
+
+		ServletOutputStream outputStream = response.getOutputStream();
+		outputStream.write(bytes);
+
+		outputStream.close();
+	}
+
+	@RequestMapping(value = "/admin/export/v2_ferie", method = RequestMethod.GET)
+	public void exportFerie(HttpServletResponse response, @RequestParam(name = "month", required = true) int month, @RequestParam(name = "bu", required = true) int bu) throws IOException, InvalidFormatException, ParseException {
+
+		List<FerieBean> list = workloadService.findFerie(month, String.valueOf(bu));
+
+		byte[] bytes = exportV2Service.exportFerie(list);
+
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-Disposition", "inline; filename=\"ferie_" + month + "_" + bu + ".xlsx\"");
 
 		ServletOutputStream outputStream = response.getOutputStream();
 		outputStream.write(bytes);

@@ -141,14 +141,14 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 		else {
 			
 			StringBuilder insertSql = new StringBuilder();
-			insertSql.append(" INSERT INTO risorse_ferie (mese, matricola, nome, cognome, utente_ins, data_ins, ").append(colname).append(" )");
+			insertSql.append(" INSERT INTO risorse_ferie (mese, matricola, nome, cognome, utente_ins, data_ins, business_unit, ").append(colname).append(" )");
 			insertSql.append("VALUES");
-			insertSql.append(" (?, ?, ?, ?, ?, ?, ?)");
+			insertSql.append(" (?, ?, ?, ?, ?, ?, ?, ?)");
 			
 			Timestamp timestamp = new Timestamp(new Date().getTime());
 			
-			Object[] params = new Object[] { month, workloadBean.getBadgeNumber(), workloadBean.getName(), workloadBean.getSurname(), username, timestamp, value };
-			int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP, Types.INTEGER};
+			Object[] params = new Object[] { month, workloadBean.getBadgeNumber(), workloadBean.getName(), workloadBean.getSurname(), username, timestamp, workloadBean.getBusinessUnit(), value };
+			int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR, Types.INTEGER};
 			getJdbcTemplate().update(insertSql.toString(), params, types);
 
 		}
@@ -198,5 +198,46 @@ public class WorkloadDaoImpl extends JdbcDaoSupport implements WorkloadDao {
 		}
 		return list.get(0);
 	}
-	
+
+	public List<FerieBean> getFerieByBusinessUnit(final int month, final String businessUnit) {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select *");
+		sql.append(" from risorse_ferie");
+		sql.append(" where mese = ?");
+		sql.append(" and business_unit = ?");
+		
+		return getJdbcTemplate().query(sql.toString(), new PreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement pstm) throws SQLException {
+				
+				int i = 1;
+				pstm.setInt(i++, month);
+				pstm.setString(i, businessUnit);
+			}
+		}, new RowMapper<FerieBean>() {
+			public FerieBean mapRow(ResultSet rs, int rowNumb) throws SQLException {
+				
+				FerieBean bean = new FerieBean();
+				bean.setIdFerie(rs.getInt("id_ferie"));
+				bean.setMese(rs.getInt("mese"));
+				bean.setBadgeNumber(rs.getString("matricola"));
+				bean.setNome(rs.getString("nome"));
+				bean.setCognome(rs.getString("cognome"));
+				bean.setFerie1(rs.getInt("ferie_1"));
+				bean.setFerie2(rs.getInt("ferie_2"));
+				bean.setFerie3(rs.getInt("ferie_3"));
+				bean.setUtenteIns(rs.getString("utente_ins"));
+				bean.setDataIns(rs.getTimestamp("data_ins"));
+				bean.setUtenteMod(rs.getString("utente_mod"));
+				bean.setDataMod(rs.getTimestamp("data_mod"));
+				bean.setBusinessUnit(rs.getString("business_unit"));
+				
+				return bean;
+			}
+		});
+		
+	}
+
 }

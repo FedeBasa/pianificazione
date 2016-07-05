@@ -18,11 +18,11 @@ public class V2Bean {
 	public void setMonth(int month) {
 		this.month = month;
 	}
-	
+
 	public String getFormattedMonth() {
 		try {
 			return DateUtil.convertExportFormat(month);
-		} catch(ParseException e) {
+		} catch (ParseException e) {
 			return String.valueOf(month);
 		}
 	}

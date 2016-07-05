@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import it.soprasteria.pianificazione.v2.bean.EmployeeBean;
+import it.soprasteria.pianificazione.v2.bean.FerieBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadBean;
 import it.soprasteria.pianificazione.v2.bean.WorkloadDetailBean;
 import it.soprasteria.pianificazione.v2.dao.WorkloadDao;
@@ -16,6 +18,9 @@ public class WorkloadService {
 	
 	@Autowired
 	private CalendarConfigService calendarConfigService;
+	
+	@Autowired
+	private EmployeeService employeeService;
 	
 	public List<WorkloadBean> findWorkload(int month, String username) {
 		
@@ -88,8 +93,23 @@ public class WorkloadService {
 			}
 			workloadBean.setNonProject3(config3 - workloadBean.getWork3() - value);
 		}
+		
+		System.out.println("interrogo anagrafica: " + workloadBean.getBadgeNumber());
+		
+		EmployeeBean employeeBean = employeeService.findByBadgeNumber(workloadBean.getBadgeNumber());
+		if (employeeBean != null) {
+			workloadBean.setBusinessUnit(employeeBean.getBusinessUnit());
+			
+			System.out.println("business unit: " + employeeBean.getBusinessUnit());
+		}
+		
 		dao.updateFerieTable(workloadBean, month, colname, value, username);
 		
 		return workloadBean;
+	}
+	
+	public List<FerieBean> findFerie(int month, String businessUnit) {
+
+		return this.dao.getFerieByBusinessUnit(month, businessUnit);
 	}
 }

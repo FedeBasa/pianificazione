@@ -7,6 +7,7 @@ public class EmployeeBean extends BaseBean implements Serializable {
 	private String badgeNumber;
 	private String name;
 	private String surname;
+	private String businessUnit;
 
 	public static EmployeeBean build(String badgeNumber, String name, String surname, String utenteIns) {
 
@@ -50,4 +51,12 @@ public class EmployeeBean extends BaseBean implements Serializable {
 		this.surname = surname;
 	}
 
+	public String getBusinessUnit() {
+		return businessUnit;
+	}
+
+	public void setBusinessUnit(String businessUnit) {
+		this.businessUnit = businessUnit;
+	}
+	
 }
