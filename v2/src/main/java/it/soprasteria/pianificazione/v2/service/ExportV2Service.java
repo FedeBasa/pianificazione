@@ -54,7 +54,11 @@ public class ExportV2Service {
 			}
 		
 			Cell cell6 = row.createCell(5);
-			cell6.setCellValue(bean.getIdProject() + " - " + bean.getProjectDesc());
+			String projectDesc = bean.getIdProject() + " - " + bean.getProjectDesc();
+			if (projectDesc.length() > 40) {
+				projectDesc = projectDesc.substring(0, 40);
+			}
+			cell6.setCellValue(projectDesc);
 			Cell cell7 = row.createCell(6);
 			cell7.setCellValue(bean.getPrice());
 			Cell cell8 = row.createCell(7);
@@ -115,7 +119,11 @@ public class ExportV2Service {
 				}
 			
 				Cell cell6 = row.createCell(5);
-				cell6.setCellValue(bean.getIdProject() + " - " + bean.getProjectDesc());
+				String projectDesc = bean.getIdProject() + " - " + bean.getProjectDesc();
+				if (projectDesc.length() > 40) {
+					projectDesc = projectDesc.substring(0, 40);
+				}				
+				cell6.setCellValue(projectDesc);
 				Cell cell7 = row.createCell(6);
 				cell7.setCellValue(bean.getPrice());
 				Cell cell8 = row.createCell(7);
