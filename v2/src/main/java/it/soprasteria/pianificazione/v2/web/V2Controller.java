@@ -352,6 +352,9 @@ public class V2Controller {
 
 	private void prepareModelAttributes(Model model, int month, Integer businessUnit) {
 		
+		V2Bean v2Config = adminService.getV2Config(month, businessUnit);
+		model.addAttribute("v2Config", v2Config);
+
 		model.addAttribute("v2Bean", SessionHelper.getV2(month, businessUnit));
 		model.addAttribute("month", month);
 		model.addAttribute("businessUnit", businessUnit);

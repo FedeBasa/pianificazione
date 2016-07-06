@@ -29,7 +29,7 @@ public class ExportV2Service {
 		
 		XSSFWorkbook workbook = new XSSFWorkbook(classLoader.getResourceAsStream("excel/template.xlsx"));
 
-		XSSFSheet sheet = workbook.getSheet("Foglio1");
+		XSSFSheet sheet = workbook.getSheet("V2");
 
 		int i = 1;
 		
@@ -91,7 +91,7 @@ public class ExportV2Service {
 		
 		XSSFWorkbook workbook = new XSSFWorkbook(classLoader.getResourceAsStream("excel/template_terzeparti.xlsx"));
 
-		XSSFSheet sheet = workbook.getSheet("Foglio1");
+		XSSFSheet sheet = workbook.getSheet("V2");
 
 		int i = 1;
 		
